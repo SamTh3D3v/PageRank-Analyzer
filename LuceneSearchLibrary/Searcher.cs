@@ -32,6 +32,7 @@ namespace LuceneSearchLibrary
         }
         #endregion
         #region Methods
+        //Changes
         public IEnumerable<DocumentHit> Search(String term)
         {
             var analyzer = new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_30);

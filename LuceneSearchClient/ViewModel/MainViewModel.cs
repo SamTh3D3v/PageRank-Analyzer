@@ -13,6 +13,7 @@ namespace LuceneSearchClient.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
+        //Update
         #region Consts
         public const string ListSearchResultPropertyName = "ListSearchResult";
         public const string SearchTermsPropertyName = "SearchTerms";

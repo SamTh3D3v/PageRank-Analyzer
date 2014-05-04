@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuceneSearchLibrary", "Luce
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SearchClient", "LuceneSearchClient\SearchClient.csproj", "{CFBB38DB-A2D6-441A-8720-8EEF8556F862}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebGraphMaker", "..\..\..\..\Documents\Visual Studio 2013\Projects\WebGraphMaker\MapGraphMaker\WebGraphMaker.csproj", "{086FAF77-79EE-47A1-8119-F2567B4F0C99}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebGraphMaker", "WebGraphMaker\WebGraphMaker.csproj", "{086FAF77-79EE-47A1-8119-F2567B4F0C99}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

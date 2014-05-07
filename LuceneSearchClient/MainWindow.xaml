@@ -41,7 +41,7 @@
         <TextBlock Text="Search Terms" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
         <TextBox x:Name="TxbSearch" Grid.Row="0" Text="{Binding SearchTerms ,Mode=TwoWay}" Grid.Column="1" Margin="5"/>
         <Button Content="Search" Grid.Row="0" Grid.Column="2" Margin="5"  Command="{Binding SearchCommand}" IsEnabled="{Binding SearchEnabled}"/>
-        <ListBox ItemsSource="{Binding ListSearchResult}" Margin="5" Grid.Row="1" Grid.ColumnSpan="3" Grid.Column="0"
+        <!--<ListBox ItemsSource="{Binding ListSearchResult}" Margin="5" Grid.Row="1" Grid.ColumnSpan="3" Grid.Column="0"
                  Background="LightGray">
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -53,7 +53,9 @@
                     </Border>
                 </DataTemplate>
             </ListBox.ItemTemplate>
-        </ListBox>
+        </ListBox>-->
+        <DataGrid Margin="5" Grid.Row="1" Grid.ColumnSpan="3" Grid.Column="0" ItemsSource="{Binding ListSearchResult}"/>
+        
 
     </Grid>
 </Window>

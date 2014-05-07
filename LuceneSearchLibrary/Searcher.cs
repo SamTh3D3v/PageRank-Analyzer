@@ -49,7 +49,9 @@ namespace LuceneSearchLibrary
                 {    
                     Title = doc.Get("title"),
                     Path=doc.Get("path"),
-                    Link = doc.Get("link")
+                    Link = doc.Get("link"),
+                    Score = hits[i].Score,
+                    PageRank = 1  //PageRank To Be Calcumated
                 });              
             }
             return listHits;

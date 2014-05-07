@@ -1,0 +1,47 @@
+﻿<Window x:Class="LuceneSearchClient.Views.SettingView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ignore="http://www.ignore.com"
+        mc:Ignorable="d ignore" ShowInTaskbar="False" FocusManager.FocusedElement="{Binding ElementName=TxbSiteUrl}"
+    WindowStartupLocation="CenterScreen" WindowStyle="None" 
+        DataContext="{Binding SettingViewMModel, Source={StaticResource Locator}}" Width="329.194" Height="124.552">
+<Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/ResourceDictionary.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+        <Label Grid.Row="0" Grid.Column="0" Content="Website Url :"/>
+        <TextBox x:Name="TxbSiteUrl"  Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding WebSiteUrl ,Mode=TwoWay}" Style="{StaticResource SettingsTextBoxStyle}"/>                
+        <Label Grid.Row="1" Grid.Column="0" Content="Location"/>
+        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding WebSiteLocation ,Mode=TwoWay}" Style="{StaticResource SettingsTextBoxStyle}"/>
+        <Button Content="Browse" Grid.Row="1" Grid.Column="2" Style="{StaticResource SettingsButtonStyle}" Command="{Binding WebSiteLocationCommand}"/>
+        <Label Grid.Row="2" Grid.Column="0" Content="Index Location"/>
+        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding IndexLocation ,Mode=TwoWay}" Style="{StaticResource SettingsTextBoxStyle}"/>
+        <Button Content="Browse" Grid.Row="2" Grid.Column="2" Style="{StaticResource SettingsButtonStyle}" Command="{Binding IndexLocationCommand}"/>
+        <Grid Margin="5" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Right">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+            <Button Content="Save" Grid.Column="0" Style="{StaticResource SettingsButtonStyle}" Command="{Binding SaveCommand}" Margin="0,3,6,3"/>
+            <Button Content="Cancel" Grid.Column="1" IsEnabled="False" Style="{StaticResource SettingsButtonStyle}"/>
+        </Grid>
+
+    </Grid>
+</Window>

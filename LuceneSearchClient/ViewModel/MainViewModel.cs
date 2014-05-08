@@ -104,6 +104,7 @@ namespace LuceneSearchClient.ViewModel
         #endregion
         #region Ctors and Methods
         public MainViewModel()
+
         {
             //Registre To Receive The WebSite Settings
             Messenger.Default.Register<WebSite>(this, "savesettings", (website) =>
@@ -112,6 +113,7 @@ namespace LuceneSearchClient.ViewModel
                 var indexingThread = new Thread(new ThreadStart(Indexing));
                 indexingThread.Start();
             });                      
+
         }
 
         private void Indexing()

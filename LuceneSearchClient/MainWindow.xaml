@@ -10,52 +10,20 @@
         Height="400"
         Width="600"
         Title="MVVM Light Application"
-        FocusManager.FocusedElement="{Binding ElementName=TxbSearch}"
+        
     WindowStartupLocation="CenterScreen"
         DataContext="{Binding Main, Source={StaticResource Locator}}" >
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Skins/MainSkin.xaml" />
+                <ResourceDictionary Source="Resources/ResourceDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Loaded" >
-            <command:EventToCommand Command="{Binding OnloadCommand}"
-                 PassEventArgsToCommand="True" />
-        </i:EventTrigger>
-    </i:Interaction.Triggers>
+    
 
     <Grid x:Name="LayoutRoot">
-
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="150"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="100"/>
-        </Grid.ColumnDefinitions>
-        <TextBlock Text="Search Terms" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
-        <TextBox x:Name="TxbSearch" Grid.Row="0" Text="{Binding SearchTerms ,Mode=TwoWay}" Grid.Column="1" Margin="5"/>
-        <Button Content="Search" Grid.Row="0" Grid.Column="2" Margin="5"  Command="{Binding SearchCommand}" IsEnabled="{Binding SearchEnabled}"/>
-        <!--<ListBox ItemsSource="{Binding ListSearchResult}" Margin="5" Grid.Row="1" Grid.ColumnSpan="3" Grid.Column="0"
-                 Background="LightGray">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Border BorderThickness="2" BorderBrush="Black" Margin="1" Background="White" HorizontalAlignment="Stretch">
-                        <StackPanel  HorizontalAlignment="Stretch">
-                            <TextBlock Text="{Binding Title}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1"/>
-                            <TextBlock Text="{Binding Link}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1"/>                            
-                        </StackPanel>
-                    </Border>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>-->
-        <DataGrid Margin="5" Grid.Row="1" Grid.ColumnSpan="3" Grid.Column="0" ItemsSource="{Binding ListSearchResult}"/>
-        
-
+        <Frame Source="{Binding NavigationUri,Mode=TwoWay}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" NavigationUIVisibility="Visible"/>
     </Grid>
 </Window>

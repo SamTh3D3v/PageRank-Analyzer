@@ -23,6 +23,7 @@ namespace LuceneSearchClient.ViewModel
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);            
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<SettingViewModel>();
+            SimpleIoc.Default.Register<SearchViewModel>();
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance",
@@ -45,7 +46,17 @@ namespace LuceneSearchClient.ViewModel
             {
                 return ServiceLocator.Current.GetInstance<SettingViewModel>();
             }
-        }        
+        }       
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance",
+            "CA1822:MarkMembersAsStatic",
+            Justification = "This non-static member is needed for data binding purposes.")]
+        public SearchViewModel SearchViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<SearchViewModel>();
+            }
+        }
         public static void Cleanup()
         {
         }

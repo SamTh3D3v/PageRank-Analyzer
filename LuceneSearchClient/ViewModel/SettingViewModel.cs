@@ -130,6 +130,7 @@ namespace LuceneSearchClient.ViewModel
                                Messenger.Default.Send<NotificationMessage>(new NotificationMessage("killsettingswindow"));
                            }));
             }
+
         }
 
         #endregion

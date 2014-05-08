@@ -68,7 +68,6 @@ namespace WebGraphMaker.businessLogic
                 }
                 private void GenerateLinksList()
                 {
-                    Debug.WriteLine("Generating Links list ...");
                     _links = new List<Model.Link>();
 
                     int rowCount = _worksheetRange.Rows.Count;
@@ -86,56 +85,8 @@ namespace WebGraphMaker.businessLogic
                         });
                     } 
                 }
-
-                private void GeneratePagesListFromCSV()
-                {
-                    _pages = new List<Model.Page>();
-
-                    int rowCount = _worksheetRange.Rows.Count;
-                    int colCount = _worksheetRange.Columns.Count;
-                                                        
-                    ulong idCount = 0;
-                    for (int i = 1; i <= rowCount; i++)
-                    {
-                        for (int j = 1; j <= colCount; j++)
-                        {
-                            //Thx god Uri has the == operator
-
-                            if (_pages.Count == 0)
-                            {
-                                Debug.WriteLine(idCount);
-                                _pages.Add(new Model.Page()
-                                {
-
-                                    Url = new Uri(_worksheetRange.Cells[i, j].Value2.ToString(), UriKind.RelativeOrAbsolute),
-                                    Id = idCount
-                                });
-                                idCount++;
-                            }
-                            else
-                            {
-                                var uri = new Uri(_worksheetRange.Cells[i, j].Value2.ToString(), UriKind.RelativeOrAbsolute);
-                                if (!_pages.Contains(_pages.Find(p => p.Url == uri)))
-                                {
-                                    Debug.WriteLine(idCount);
-                                    _pages.Add(new Model.Page()
-                                    {
-                                        Url = new Uri(_worksheetRange.Cells[i, j].Value2.ToString(), UriKind.RelativeOrAbsolute),
-                                        Id = idCount
-                                    });
-                                    idCount++;
-                                }
-                            }
-                        }
-                    }
-
-                }
-
-
                 private void PersistGraphEntitiesToXml(GraphEntities grapheEntity)
                 {
-                    Debug.Write("Generating XML Pages file into ");
-
                     var saveFileDialog = new SaveFileDialog
                     {
                         Filter = "txt files (*.xml)|*.xml",
@@ -161,17 +112,13 @@ namespace WebGraphMaker.businessLogic
                         }
                     }
                 }
-        
-                public void ConvertExelDataAsync()
+                public void ConvertExelData()
                 {
-                    Debug.WriteLine("Convertion ...");
-
                     GeneratePagesList();
                     GenerateLinksList();
 
                     PersistGraphEntitiesToXml(GraphEntities.Pages);
                     PersistGraphEntitiesToXml(GraphEntities.Links);
-                    Debug.WriteLine("Convertion Finished with success !");
                 }
         #endregion
 

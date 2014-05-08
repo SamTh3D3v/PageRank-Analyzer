@@ -7,8 +7,8 @@
     <ProjectGuid>{086FAF77-79EE-47A1-8119-F2567B4F0C99}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MapGraphMaker</RootNamespace>
-    <AssemblyName>MapGraphMaker</AssemblyName>
+    <RootNamespace>WebGraphMaker</RootNamespace>
+    <AssemblyName>WebGraphMaker</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

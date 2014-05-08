@@ -4,12 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ignore="http://www.ignore.com"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:command="http://www.galasoft.ch/mvvmlight"
         mc:Ignorable="d ignore"
         Height="400"
         Width="600"
         Title="MVVM Light Application"
-        DataContext="{Binding Main, Source={StaticResource Locator}}">
-
+        FocusManager.FocusedElement="{Binding ElementName=TxbSearch}"
+    WindowStartupLocation="CenterScreen"
+        DataContext="{Binding Main, Source={StaticResource Locator}}" >
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -17,6 +20,12 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded" >
+            <command:EventToCommand Command="{Binding OnloadCommand}"
+                 PassEventArgsToCommand="True" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
 
     <Grid x:Name="LayoutRoot">
 
@@ -30,9 +39,9 @@
             <ColumnDefinition Width="100"/>
         </Grid.ColumnDefinitions>
         <TextBlock Text="Search Terms" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
-        <TextBox Grid.Row="0" Text="{Binding SearchTerms ,Mode=TwoWay}" Grid.Column="1" Margin="5"/>
+        <TextBox x:Name="TxbSearch" Grid.Row="0" Text="{Binding SearchTerms ,Mode=TwoWay}" Grid.Column="1" Margin="5"/>
         <Button Content="Search" Grid.Row="0" Grid.Column="2" Margin="5"  Command="{Binding SearchCommand}" IsEnabled="{Binding SearchEnabled}"/>
-        <ListBox ItemsSource="{Binding ListSearchResult}" Margin="5" Grid.Row="1" Grid.ColumnSpan="3" Grid.Column="0"
+        <!--<ListBox ItemsSource="{Binding ListSearchResult}" Margin="5" Grid.Row="1" Grid.ColumnSpan="3" Grid.Column="0"
                  Background="LightGray">
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -44,7 +53,9 @@
                     </Border>
                 </DataTemplate>
             </ListBox.ItemTemplate>
-        </ListBox>
+        </ListBox>-->
+        <DataGrid Margin="5" Grid.Row="1" Grid.ColumnSpan="3" Grid.Column="0" ItemsSource="{Binding ListSearchResult}"/>
+        
 
     </Grid>
 </Window>

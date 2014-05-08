@@ -26,7 +26,16 @@ namespace LuceneSearchLibrary
         #region Constructors
         public  HtmlIndexer(string indexDirectory,string webSiteLink)
 		{
-            _writer = new IndexWriter(FSDirectory.Open(indexDirectory), new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_30), true, IndexWriter.MaxFieldLength.LIMITED);
+
+            try
+            {
+                _writer = new IndexWriter(FSDirectory.Open(indexDirectory), new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_30), true, IndexWriter.MaxFieldLength.LIMITED);
+            }
+            catch (Exception)
+            {
+                
+                throw;
+            }
 			_writer.UseCompoundFile = true;
             _webSiteLink = webSiteLink;
 		}
@@ -70,6 +79,8 @@ namespace LuceneSearchLibrary
         {
             string temp = Regex.Replace(html, "<[^>]*>", "");
             return temp.Replace("&nbsp;", " ");
+
+
         }
         private static string GetPageTitle(string html)
         {
@@ -80,8 +91,18 @@ namespace LuceneSearchLibrary
         }
         public void Close()
         {
-            _writer.Optimize();   //Make The Inverted Index Much Faster To Read 
-            _writer.Dispose();
+
+            try
+            {
+                _writer.Optimize();   //Make The Inverted Index Much Faster To Read 
+                _writer.Dispose();
+            }
+            catch (Exception)
+            {
+                
+                throw new Exception("Exception while closing the indexWriter");
+            }
+            
         }
         #endregion
         #region Events

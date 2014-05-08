@@ -30,7 +30,7 @@ namespace WebGraphMaker.businessLogic
                      int rowCount = _worksheetRange.Rows.Count;
                      int colCount = _worksheetRange.Columns.Count;
 
-                     short idCount = 0;
+                     ulong idCount = 0;
                      for (int i = 1; i <= rowCount; i++)
                      {
                          for (int j = 1; j <= colCount; j++)
@@ -77,8 +77,8 @@ namespace WebGraphMaker.businessLogic
                     {
                         var tailUri = new Uri(_worksheetRange.Cells[i, 1].Value2.ToString(), UriKind.RelativeOrAbsolute);
                         var headUri = new Uri(_worksheetRange.Cells[i, 2].Value2.ToString(), UriKind.RelativeOrAbsolute);
-                        short tailId = _pages.Find(p => p.Url == tailUri).Id;
-                        short headId = _pages.Find(p => p.Url == headUri).Id;
+                        ulong tailId = _pages.Find(p => p.Url == tailUri).Id;
+                        ulong headId = _pages.Find(p => p.Url == headUri).Id;
                         _links.Add(new Link()
                         {
                             TailPageId = tailId,
@@ -94,7 +94,7 @@ namespace WebGraphMaker.businessLogic
                     int rowCount = _worksheetRange.Rows.Count;
                     int colCount = _worksheetRange.Columns.Count;
                                                         
-                    short idCount = 0;
+                    ulong idCount = 0;
                     for (int i = 1; i <= rowCount; i++)
                     {
                         for (int j = 1; j <= colCount; j++)

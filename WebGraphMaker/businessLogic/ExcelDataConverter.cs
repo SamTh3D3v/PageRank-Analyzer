@@ -77,7 +77,7 @@ namespace WebGraphMaker.businessLogic
                     {
                         var tailUri = new Uri(_worksheetRange.Cells[i, 1].Value2.ToString(), UriKind.RelativeOrAbsolute);
                         var headUri = new Uri(_worksheetRange.Cells[i, 2].Value2.ToString(), UriKind.RelativeOrAbsolute);
-                        ulong tailId = _pages.Find(p => p.Url == tailUri).Id;
+                        ulong  tailId = _pages.Find(p => p.Url == tailUri).Id;
                         ulong headId = _pages.Find(p => p.Url == headUri).Id;
                         _links.Add(new Link()
                         {

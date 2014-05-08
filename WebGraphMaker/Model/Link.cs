@@ -11,9 +11,9 @@ namespace WebGraphMaker.Model
     public class Link
     {
         [XmlElement("From")] 
-        public short TailPageId { get; set; }
+        public ulong TailPageId { get; set; }
 
         [XmlElement("To")] 
-        public short HeadPageId { get; set; }
+        public ulong HeadPageId { get; set; }
     }
 }

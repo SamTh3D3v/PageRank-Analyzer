@@ -24,7 +24,7 @@ namespace WebGraphMaker.Model
 
 
         [XmlElement("Id")] 
-        public short Id { get; set; }
+        public ulong Id { get; set; }
 
         [XmlElement("Description")] 
         public String Description { get; set; }

@@ -79,6 +79,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\MatrixToDataViewConverter.cs" />
     <Compile Include="Helpers\MultiSeriesChart.cs" />
     <Compile Include="Model\WebSite.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />

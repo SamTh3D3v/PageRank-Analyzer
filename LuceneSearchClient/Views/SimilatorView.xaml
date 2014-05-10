@@ -5,11 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ignore="http://www.ignore.com"
         xmlns:avalonDock="http://schemas.xceed.com/wpf/xaml/avalondock"
+      
       xmlns:dv="clr-namespace:System.Windows.Controls.DataVisualization;assembly=System.Windows.Controls.DataVisualization.Toolkit"
 xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
-    
-        mc:Ignorable="d ignore" d:DesignHeight="500" d:DesignWidth="700"
+      xmlns:converters="clr-namespace:LuceneSearchClient.Converters"
+
+      mc:Ignorable="d ignore" d:DesignHeight="500" d:DesignWidth="700"
         DataContext="{Binding SimulatorViewModel, Source={StaticResource Locator}}">
+    <Page.Resources>
+        <converters:MatrixToDataViewConverter x:Key="MatrixToDataViewConverter" />
+    </Page.Resources>
     <Grid>
         <avalonDock:DockingManager x:Name="dockingManager">
             <avalonDock:LayoutRoot>
@@ -43,7 +48,7 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Matrix Size :" Grid.Row="0" Grid.Column="0"/>
-                                        <TextBox  Grid.Row="0" Grid.Column="1"/>
+                                        <TextBox  Grid.Row="0" Grid.Column="1" Text="{Binding MatrixSize,Mode=TwoWay}"/>
                                         <Label Content="Initial PageRank Values :" Grid.Row="1" Grid.Column="0" />
                                         <TextBox  Grid.Row="1" Grid.Column="1"/>
                                         <Label Content="Transportation Matrix Values :" Grid.Row="2" Grid.Column="0" />
@@ -61,7 +66,7 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="Auto"/>
                                         </Grid.RowDefinitions>
-                                        <DataGrid Grid.Row="0" Margin="5" Background="White"/>
+                                        <DataGrid Grid.Row="0" Margin="5" Background="White" ItemsSource="{Binding TransitionMatrix ,Converter={StaticResource MatrixToDataViewConverter}}" LoadingRow="OnLoadingRow"/>
                                         <Button Content="Generate Matrix Randomly" Grid.Row="1" Margin="2"/>
                                         <Button Content="Reset Matrix" Grid.Row="2" Margin="2"/>
                                     </Grid>

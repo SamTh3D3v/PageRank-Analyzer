@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SearchClient", "LuceneSearc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebGraphMaker", "WebGraphMaker\WebGraphMaker.csproj", "{086FAF77-79EE-47A1-8119-F2567B4F0C99}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PageRankCalculator", "PageRankCalculator\PageRankCalculator.csproj", "{B8461FEF-2ADF-41C6-A442-C6F7C0322975}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{086FAF77-79EE-47A1-8119-F2567B4F0C99}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{086FAF77-79EE-47A1-8119-F2567B4F0C99}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{086FAF77-79EE-47A1-8119-F2567B4F0C99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8461FEF-2ADF-41C6-A442-C6F7C0322975}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8461FEF-2ADF-41C6-A442-C6F7C0322975}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8461FEF-2ADF-41C6-A442-C6F7C0322975}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8461FEF-2ADF-41C6-A442-C6F7C0322975}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

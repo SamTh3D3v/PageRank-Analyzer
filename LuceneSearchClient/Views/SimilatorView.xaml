@@ -14,6 +14,7 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
         DataContext="{Binding SimulatorViewModel, Source={StaticResource Locator}}">
     <Page.Resources>
         <converters:MatrixToDataViewConverter x:Key="MatrixToDataViewConverter" />
+        <converters:ArrayToDataViewConverter x:Key="ArrayToDataViewConverter"/>
     </Page.Resources>
     <Grid>
         <avalonDock:DockingManager x:Name="dockingManager">
@@ -27,12 +28,10 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"></RowDefinition>
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-
-                                </Grid.ColumnDefinitions>
+                                </Grid.RowDefinitions>                               
                                 <GroupBox Header="PageRank Settings" Margin="5" Grid.Row="0">
                                     <Grid>
                                         <Grid.RowDefinitions>
@@ -50,7 +49,7 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                         <Label Content="Matrix Size :" Grid.Row="0" Grid.Column="0"/>
                                         <TextBox  Grid.Row="0" Grid.Column="1" Text="{Binding MatrixSize,Mode=TwoWay}"/>
                                         <Label Content="Initial PageRank Values :" Grid.Row="1" Grid.Column="0" />
-                                        <TextBox  Grid.Row="1" Grid.Column="1" Text="{Binding InitialPageRank,Mode=TwoWay}"/>
+                                        <TextBox  Grid.Row="1" Grid.Column="1" Text="{Binding DefaultInitialPageRank,Mode=TwoWay}"/>
                                         <Label Content="Transportation Matrix Values :" Grid.Row="2" Grid.Column="0" />
                                         <TextBox  Grid.Row="2" Grid.Column="1" Text="{Binding TransportationValue,Mode=TwoWay}"/>
                                         <Label Content="The Damping Factor :" Grid.Row="3" Grid.Column="0" />
@@ -59,7 +58,18 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                         <TextBox  Grid.Row="4" Grid.Column="1" Text="{Binding NumberIterations,Mode=TwoWay}"/>
                                     </Grid>
                                 </GroupBox>
-                                <GroupBox Header="Transition Matrix" Margin="5" Grid.Row="1">
+                                <GroupBox Header="Initial PageRank Values " Margin="5" Grid.Row="1">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>                                            
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <DataGrid Grid.Row="0" Margin="5" Background="White" ItemsSource="{Binding InitialPageRank,Converter={StaticResource ArrayToDataViewConverter},Mode=TwoWay}"/>
+                                        <Button Content="1/N" Margin="2" Grid.Column="1" Command="{Binding ResetInitialPageRankCommand}"/>
+
+                                    </Grid>
+                                </GroupBox>
+                                <GroupBox Header="Transition Matrix" Margin="5" Grid.Row="2">
                                     <Grid>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="*"/>
@@ -77,7 +87,7 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                         </Grid>                                                                               
                                     </Grid>
                                 </GroupBox>
-                                <GroupBox Header="Calculation" Margin="5" Grid.Row="2">
+                                <GroupBox Header="Calculation" Margin="5" Grid.Row="3">
                                     <Grid HorizontalAlignment="Right">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="100"/>

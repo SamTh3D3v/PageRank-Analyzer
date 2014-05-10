@@ -5,6 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ignore="http://www.ignore.com"
         xmlns:avalonDock="http://schemas.xceed.com/wpf/xaml/avalondock"
+      xmlns:dv="clr-namespace:System.Windows.Controls.DataVisualization;assembly=System.Windows.Controls.DataVisualization.Toolkit"
+xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
+    
         mc:Ignorable="d ignore" d:DesignHeight="500" d:DesignWidth="700"
         DataContext="{Binding SimulatorViewModel, Source={StaticResource Locator}}">
     <Grid>
@@ -23,9 +26,9 @@
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    
+
                                 </Grid.ColumnDefinitions>
-                                <GroupBox Header="PageRank Settings" Margin="5" Grid.Row="0">                                    
+                                <GroupBox Header="PageRank Settings" Margin="5" Grid.Row="0">
                                     <Grid>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto"/>
@@ -49,16 +52,18 @@
                                         <TextBox  Grid.Row="3" Grid.Column="1"/>
                                         <Label Content="Number Of Iterations :" Grid.Row="4" Grid.Column="0" />
                                         <TextBox  Grid.Row="4" Grid.Column="1"/>
-                                    </Grid>                                    
+                                    </Grid>
                                 </GroupBox>
                                 <GroupBox Header="Transition Matrix" Margin="5" Grid.Row="1">
                                     <Grid>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="*"/>
-                                            <RowDefinition Height="Auto"/>                                           
-                                        </Grid.RowDefinitions>                                        
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
                                         <DataGrid Grid.Row="0" Margin="5" Background="White"/>
-                                        <Button Content="Generate Matrix Randomly" Grid.Row="1"/>
+                                        <Button Content="Generate Matrix Randomly" Grid.Row="1" Margin="2"/>
+                                        <Button Content="Reset Matrix" Grid.Row="2" Margin="2"/>
                                     </Grid>
                                 </GroupBox>
                                 <GroupBox Header="Calculation" Margin="5" Grid.Row="2">
@@ -73,9 +78,39 @@
                                 </GroupBox>
                             </Grid>
                         </avalonDock:LayoutAnchorable>
-                     
+                    </avalonDock:LayoutAnchorablePane>
+                    <avalonDock:LayoutAnchorablePane DockWidth="300" >
+                        <avalonDock:LayoutAnchorable Title="Damping Factor Chart">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <ComboBox Grid.Row="0" Margin="3"/>
+                                <dvc:Chart Grid.Row="1" Background="White">
+                                    <dvc:LineSeries Title="ComboBox Selected Page"
+                                        ItemsSource="{Binding Data}"
+                                        IndependentValueBinding="{Binding DampingFactor}"
+                                        DependentValueBinding="{Binding PageRank}" />
+                                </dvc:Chart>
+                                <GroupBox Grid.Row="2" Header="Calculate" Margin="2">
+                                    <Grid HorizontalAlignment="Right">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="60"/>
+                                            <ColumnDefinition Width="60"/>
+                                            <ColumnDefinition Width="60"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Button Grid.Column="0" Content="Simulate" Margin="3"/>
+                                        <Button Grid.Column="1" Content="Reset" Margin="3"/>
+                                        <Button Grid.Column="2" Content="Export" Margin="3"/>
+                                    </Grid>
+                                </GroupBox>
+                            </Grid>
+                        </avalonDock:LayoutAnchorable>
                     </avalonDock:LayoutAnchorablePane>
                 </avalonDock:LayoutPanel>
+
                 <!--<avalonDock:LayoutRoot.LeftSide>
                     <avalonDock:LayoutAnchorSide>
                         <avalonDock:LayoutAnchorGroup>
@@ -84,7 +119,7 @@
                             </avalonDock:LayoutAnchorable>
                         </avalonDock:LayoutAnchorGroup>
                     </avalonDock:LayoutAnchorSide>
-                </avalonDock:LayoutRoot.LeftSide>-->   
+                </avalonDock:LayoutRoot.LeftSide>-->
             </avalonDock:LayoutRoot>
         </avalonDock:DockingManager>
     </Grid>

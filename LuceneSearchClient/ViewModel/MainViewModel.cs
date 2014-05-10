@@ -47,7 +47,46 @@ namespace LuceneSearchClient.ViewModel
 
         #endregion
         #region Commands
-      
+        private RelayCommand _newSearchCommand;
+        public RelayCommand NewSearchCommand
+        {
+            get
+            {
+                return _newSearchCommand
+                    ?? (_newSearchCommand = new RelayCommand(
+                                          () =>
+                                          {
+                                              NavigationUri=new Uri("../Views/SearchView.xaml",UriKind.RelativeOrAbsolute);  
+                                          }));
+            }
+        }
+        private RelayCommand _settingsCommand;
+   
+        public RelayCommand SettingsCommand
+        {
+            get
+            {
+                return _settingsCommand
+                    ?? (_settingsCommand = new RelayCommand(
+                                          () => Messenger.Default.Send<NotificationMessage>(
+                                              new NotificationMessage("opensettingswindow"))));
+            }
+        }
+        private RelayCommand _allSimulationCommand;
+
+       
+        public RelayCommand AllSimulationCommand
+        {
+            get
+            {
+                return _allSimulationCommand
+                    ?? (_allSimulationCommand = new RelayCommand(
+                                          () =>
+                                          {
+                                              NavigationUri=new Uri("../Views/SimilatorView.xaml",UriKind.RelativeOrAbsolute);  
+                                          }));
+            }
+        }
         #endregion            
     }
 }

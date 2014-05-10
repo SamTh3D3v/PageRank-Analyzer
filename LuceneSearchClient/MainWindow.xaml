@@ -9,7 +9,7 @@
         mc:Ignorable="d ignore"
         Height="400"
         Width="600"
-        Title="MVVM Light Application"
+        Title="PageRank Analyser"
         
     WindowStartupLocation="CenterScreen"
         DataContext="{Binding Main, Source={StaticResource Locator}}" >
@@ -21,9 +21,35 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    
-
     <Grid x:Name="LayoutRoot">
-        <Frame Source="{Binding NavigationUri,Mode=TwoWay}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" NavigationUIVisibility="Visible"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Menu VerticalAlignment="Top">
+            <MenuItem Header="_Search">
+                <MenuItem Header="_New" Command="{Binding NewSearchCommand}"/>
+                <MenuItem Header="_Settings" Command="{Binding SettingsCommand}"/>
+            </MenuItem>
+            <MenuItem Header="_WebGraph">
+                <MenuItem Header="_New"/>
+                <MenuItem Header="_Settings"/>
+            </MenuItem>
+            <MenuItem Header="_PageRank">
+                <MenuItem Header="_New"/>
+                <MenuItem Header="_Settings"/>
+            </MenuItem>
+            <MenuItem Header="_Simulation">
+                <MenuItem Header="_View All" Command="{Binding AllSimulationCommand}"/>
+                <Separator/>
+                <MenuItem Header="_Matrix Settings"/>
+                <MenuItem Header="_Damping Factor"/>
+                <MenuItem Header="_Speed Of Convergence"/>
+                <MenuItem Header="_Web Graph"/>
+            </MenuItem>
+        </Menu>
+        <Frame Grid.Row="1" Source="{Binding NavigationUri,Mode=TwoWay}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" NavigationUIVisibility="Visible"/>
     </Grid>
 </Window>
+
+    

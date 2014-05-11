@@ -308,20 +308,18 @@ namespace PageRankCalculator.Model
         }
 
         public static bool operator >=(Matrix x, float y)
-        {
-            bool isGreater = true;
+        {            
             for (ulong i = 0; i < x.Length; i++)
             {
                 for (ulong j = 0; j < x.Length; j++)
                 {
                     if (x[i, j] < y)
-                    {
-                        isGreater = false;
-                        break;
+                    {                        
+                        return false;
                     }
                 }
             }
-            return isGreater;
+            return true;
         }
 
         public static bool operator <(Matrix x, float y)

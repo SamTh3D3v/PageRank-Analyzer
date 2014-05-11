@@ -421,7 +421,6 @@ namespace PageRankCalculator.Model
             period = power - 1;
             return isPeriodic;
         }
-
         public List<float> Eigenvalues()
         {
             DenseMatrix m = DenseMatrix.OfArray(_data);

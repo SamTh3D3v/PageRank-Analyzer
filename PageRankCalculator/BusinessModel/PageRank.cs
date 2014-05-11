@@ -10,34 +10,37 @@ namespace PageRankCalculator.BusinessModel
 {
     public class PageRank
     {
+        #region consts
+        public static float DefaultDampingFactor = 0.85f;
+        #endregion
 
         #region Properties
-            public float DampingFactor
+        public float DampingFactor
         {
             get
             {
                 return _dampinFactor;
             }
         }
-            public Matrix TeleportationMatrix
+        public Matrix TeleportationMatrix
         {
             get
             {
                 return _teleportationMatrix;
             }
         }
-            public Matrix TransitionMatrix
+        public Matrix TransitionMatrix
         {
             get
             {
                 return _transitionMatrix;
-            } 
+            }
         }
         #endregion
 
         #region Constructors
 
-            public PageRank(Matrix transitionMatrix,float dampingFactor)
+        public PageRank(Matrix transitionMatrix, float dampingFactor)
         {
             if ((dampingFactor > 1) || (dampingFactor < 0))
             {
@@ -48,11 +51,11 @@ namespace PageRankCalculator.BusinessModel
             _teleportationMatrix = Matrix.E(transitionMatrix.Length);
             _dampinFactor = dampingFactor;
         }
-            public PageRank(Matrix transitionMatrix, float dampingFactor,Matrix teleportationMatrix)
+        public PageRank(Matrix transitionMatrix, float dampingFactor, Matrix teleportationMatrix)
         {
-            if (transitionMatrix.Length!=teleportationMatrix.Length)
+            if (transitionMatrix.Length != teleportationMatrix.Length)
             {
-                throw new ArithmeticException("Can't calculate PageRank with a transition matrix and a teleportation matrix of different lengths");                                                
+                throw new ArithmeticException("Can't calculate PageRank with a transition matrix and a teleportation matrix of different lengths");
             }
             if ((dampingFactor > 1) || (dampingFactor < 0))
             {
@@ -60,111 +63,111 @@ namespace PageRankCalculator.BusinessModel
                     "the DampingFactor should be between 0 and 1");
             }
             _transitionMatrix = transitionMatrix;
-             _teleportationMatrix = teleportationMatrix;
-             _dampinFactor = dampingFactor;
+            _teleportationMatrix = teleportationMatrix;
+            _dampinFactor = dampingFactor;
         }
-            
+
         #endregion
 
         #region Methods
 
-            public Vector PageRankVector(Vector initialVector, ulong nbItterations)
-            {
-                //pi*G = d*pi*A + (1-d)*pi*Q = d*pi*A + (1-d)*e
-                DeleteDanglingNodes();
+        public Vector PageRankVector(Vector initialVector, ulong nbItterations)
+        {
+            //pi*G = d*pi*A + (1-d)*pi*Q = d*pi*A + (1-d)*e
+            DeleteDanglingNodes();
 
-                var pageRankVector = initialVector;
-                for (ulong i = 0; i < nbItterations; i++)
-                {
-                    var temp1 = _dampinFactor * (pageRankVector * _transitionMatrix);
-                    var temp2 = (1 - _dampinFactor) * Vector.e(VectorType.Row, _transitionMatrix.Length);
-                    pageRankVector = temp1 + temp2;
-                }
-                return pageRankVector;
+            var pageRankVector = initialVector;
+            for (ulong i = 0; i < nbItterations; i++)
+            {
+                var temp1 = _dampinFactor * (pageRankVector * _transitionMatrix);
+                var temp2 = (1 - _dampinFactor) * Vector.e(VectorType.Row, _transitionMatrix.Length);
+                pageRankVector = temp1 + temp2;
             }
+            return pageRankVector;
+        }
 
-            public Vector PageRankVector(Vector initialVector, short convergenceDegree, out ulong nbItterations)
+        public Vector PageRankVector(Vector initialVector, short convergenceDegree, out ulong nbItterations)
+        {
+            //pi*G = d*pi*A + (1-d)*pi*Q = d*pi*A + (1-d)*e
+
+            DeleteDanglingNodes();
+
+            //Vectors used to valuate convergence 
+            Vector previousPageRankValue;
+            Vector pageRankVector = previousPageRankValue = initialVector;
+
+            //Convergence degree example 0.0001
+            double convergenceValue = 1f / (Math.Pow(10, convergenceDegree));
+
+            //To test convergence 
+            bool converged;
+
+            //Itterations number
+            nbItterations = 0;
+
+            do
             {
-                //pi*G = d*pi*A + (1-d)*pi*Q = d*pi*A + (1-d)*e
-                
-                DeleteDanglingNodes();
-                
-                //Vectors used to valuate convergence 
-                Vector previousPageRankValue;
-                Vector pageRankVector = previousPageRankValue = initialVector;
-                
-                //Convergence degree example 0.0001
-                double convergenceValue = 1f/(Math.Pow(10,convergenceDegree));
-                
-                //To test convergence 
-                bool converged ;
-                
-                //Itterations number
-                nbItterations = 0;
+                converged = true;
 
-                do
+                //New itteration
+                nbItterations++;
+
+                previousPageRankValue = pageRankVector;
+
+
+                var temp1 = _dampinFactor * (pageRankVector * _transitionMatrix);
+                var temp2 = (1 - _dampinFactor) * Vector.e(VectorType.Row, _transitionMatrix.Length);
+                pageRankVector = temp1 + temp2;
+
+                //Testing convergence 
+
+                Parallel.For((long)0, (long)_transitionMatrix.Length, (i, parallelLoopState) =>
                 {
-                    converged = true;
-
-                    //New itteration
-                    nbItterations++;
-
-                    previousPageRankValue = pageRankVector;
-
-                    
-                    var temp1 = _dampinFactor * (pageRankVector * _transitionMatrix);
-                    var temp2 = (1 - _dampinFactor) * Vector.e(VectorType.Row, _transitionMatrix.Length);
-                    pageRankVector = temp1 + temp2;
-                    
-                    //Testing convergence 
-
-                    Parallel.For((long)0, (long)_transitionMatrix.Length, (i, parallelLoopState) =>
+                    if (Math.Abs(pageRankVector[(ulong)i] - previousPageRankValue[(ulong)i]) > convergenceValue)
                     {
-                       if (Math.Abs(pageRankVector[(ulong)i]-previousPageRankValue[(ulong)i])>convergenceValue)
-                        {
-                            converged = false;
-                            parallelLoopState.Break();
-                        }                         
-                    });
+                        converged = false;
+                        parallelLoopState.Break();
+                    }
+                });
 
-                } while (!converged);
+            } while (!converged);
 
-                return pageRankVector;
-            }
+            return pageRankVector;
+        }
 
-            private void DeleteDanglingNodes()
-            {
-                Parallel.For((long) 0, (long) _transitionMatrix.Length, (i) =>
+        private void DeleteDanglingNodes()
+        {
+            Parallel.For((long)0, (long)_transitionMatrix.Length, (i) =>
+                                           {
+                                               if (Math.Abs(_transitionMatrix[VectorType.Row, (ulong)i].Sum()) < Single.Epsilon)
                                                {
-                                                   if (Math.Abs(_transitionMatrix[VectorType.Row, (ulong)i].Sum()) < Single.Epsilon)
+                                                   for (ulong j = 0; j < _transitionMatrix.Length; j++)
                                                    {
-                                                       for (ulong j = 0; j < _transitionMatrix.Length; j++)
-                                                       {
-                                                           _transitionMatrix[(ulong)i, j] = 1f / _transitionMatrix.Length;
-                                                       }
+                                                       _transitionMatrix[(ulong)i, j] = 1f / _transitionMatrix.Length;
                                                    }
-                                               });
-            }
+                                               }
+                                           });
+        }
 
-            public Matrix GoogleMatrix()
-                {
-                    //G=dA+(1-d)Q
-                    DeleteDanglingNodes();
-                    //d*A
-                    var temp1 = _dampinFactor * _transitionMatrix;
-                    //(1-d)Q
-                    var temp2 = (1f - _dampinFactor) * Matrix.E(_transitionMatrix.Length);
-                    //return google matrix
-                    return temp1 + temp2;
-                }
+        public Matrix GoogleMatrix()
+        {
+            //G=dA+(1-d)Q
+            DeleteDanglingNodes();
+            //d*A
+            var temp1 = _dampinFactor * _transitionMatrix;
+            //(1-d)Q
+            var temp2 = (1f - _dampinFactor) * Matrix.E(_transitionMatrix.Length);
+            //return google matrix
+            return temp1 + temp2;
+        }
 
         #endregion
 
         #region  Fields
 
-            private float _dampinFactor ;
-            private Matrix _teleportationMatrix;
-            private Matrix _transitionMatrix;
+        private float _dampinFactor;
+        private Matrix _teleportationMatrix;
+        private Matrix _transitionMatrix;
 
         #endregion
     }

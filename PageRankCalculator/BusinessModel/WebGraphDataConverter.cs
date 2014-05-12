@@ -27,6 +27,13 @@ namespace PageRankCalculator.BusinessModel
         #endregion
 
         #region Methods
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pages"></param>
+        /// <param name="links"></param>
+        /// <returns></returns>
         private static Matrix GetAdjacentMatrix(List<Page> pages, List<Link> links)
         {
             var adjacentMatrix = new Matrix((ulong) pages.Count);

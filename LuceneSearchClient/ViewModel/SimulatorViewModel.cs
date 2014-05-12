@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using PageRankCalculator.BusinessModel;
+using PageRankCalculator.Model;
 
 namespace LuceneSearchClient.ViewModel
 {
@@ -13,48 +15,43 @@ namespace LuceneSearchClient.ViewModel
         public const string MatrixSizePropertyName = "MatrixSize";
         public const string TransitionMatrixPropertyName = "TransitionMatrix";
         public const string DefaultInitialPageRankPropertyName = "DefaultInitialPageRank";
-        public const string DampingFactorPropertyName = "DampingFactor";
-        public const string TransportationValuePropertyName = "TransportationValue";
+        public const string DampingFactorPropertyName = "DampingFactor";        
         public const string NumberIterationsPropertyName = "NumberIterations";
         public const string InitialPageRankPropertyName = "InitialPageRank";
+        public const string AutomaticIterationsPropertyName = "AAutomaticIterations";
+        public const string PageRankVectorPropertyName = "PageRankVector";
         #endregion
         #region Fields
-        private int _matrixSize;
-        private short[,] _transitionMatrix;
-        private float _dampingFactor;
-        private float _transportationValue;
+        private ulong _matrixSize;
+        private Matrix _transitionMatrix;
+        private float _dampingFactor;        
         private float _defaultInitialPageRank;
         private int _numberIterations;
-        private float[] _initialPageRank;
+        private Vector _initialPageRank;
+        private bool _automaticIterations = true;
+        private Vector _pageRank;
         #endregion
         #region Properties
-        public int MatrixSize
+        public ulong MatrixSize
         {
             get
             {
                 return _matrixSize;
             }
-
             set
             {
                 if (_matrixSize == value)
                 {
                     return;
                 }                
-                _matrixSize = value;
-                TransitionMatrix = new short[_matrixSize, _matrixSize];
-                TransportationValue = 1f/_matrixSize;
-                DefaultInitialPageRank = 1f / _matrixSize;
-                _initialPageRank = new float[_matrixSize];
-                for (int i = 0; i < _matrixSize ; i++)
-                {
-                    _initialPageRank[i] = DefaultInitialPageRank;
-                }
+                _matrixSize = value;                
+                TransitionMatrix = new Matrix(_matrixSize);
+                InitialPageRank = Vector.e(VectorType.Row, _matrixSize);                                                          
                 RaisePropertyChanged(InitialPageRankPropertyName);
                 RaisePropertyChanged(MatrixSizePropertyName);
             }
         }
-        public short[,] TransitionMatrix
+        public Matrix TransitionMatrix
         {
             get
             {
@@ -89,25 +86,7 @@ namespace LuceneSearchClient.ViewModel
                 _dampingFactor = value;
                 RaisePropertyChanged(DampingFactorPropertyName);
             }
-        }        
-        public float TransportationValue
-        {
-            get
-            {
-                return _transportationValue;
-            }
-
-            set
-            {
-                if (Equals(_transportationValue, value))
-                {
-                    return;
-                }
-                
-                _transportationValue = value;
-                RaisePropertyChanged(TransportationValuePropertyName);
-            }
-        }        
+        }                      
         public float DefaultInitialPageRank
         {
             get
@@ -143,12 +122,12 @@ namespace LuceneSearchClient.ViewModel
                 RaisePropertyChanged(NumberIterationsPropertyName);
             }
         }
-        public float[] InitialPageRank
+        public Vector InitialPageRank
         {
             get
             {
                 return _initialPageRank;
-            }
+            } 
 
             set
             {
@@ -159,11 +138,46 @@ namespace LuceneSearchClient.ViewModel
                 _initialPageRank = value;
                 RaisePropertyChanged(InitialPageRankPropertyName);
             }
+        }      
+        public bool AutomaticIterations
+        {
+            get
+            {
+                return _automaticIterations;
+            }
+
+            set
+            {
+                if (_automaticIterations == value)
+                {
+                    return;
+                }                
+                _automaticIterations = value;
+                RaisePropertyChanged(AutomaticIterationsPropertyName);
+            }
+        }                   
+        public Vector PageRankVector
+        {
+            get
+            {
+                return _pageRank;
+            }
+
+            set
+            {
+                if (_pageRank == value)
+                {
+                    return;
+                }                
+                _pageRank = value;
+                RaisePropertyChanged(PageRankVectorPropertyName);
+            }
         }
         #endregion
         #region Ctors and Methods
         public SimulatorViewModel()
         {
+            DefaultInitialPageRank = PageRank.DefaultDampingFactor;
             DampingFactor = 0.85f;
             NumberIterations = 100;         
         }
@@ -179,11 +193,11 @@ namespace LuceneSearchClient.ViewModel
                                           () =>
                                           {
                                               var rand=new Random();
-                                              for (int i = 0; i < MatrixSize; i++)
+                                              for (ulong i = 0; i < MatrixSize; i++)
                                               {
-                                                  for (int j = 0; j < MatrixSize; j++)
+                                                  for (ulong j = 0; j < MatrixSize; j++)
                                                   {
-                                                      TransitionMatrix[i, j] = (short) rand.Next(2);
+                                                      TransitionMatrix[i, j] =  rand.Next(2);
                                                   }
                                                   
                                               }
@@ -200,15 +214,11 @@ namespace LuceneSearchClient.ViewModel
                     ?? (_resetMatrixCommand = new RelayCommand(
                                           () =>
                                           {
-                                              TransitionMatrix = new short[_matrixSize, _matrixSize];
+                                              TransitionMatrix = new Matrix(MatrixSize);
                                           }));
             }
         }
-        private RelayCommand _resetInitialPageRankCommand;  
-
-        /// <summary>
-        /// Gets the ResetInitialPageRankCommand.
-        /// </summary>
+        private RelayCommand _resetInitialPageRankCommand;        
         public RelayCommand ResetInitialPageRankCommand
         {
             get
@@ -217,12 +227,42 @@ namespace LuceneSearchClient.ViewModel
                     ?? (_resetInitialPageRankCommand = new RelayCommand(
                                           () =>
                                           {
-                                              InitialPageRank = new float[MatrixSize];
-                                              for (int i = 0; i < _matrixSize; i++)
-                                              {
-                                                  InitialPageRank[i] = DefaultInitialPageRank;
-                                              }
-                                              RaisePropertyChanged(InitialPageRankPropertyName);
+
+                                              InitialPageRank=new Vector(VectorType.Row, MatrixSize);                                            
+                                          }));
+            }
+        }
+        private RelayCommand _calculatePageRankCommand;      
+        public RelayCommand CalculatePageRankCommand
+        {
+            get
+            {
+                return _calculatePageRankCommand
+                    ?? (_calculatePageRankCommand = new RelayCommand(
+                                          () =>
+                                          {
+                                              ulong nbIterations =0;
+                                              TransitionMatrix.ToProbablityMatrix();
+                                              RaisePropertyChanged(TransitionMatrixPropertyName);
+                                              var pageRank=new PageRank(TransitionMatrix,DampingFactor);
+                                             // pageRank.GoogleMatrix();
+                                              PageRankVector = !AutomaticIterations ? pageRank.GetPageRankVector(InitialPageRank, (short)5, out nbIterations) :pageRank.GetPageRankVector(InitialPageRank,(ulong)NumberIterations) ;
+                                              RaisePropertyChanged(PageRankVectorPropertyName);
+                                              NumberIterations = (int) nbIterations;
+
+                                          }));
+            }
+        }
+        private RelayCommand _resetPageRankVector;       
+        public RelayCommand ResetPageRankVector
+        {
+            get
+            {
+                return _resetPageRankVector
+                    ?? (_resetPageRankVector = new RelayCommand(
+                                          () =>
+                                          {
+                                              PageRankVector = InitialPageRank;
                                           }));
             }
         }

@@ -60,8 +60,7 @@ namespace LuceneSearchClient.ViewModel
                                           }));
             }
         }
-        private RelayCommand _settingsCommand;
-   
+        private RelayCommand _settingsCommand;  
         public RelayCommand SettingsCommand
         {
             get
@@ -72,9 +71,7 @@ namespace LuceneSearchClient.ViewModel
                                               new NotificationMessage("opensettingswindow"))));
             }
         }
-        private RelayCommand _allSimulationCommand;
-
-       
+        private RelayCommand _allSimulationCommand;      
         public RelayCommand AllSimulationCommand
         {
             get
@@ -84,6 +81,19 @@ namespace LuceneSearchClient.ViewModel
                                           () =>
                                           {
                                               NavigationUri=new Uri("../Views/SimilatorView.xaml",UriKind.RelativeOrAbsolute);  
+                                          }));
+            }
+        }
+        private RelayCommand _pageRankSettingsCommand;
+        public RelayCommand PageRankCommand
+        {
+            get
+            {
+                return  _pageRankSettingsCommand
+                    ?? ( _pageRankSettingsCommand = new RelayCommand(
+                                          () =>
+                                          {
+                                               NavigationUri=new Uri("../Views/PageRankView.xaml",UriKind.RelativeOrAbsolute);  
                                           }));
             }
         }

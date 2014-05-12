@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
+using PageRankCalculator.Model;
 
 namespace LuceneSearchClient.Converters
 {
@@ -13,20 +14,16 @@ namespace LuceneSearchClient.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var array = value as float[];
-            if (array == null) return null;
-            //colomns
-            if (array.Length == 0) return null;
+            if (value==null) return null;  
+            var vector = value as Vector;                   
+            if (vector.Length == 0) return null;
             var dataTable = new DataTable();
-            for (var column = 0; column < array.Length; column++)
+            var newRow = dataTable.NewRow();
+            for (ulong column = 0; column < vector.Length; column++)
             {
                 dataTable.Columns.Add(new DataColumn(column.ToString(CultureInfo.InvariantCulture)));
-            }
-            var newRow = dataTable.NewRow();
-            for (var column = 0; column < array.Length; column++)
-            {
-                newRow[column] = array[column];
-            }
+                newRow[(int) column] = vector[column];
+            }                       
             dataTable.Rows.Add(newRow);
             return dataTable.DefaultView;
         }

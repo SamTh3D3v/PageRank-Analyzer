@@ -25,6 +25,7 @@ namespace LuceneSearchClient.ViewModel
             SimpleIoc.Default.Register<SettingViewModel>();
             SimpleIoc.Default.Register<SearchViewModel>();
             SimpleIoc.Default.Register<SimulatorViewModel>();
+            SimpleIoc.Default.Register<PageRankViewModel>();
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance",
@@ -67,6 +68,16 @@ namespace LuceneSearchClient.ViewModel
             get
             {
                 return ServiceLocator.Current.GetInstance<SimulatorViewModel>();
+            }
+        }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance",
+            "CA1822:MarkMembersAsStatic",
+            Justification = "This non-static member is needed for data binding purposes.")]
+        public PageRankViewModel PageRankViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<PageRankViewModel>();
             }
         }
         public static void Cleanup()

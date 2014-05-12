@@ -31,7 +31,7 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                     <RowDefinition Height="Auto"></RowDefinition>
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>                               
+                                </Grid.RowDefinitions>
                                 <GroupBox Header="PageRank Settings" Margin="5" Grid.Row="0">
                                     <Grid>
                                         <Grid.RowDefinitions>
@@ -45,22 +45,25 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="200"/>
                                             <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Matrix Size :" Grid.Row="0" Grid.Column="0"/>
                                         <TextBox  Grid.Row="0" Grid.Column="1" Text="{Binding MatrixSize,Mode=TwoWay}"/>
                                         <Label Content="Initial PageRank Values :" Grid.Row="1" Grid.Column="0" />
                                         <TextBox  Grid.Row="1" Grid.Column="1" Text="{Binding DefaultInitialPageRank,Mode=TwoWay}"/>
-                                        <Label Content="Transportation Matrix Values :" Grid.Row="2" Grid.Column="0" />
-                                        <TextBox  Grid.Row="2" Grid.Column="1" Text="{Binding TransportationValue,Mode=TwoWay}"/>
-                                        <Label Content="The Damping Factor :" Grid.Row="3" Grid.Column="0" />
-                                        <TextBox  Grid.Row="3" Grid.Column="1" Text="{Binding DampingFactor,Mode=TwoWay}"/>
-                                        <Label Content="Number Of Iterations :" Grid.Row="4" Grid.Column="0" />
-                                        <TextBox  Grid.Row="4" Grid.Column="1" Text="{Binding NumberIterations,Mode=TwoWay}"/>
+     
+                                        <Label Content="The Damping Factor :" Grid.Row="2" Grid.Column="0" />
+                                        <TextBox  Grid.Row="2" Grid.Column="1" Text="{Binding DampingFactor,Mode=TwoWay}"/>
+                                        <Label Content="Number Of Iterations :" Grid.Row="3" Grid.Column="0" />
+                                        <TextBox  Grid.Row="3" Grid.Column="1" Text="{Binding NumberIterations,Mode=TwoWay}" IsEnabled="{Binding ElementName=AutoIteCheckBox,Path=IsChecked}"/>
+                                        <CheckBox x:Name="AutoIteCheckBox"  Grid.Row="3" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding AutomaticIterations}"/>
+                                        
+                                                                                        
                                     </Grid>
                                 </GroupBox>
                                 <GroupBox Header="Initial PageRank Values " Margin="5" Grid.Row="1">
                                     <Grid>
-                                        <Grid.ColumnDefinitions>                                            
+                                        <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
@@ -84,17 +87,30 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                             </Grid.ColumnDefinitions>
                                             <Button Content="Generate Matrix Randomly" Margin="2" Grid.Column="0" Command="{Binding GenerateMatrixCommand}"/>
                                             <Button Content="Reset Matrix"  Margin="2" Grid.Column="1" Command="{Binding ResetMatrixCommand}"/>
-                                        </Grid>                                                                               
+                                        </Grid>
                                     </Grid>
                                 </GroupBox>
-                                <GroupBox Header="Calculation" Margin="5" Grid.Row="3">
-                                    <Grid HorizontalAlignment="Right">
+                                <GroupBox Header="Page Rank" Margin="5" Grid.Row="3">
+                                    <Grid >
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="100"/>
                                             <ColumnDefinition Width="100"/>
                                         </Grid.ColumnDefinitions>
-                                        <Button Content="CalculPageRank" Grid.Column="0"/>
-                                        <Button Content="Show Report" Grid.Column="1"/>
+                                        <Grid Grid.Row="0" Grid.ColumnSpan="3">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <DataGrid Grid.Row="0" Margin="5" Background="White" ItemsSource="{Binding PageRankVector,Converter={StaticResource ArrayToDataViewConverter},Mode=TwoWay}"/>
+                                            <Button Content="Reset" Margin="2" Grid.Column="1" Command="{Binding ResetPageRankVector}"/>
+                                        </Grid>
+                                        <Button Content="CalculPageRank" Grid.Column="1" Grid.Row="1" Command="{Binding CalculatePageRankCommand}" Margin="3"/>
+                                        <Button Content="Show Report" Grid.Column="2" Grid.Row="1" Command="{Binding ShowPageRankRepportsCommand}" Margin="3"/>
                                     </Grid>
                                 </GroupBox>
                             </Grid>

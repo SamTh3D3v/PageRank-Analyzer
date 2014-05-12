@@ -36,8 +36,7 @@
                 <MenuItem Header="_Settings"/>
             </MenuItem>
             <MenuItem Header="_PageRank">
-                <MenuItem Header="_New"/>
-                <MenuItem Header="_Settings"/>
+                <MenuItem Header="_Settings" Command="{Binding PageRankCommand}"/>
             </MenuItem>
             <MenuItem Header="_Simulation">
                 <MenuItem Header="_View All" Command="{Binding AllSimulationCommand}"/>

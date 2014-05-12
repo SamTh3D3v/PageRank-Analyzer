@@ -102,10 +102,14 @@
     <Compile Include="Helpers\MultiSeriesChart.cs" />
     <Compile Include="Model\WebSite.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\PageRankViewModel.cs" />
     <Compile Include="ViewModel\SearchViewModel.cs" />
     <Compile Include="ViewModel\SettingViewModel.cs" />
     <Compile Include="ViewModel\SimulatorViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="Views\PageRankView.xaml.cs">
+      <DependentUpon>PageRankView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SearchView.xaml.cs">
       <DependentUpon>SearchView.xaml</DependentUpon>
     </Compile>
@@ -134,6 +138,10 @@
     <Page Include="Skins\MainSkin.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\PageRankView.xaml">
+      <SubType>Form</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SearchView.xaml">
       <SubType>Form</SubType>
@@ -177,6 +185,10 @@
     <ProjectReference Include="..\LuceneSearchLibrary\LuceneSearchLibrary.csproj">
       <Project>{2b440c2d-4807-4387-8d9c-50da4bdced30}</Project>
       <Name>LuceneSearchLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PageRankCalculator\PageRankCalculator.csproj">
+      <Project>{d31e64f3-ce5c-4a3a-9cbc-66d1c275922e}</Project>
+      <Name>PageRankCalculator</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -14,63 +14,97 @@ namespace PageRankCalculator.BusinessModel
     {
 
         #region Properties
+
+            /// <summary>
+            /// Get the value of the Damping Factor d : factor used to calculate the Google matrix, amortize between the transition matrix and the teleportation matrix
+            /// </summary>
+            /// <value>Value less or equal than 1, greater or equal than 0</value>
             public float DampingFactor
-        {
-            get
             {
-                return _dampinFactor;
+                get
+                {
+                    return _dampinFactor;
+                }
             }
-        }
+
+            /// <summary>
+            /// Get the value of the Teleportation matrix : matrix used to calculate the Google matrix, eliminates reducibility and periodicity of the Transition matrix
+            /// </summary>
             public Matrix TeleportationMatrix
-        {
-            get
             {
-                return _teleportationMatrix;
+                get
+                {
+                    return _teleportationMatrix;
+                }
             }
-        }
+            
+            /// <summary>
+            /// Get the value of the Transition matrix, represents transition probabilities from web graph pages
+            /// </summary>
             public Matrix TransitionMatrix
-        {
-            get
             {
-                return _transitionMatrix;
-            } 
-        }
+                get
+                {
+                    return _transitionMatrix;
+                } 
+            }
         #endregion
 
         #region Constructors
 
+            /// <summary>
+            /// Initialize a new instance of the <b>PageRank</b> Class, using the Transition matrix and the DampingFactor
+            /// </summary>
+            /// <param name="transitionMatrix">The suggested Transition matrix that represents the web graph</param>
+            /// <param name="dampingFactor">The suggested DampingFactor, value should be between 0 and 1</param>
+            /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the given <b>DampingFactor</b> is not in the correct range</exception>
             public PageRank(Matrix transitionMatrix,float dampingFactor)
-        {
-            if ((dampingFactor > 1) || (dampingFactor < 0))
             {
-                throw new ArgumentOutOfRangeException("dampingFactor", dampingFactor,
-                    "the DampingFactor should be between 0 and 1");
+                if ((dampingFactor > 1) || (dampingFactor < 0))
+                {
+                    throw new ArgumentOutOfRangeException("dampingFactor", dampingFactor,
+                        "the DampingFactor should be between 0 and 1");
+                }
+                _transitionMatrix = transitionMatrix;
+                _teleportationMatrix = Matrix.E(transitionMatrix.Length);
+                _dampinFactor = dampingFactor;
             }
-            _transitionMatrix = transitionMatrix;
-            _teleportationMatrix = Matrix.E(transitionMatrix.Length);
-            _dampinFactor = dampingFactor;
-        }
+
+            /// <summary>
+            /// Initialize a new instance of the <b>PageRank</b> Class, using the Transition matrix and the DampingFactor and the specific Teleportation matrix
+            /// </summary>
+            /// <param name="transitionMatrix">The suggested Transition matrix that represents the web graph</param>
+            /// <param name="dampingFactor">The suggested DampingFactor, value should be between 0 and 1</param>
+            /// <param name="teleportationMatrix">The suggested Teleportation matrix to calculate the Google matrix</param>
+            /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the given <b>DampingFactor</b> is not in the correct range</exception>
+            /// <exception cref="ArithmeticException">Thrown when the given <b>teleportationMatrix</b> and the <b>transitionMatrix</b> don't have the same size</exception>
             public PageRank(Matrix transitionMatrix, float dampingFactor,Matrix teleportationMatrix)
-        {
-            if (transitionMatrix.Length!=teleportationMatrix.Length)
             {
-                throw new ArithmeticException("Can't calculate PageRank with a transition matrix and a teleportation matrix of different lengths");                                                
+                if (transitionMatrix.Length!=teleportationMatrix.Length)
+                {
+                    throw new ArithmeticException("Can't calculate PageRank with a transition matrix and a teleportation matrix of different lengths");                                                
+                }
+                if ((dampingFactor > 1) || (dampingFactor < 0))
+                {
+                    throw new ArgumentOutOfRangeException("dampingFactor", dampingFactor,
+                        "the DampingFactor should be between 0 and 1");
+                }
+                _transitionMatrix = transitionMatrix;
+                _teleportationMatrix = teleportationMatrix;
+                _dampinFactor = dampingFactor;
             }
-            if ((dampingFactor > 1) || (dampingFactor < 0))
-            {
-                throw new ArgumentOutOfRangeException("dampingFactor", dampingFactor,
-                    "the DampingFactor should be between 0 and 1");
-            }
-            _transitionMatrix = transitionMatrix;
-             _teleportationMatrix = teleportationMatrix;
-             _dampinFactor = dampingFactor;
-        }
             
         #endregion
 
         #region Methods
 
-            public Vector PageRankVector(Vector initialVector, ulong nbItterations)
+            /// <summary>
+            /// Calculate the PageRank of all pages represented by the Transition matrix, using the initialVector and the number of itterations
+            /// </summary>
+            /// <param name="initialVector">The suggested intial vector used to proceed the itterations power method that calculates the PageRank vector</param>
+            /// <param name="nbItterations">The suggested number of itterations for the itterations power method</param>
+            /// <returns>A row Vector object</returns>
+            public Vector GetPageRankVector(Vector initialVector, ulong nbItterations)
             {
                 //pi*G = d*pi*A + (1-d)*pi*Q = d*pi*A + (1-d)*e
                 DeleteDanglingNodes();
@@ -85,7 +119,14 @@ namespace PageRankCalculator.BusinessModel
                 return pageRankVector;
             }
 
-            public Vector PageRankVector(Vector initialVector, short convergenceDegree, out ulong nbItterations)
+            /// <summary>
+            /// Calculate the PageRank of all pages represented by the Transition matrix, using the initialVector and the degree of convergence
+            /// </summary>
+            /// <param name="initialVector">The suggested intial vector used to proceed the itterations power method that calculates the PageRank vector</param>
+            /// <param name="convergenceDegree">The degree of convergence at which the itterations power method stops calulcation, <example>0.0001</example> </param>
+            /// <param name="nbItterations">Returns the number of itterations made by the power method</param>
+            /// <returns>A row Vector object</returns>
+            public Vector GetPageRankVector(Vector initialVector, short convergenceDegree, out ulong nbItterations)
             {
                 //pi*G = d*pi*A + (1-d)*pi*Q = d*pi*A + (1-d)*e
                 
@@ -134,13 +175,20 @@ namespace PageRankCalculator.BusinessModel
                 return pageRankVector;
             }
 
-            public Vector ModifiedPageRankVector(Vector initialVector, ulong nbItterations)
+            /// <summary>
+            /// Calculate the PageRank of all pages represented by the Transition matrix, using the initialVector and the number of itterations, This method 
+            /// uses a calulated variant DampingFactor that corresponds to each page <see cref="GetVariantDampingFactorMatrix"/>
+            /// </summary>
+            /// <param name="initialVector">The suggested intial vector used to proceed the itterations power method that calculates the PageRank vector</param>
+            /// <param name="nbItterations">The suggested number of itterations for the itterations power method</param>
+            /// <returns>A row Vector object</returns>
+            public Vector GetAmelioratedPageRankVector(Vector initialVector, ulong nbItterations)
             {
                 //pi*G = d*pi*A + (1-d)*pi*Q = d*pi*A + (1-d)*e
                 DeleteDanglingNodes();
 
                 //Calculate Damping factors
-                var dampingFactorMatrix = DampingFactorMatrix(_transitionMatrix);
+                var dampingFactorMatrix = GetVariantDampingFactorMatrix();
 
                 var pageRankVector = initialVector;
                 for (ulong i = 0; i < nbItterations; i++)
@@ -152,14 +200,22 @@ namespace PageRankCalculator.BusinessModel
                 return pageRankVector;
             }
 
-            public Vector ModifiedPageRankVector(Vector initialVector, short convergenceDegree, out ulong nbItterations)
+            /// <summary>
+            /// Calculate the PageRank of all pages represented by the Transition matrix, using the initialVector and the degree of convergence, This method 
+            /// uses a calulated variant DampingFactor that corresponds to each page <see cref="GetVariantDampingFactorMatrix"/>
+            /// </summary>
+            /// <param name="initialVector">The suggested intial vector used to proceed the itterations power method that calculates the PageRank vector</param>
+            /// <param name="convergenceDegree">The degree of convergence at which the itterations power method stops calulcation, <example>0.0001</example> </param>
+            /// <param name="nbItterations">Returns the number of itterations made by the power method</param>
+            /// <returns>A row Vector object</returns>
+            public Vector GetAmelioratedPageRankVector(Vector initialVector, short convergenceDegree, out ulong nbItterations)
             {
                 //pi*G = d*pi*A + (1-d)*pi*Q = d*pi*A + (1-d)*e
 
                 DeleteDanglingNodes();
 
                 //Calculate Damping factors
-                var dampingFactorMatrix = DampingFactorMatrix(_transitionMatrix);
+                var dampingFactorMatrix = GetVariantDampingFactorMatrix();
                 //Vectors used to valuate convergence 
                 Vector previousPageRankValue;
                 Vector pageRankVector = previousPageRankValue = initialVector;
@@ -203,21 +259,27 @@ namespace PageRankCalculator.BusinessModel
                 return pageRankVector;
             }
 
-
-            public Matrix DampingFactorMatrix(Matrix trannsitionMatrix)
+            /// <summary>
+            /// Calculate the diagonal matrix containing the DampingFactors corresponding to each page, 
+            /// this method is used for the ameliorated version of the GetPageRankVector <see>
+            ///     <cref>GetAmelioratedPageRankVector</cref>
+            /// </see>
+            /// </summary>
+            /// <returns>A Matrix object, the matrix is diagonal</returns>
+            public Matrix GetVariantDampingFactorMatrix()
             {
-                var dampingFactorMatrix = new Matrix(trannsitionMatrix.Length);
-                    for (ulong j = 0; j < trannsitionMatrix.Length; j++)
+                var dampingFactorMatrix = new Matrix(_transitionMatrix.Length);
+                for (ulong j = 0; j < _transitionMatrix.Length; j++)
                     {
-                        var n = (from page in trannsitionMatrix[VectorType.Column, j]
+                        var n = (from page in _transitionMatrix[VectorType.Column, j]
                                 where Math.Abs(page) > Epsilon
                                 select page).Count();
 
                         int s = 0;
-                        for (ulong k = 0; k < trannsitionMatrix.Length; k++)
+                        for (ulong k = 0; k < _transitionMatrix.Length; k++)
                         {
-                            s += (from page in trannsitionMatrix[VectorType.Row, k]
-                                where (trannsitionMatrix[k, j] > Epsilon) && (page > Epsilon)
+                            s += (from page in _transitionMatrix[VectorType.Row, k]
+                                  where (_transitionMatrix[k, j] > Epsilon) && (page > Epsilon)
                                 select page).Count();
 
                         }
@@ -226,6 +288,9 @@ namespace PageRankCalculator.BusinessModel
                 return dampingFactorMatrix;
             }
             
+            /// <summary>
+            /// Fulfil the Zero-lines in the Transition Matrix, this method stochasticize the transition matrix and hence delete the dangling nodes case
+            /// </summary>
             private void DeleteDanglingNodes()
             {
                 Parallel.For((long) 0, (long) _transitionMatrix.Length, (i) =>
@@ -240,6 +305,10 @@ namespace PageRankCalculator.BusinessModel
                                                });
             }
 
+            /// <summary>
+            /// Calculates the Google matrix used to calculate the PageRank
+            /// </summary>
+            /// <returns></returns>
             public Matrix GoogleMatrix()
                 {
                     //G=dA+(1-d)Q

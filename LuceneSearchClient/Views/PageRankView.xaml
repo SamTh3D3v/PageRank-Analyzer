@@ -15,8 +15,8 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
@@ -43,19 +43,8 @@
                 <TextBox  Grid.Column="1" Margin="5" Grid.Row="2" IsEnabled="False" Grid.ColumnSpan="3"/>
                 
             </Grid>
-        </GroupBox>
-        <GroupBox Header="Initial PageRank Values " Margin="5" Grid.Row="1">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <DataGrid Grid.Row="0" Margin="5" Background="White"/>
-                <Button Content="1/N" Margin="2" Grid.Column="1" IsEnabled="False" Command="{Binding ResetInitialPageRankCommand}"/>
-
-            </Grid>
-        </GroupBox>
-        <GroupBox Header="Matrices" Margin="5" Grid.Row="2">
+        </GroupBox>     
+        <GroupBox Header="Matrices" Margin="5" Grid.Row="1">
             <TabControl>
                 <TabItem Header="Transition Matrix">
                     <Grid>
@@ -81,7 +70,18 @@
                 </TabItem>
             </TabControl>            
         </GroupBox>
-        <GroupBox Header="PageRank " Margin="5" Grid.Row="3">
+        <GroupBox Header="Initial PageRank Values " Margin="5" Grid.Row="2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <DataGrid Grid.Row="0" Margin="5" Background="White"/>
+                <Button Content="1/N" Margin="2" Grid.Column="1" IsEnabled="False" Command="{Binding ResetInitialPageRankCommand}"/>
+
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="PageRank " Margin="10,10,0,0" Grid.Row="3">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>

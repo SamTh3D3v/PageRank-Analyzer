@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Windows;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using PageRankCalculator.BusinessModel;
 using PageRankCalculator.Model;
+using Vector = PageRankCalculator.Model.Vector;
 
 namespace LuceneSearchClient.ViewModel
 {
@@ -173,13 +175,13 @@ namespace LuceneSearchClient.ViewModel
                 RaisePropertyChanged(PageRankVectorPropertyName);
             }
         }
+        
         #endregion
         #region Ctors and Methods
         public SimulatorViewModel()
-        {
-            DefaultInitialPageRank = PageRank.DefaultDampingFactor;
-            DampingFactor = 0.85f;
-            NumberIterations = 100;         
+        {          
+            DampingFactor =PageRank.DefaultDampingFactor;
+            NumberIterations = 100;              
         }
         #endregion
         #region Commands

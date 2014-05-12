@@ -12,6 +12,9 @@ namespace PageRankCalculator.BusinessModel
 {
     public class PageRank
     {
+        #region consts
+        public static float DefaultDampingFactor = 0.85f;
+        #endregion
 
         #region Properties
 
@@ -20,34 +23,34 @@ namespace PageRankCalculator.BusinessModel
             /// </summary>
             /// <value>Value less or equal than 1, greater or equal than 0</value>
             public float DampingFactor
+        {
+            get
             {
-                get
-                {
-                    return _dampinFactor;
-                }
+                return _dampinFactor;
             }
+        }
 
             /// <summary>
             /// Get the value of the Teleportation matrix : matrix used to calculate the Google matrix, eliminates reducibility and periodicity of the Transition matrix
             /// </summary>
             public Matrix TeleportationMatrix
+        {
+            get
             {
-                get
-                {
-                    return _teleportationMatrix;
-                }
+                return _teleportationMatrix;
             }
+        }
             
             /// <summary>
             /// Get the value of the Transition matrix, represents transition probabilities from web graph pages
             /// </summary>
             public Matrix TransitionMatrix
+        {
+            get
             {
-                get
-                {
-                    return _transitionMatrix;
-                } 
-            }
+                return _transitionMatrix;
+            } 
+        }
         #endregion
 
         #region Constructors
@@ -59,16 +62,16 @@ namespace PageRankCalculator.BusinessModel
             /// <param name="dampingFactor">The suggested DampingFactor, value should be between 0 and 1</param>
             /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the given <b>DampingFactor</b> is not in the correct range</exception>
             public PageRank(Matrix transitionMatrix,float dampingFactor)
+        {
+            if ((dampingFactor > 1) || (dampingFactor < 0))
             {
-                if ((dampingFactor > 1) || (dampingFactor < 0))
-                {
-                    throw new ArgumentOutOfRangeException("dampingFactor", dampingFactor,
-                        "the DampingFactor should be between 0 and 1");
-                }
-                _transitionMatrix = transitionMatrix;
-                _teleportationMatrix = Matrix.E(transitionMatrix.Length);
-                _dampinFactor = dampingFactor;
+                throw new ArgumentOutOfRangeException("dampingFactor", dampingFactor,
+                    "the DampingFactor should be between 0 and 1");
             }
+            _transitionMatrix = transitionMatrix;
+            _teleportationMatrix = Matrix.E(transitionMatrix.Length);
+            _dampinFactor = dampingFactor;
+        }
 
             /// <summary>
             /// Initialize a new instance of the <b>PageRank</b> Class, using the Transition matrix and the DampingFactor and the specific Teleportation matrix
@@ -79,20 +82,20 @@ namespace PageRankCalculator.BusinessModel
             /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the given <b>DampingFactor</b> is not in the correct range</exception>
             /// <exception cref="ArithmeticException">Thrown when the given <b>teleportationMatrix</b> and the <b>transitionMatrix</b> don't have the same size</exception>
             public PageRank(Matrix transitionMatrix, float dampingFactor,Matrix teleportationMatrix)
+        {
+            if (transitionMatrix.Length != teleportationMatrix.Length)
             {
-                if (transitionMatrix.Length!=teleportationMatrix.Length)
-                {
-                    throw new ArithmeticException("Can't calculate PageRank with a transition matrix and a teleportation matrix of different lengths");                                                
-                }
-                if ((dampingFactor > 1) || (dampingFactor < 0))
-                {
-                    throw new ArgumentOutOfRangeException("dampingFactor", dampingFactor,
-                        "the DampingFactor should be between 0 and 1");
-                }
-                _transitionMatrix = transitionMatrix;
-                _teleportationMatrix = teleportationMatrix;
-                _dampinFactor = dampingFactor;
+                throw new ArithmeticException("Can't calculate PageRank with a transition matrix and a teleportation matrix of different lengths");                                                
             }
+            if ((dampingFactor > 1) || (dampingFactor < 0))
+            {
+                throw new ArgumentOutOfRangeException("dampingFactor", dampingFactor,
+                    "the DampingFactor should be between 0 and 1");
+            }
+            _transitionMatrix = transitionMatrix;
+             _teleportationMatrix = teleportationMatrix;
+             _dampinFactor = dampingFactor;
+        }
             
         #endregion
 
@@ -137,10 +140,10 @@ namespace PageRankCalculator.BusinessModel
                 Vector pageRankVector = previousPageRankValue = initialVector;
                 
                 //Convergence degree example 0.0001
-                double convergenceValue = 1f/(Math.Pow(10,convergenceDegree));
+            double convergenceValue = 1f / (Math.Pow(10, convergenceDegree));
                 
                 //To test convergence 
-                bool converged ;
+            bool converged;
                 
                 //Itterations number
                 nbItterations = 0;
@@ -163,7 +166,7 @@ namespace PageRankCalculator.BusinessModel
 
                     Parallel.For((long)0, (long)_transitionMatrix.Length, (i, parallelLoopState) =>
                     {
-                       if (Math.Abs(pageRankVector[(ulong)i]-previousPageRankValue[(ulong)i])>convergenceValue)
+                    if (Math.Abs(pageRankVector[(ulong)i] - previousPageRankValue[(ulong)i]) > convergenceValue)
                         {
                             converged = false;
                             parallelLoopState.Break();
@@ -293,7 +296,7 @@ namespace PageRankCalculator.BusinessModel
             /// </summary>
             private void DeleteDanglingNodes()
             {
-                Parallel.For((long) 0, (long) _transitionMatrix.Length, (i) =>
+            Parallel.For((long)0, (long)_transitionMatrix.Length, (i) =>
                                                {
                                                    if (Math.Abs(_transitionMatrix[VectorType.Row, (ulong)i].Sum()) < Single.Epsilon)
                                                    {

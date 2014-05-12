@@ -267,6 +267,15 @@ namespace PageRankCalculator.Model
         public static bool operator ==(Matrix x, Matrix y)
         {
             bool isEqual = true;
+            var xo = x as object;
+            var yo = y as object;
+            if (xo==null && yo==null)
+            {
+                return true;
+            }else if (xo ==null || yo==null)
+            {
+                return false;
+            }
             if (x.Length != y.Length) isEqual = false;
             else
             {
@@ -421,7 +430,6 @@ namespace PageRankCalculator.Model
             period = power - 1;
             return isPeriodic;
         }
-
         public List<float> Eigenvalues()
         {
             DenseMatrix m = DenseMatrix.OfArray(_data);

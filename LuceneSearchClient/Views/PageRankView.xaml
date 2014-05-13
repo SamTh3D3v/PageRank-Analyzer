@@ -9,8 +9,10 @@
         DataContext="{Binding PageRankViewModel, Source={StaticResource Locator}}">
     <Page.Resources>
         <converters:MatrixToDataViewConverter x:Key="MatrixToDataViewConverter" />
-        <converters:ArrayToDataViewConverter x:Key="ArrayToDataViewConverter"/>
+        <converters:ArrayToDataViewConverter x:Key="VectorToDataViewConverter"/>
         <converters:GenerateWebGraphConverter x:Key="GenerateWebGraphConverter"/>
+        <converters:InitialVectorSetConverter x:Key="InitialVectorSetConverter"/>
+        
     </Page.Resources>
 
     <Grid>
@@ -77,8 +79,8 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <DataGrid Grid.Row="0" Margin="5" Background="White"/>
-                <Button Content="1/N" Margin="2" Grid.Column="1" IsEnabled="False" Command="{Binding SetInitialPageRankCommand}"/>
+                <DataGrid Grid.Row="0" Margin="5" Background="White" ItemsSource="{Binding InitialPageRankVector,Converter={StaticResource VectorToDataViewConverter}}"/>
+                <Button Content="1/N" Margin="2" Grid.Column="1" IsEnabled="{Binding InitialPageRankVector,Converter={StaticResource InitialVectorSetConverter}}" Command="{Binding SetInitialPageRankCommand}"/>
 
             </Grid>
         </GroupBox>
@@ -88,8 +90,8 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <DataGrid Grid.Row="0" Margin="5" Background="White" />
-                <Button Content="Calculate Page Rank" Margin="2" Grid.Column="1" IsEnabled="False" Command="{Binding CalculatePageRankCommand}"/>
+                <DataGrid Grid.Row="0" Margin="5" Background="White" ItemsSource="{Binding PageRankVector,Converter={StaticResource VectorToDataViewConverter}}" />
+                <Button Content="Calculate Page Rank" Margin="2" Grid.Column="1" IsEnabled="{Binding InitialPageRankVector,Converter={StaticResource InitialVectorSetConverter}}" Command="{Binding CalculatePageRankCommand}"/>
 
             </Grid>
         </GroupBox>

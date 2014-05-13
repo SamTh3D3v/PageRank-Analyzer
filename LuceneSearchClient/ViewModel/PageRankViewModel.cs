@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Microsoft.Office.Interop.Excel;
+using PageRankCalculator.BusinessModel;
 using PageRankCalculator.Model;
 using WebGraphMaker.businessLogic;
 
@@ -17,6 +18,7 @@ namespace LuceneSearchClient.ViewModel
         public const string InitialPageRankVectorPropertyName = "InitialPageRankVector";
         public const string TeleportationMatrixPropertyName = "TeleportationMatrix";
         public const string TransitionMatrixPropertyName = "TransitionMatrix";
+        public const string PageRankVectorPropertyName = "PageRankVector";
         #endregion
         #region Fields
         private string _linksXmlFile = "";
@@ -26,6 +28,8 @@ namespace LuceneSearchClient.ViewModel
         private Matrix _transitionMatrix;
         private Matrix _teleportationMatrix;
         private Range _range;
+        private Vector _pageRankVector;
+        private WebGraphDataReader _webGraphDataReader;
         #endregion
         #region Properties 
         public string WebGraphExcelFile
@@ -132,6 +136,23 @@ namespace LuceneSearchClient.ViewModel
                 RaisePropertyChanged(TeleportationMatrixPropertyName);
             }
         }
+        public Vector PageRankVector
+        {
+            get
+            {
+                return _pageRankVector;
+            }
+
+            set
+            {
+                if (_pageRankVector == value)
+                {
+                    return;
+                }                
+                _pageRankVector = value;
+                RaisePropertyChanged(PageRankVectorPropertyName);
+            }
+        }
         #endregion
         #region Ctos and Methods
         public PageRankViewModel()
@@ -149,6 +170,14 @@ namespace LuceneSearchClient.ViewModel
                     ?? (_getTransitionMatrixCommand = new RelayCommand(
                                           () =>
                                           {
+                                              _webGraphDataReader=new WebGraphDataReader();
+                                              _webGraphDataReader.ExtractDataFromWebGraph(GraphEntities.Pages,PagesXmlFile);
+                                              _webGraphDataReader.ExtractDataFromWebGraph(GraphEntities.Links, LinksXmlFile);
+                                              WebGraphDataConverter.SetTransitionMatrix(_webGraphDataReader.Pages, _webGraphDataReader.Links);
+                                             TransitionMatrix=WebGraphDataConverter.TransitionMatrix;                                              
+                                              //Setting The Transportation Matrix 
+                                              TeleportationMatrix=Matrix.E(TransitionMatrix.Length);                                              
+                                              InitialPageRankVector = Vector.e(VectorType.Row, TransitionMatrix.Length);
                                               
                                           }));
             }
@@ -175,7 +204,7 @@ namespace LuceneSearchClient.ViewModel
                     ?? (_setInitialPageRankCommand = new RelayCommand(
                                           () =>
                                           {
-                                              
+                                              InitialPageRankVector = Vector.e(VectorType.Row, TransitionMatrix.Length);
                                           }));
             }
         }
@@ -188,7 +217,11 @@ namespace LuceneSearchClient.ViewModel
                     ?? (_calculatePageRankCommand = new RelayCommand(
                                           () =>
                                           {
-                                              
+
+                                              ulong nbIterations;
+                                              var pageRank = new PageRank(TransitionMatrix, PageRank.DefaultDampingFactor);
+                                              PageRankVector = pageRank.GetPageRankVector(InitialPageRankVector,
+                                                  (short) 5, out nbIterations);                                                                                           
                                           }));
             }
         }
@@ -217,10 +250,8 @@ namespace LuceneSearchClient.ViewModel
                                           {
                                               var excelDataConverter = new ExcelDataConverter(_range);
                                               excelDataConverter.ConvertExelData();
-                                              PagesXmlFile = "Pages Xml File Has Been Setted";
-                                              LinksXmlFile = "Links Xml File Has Been Setted";
-
-
+                                              PagesXmlFile = "D:\\Page2.xml"; //Until The FileName Getter Is Implemented
+                                              LinksXmlFile = "D:\\Link2.xml";
                                           }));
             }
         }

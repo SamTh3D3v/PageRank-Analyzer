@@ -17,7 +17,7 @@ namespace LuceneSearchClient.ViewModel
         public const string LinksXmlFilePropertyName = "LinksXmlFile";
         public const string InitialPageRankVectorPropertyName = "InitialPageRankVector";
         public const string TeleportationMatrixPropertyName = "TeleportationMatrix";
-        public const string TransitionMatrixPropertyName = "TransitionMatrix";
+        public const string TransitionMatrixPropertyName = "AdjacenteMatrix";
         public const string PageRankVectorPropertyName = "PageRankVector";
         #endregion
         #region Fields

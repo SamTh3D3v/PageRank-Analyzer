@@ -9,6 +9,7 @@
       xmlns:dv="clr-namespace:System.Windows.Controls.DataVisualization;assembly=System.Windows.Controls.DataVisualization.Toolkit"
 xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
       xmlns:converters="clr-namespace:LuceneSearchClient.Converters"
+      xmlns:resources="clr-namespace:LuceneSearchClient.Resources"
 
       mc:Ignorable="d ignore" d:DesignHeight="500" d:DesignWidth="700"
         DataContext="{Binding SimulatorViewModel, Source={StaticResource Locator}}">
@@ -39,7 +40,7 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>                                            
+                                            <RowDefinition Height="Auto"/>
                                         </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="200"/>
@@ -48,7 +49,7 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Matrix Size :" Grid.Row="0" Grid.Column="0"/>
                                         <TextBox  Grid.Row="0" Grid.Column="1" Text="{Binding MatrixSize,Mode=TwoWay}" Margin="3"/>
-                                       
+
 
                                         <Label Content="The Damping Factor :" Grid.Row="1" Grid.Column="0" />
                                         <TextBox  Grid.Row="1" Grid.Column="1" Text="{Binding DampingFactor,Mode=TwoWay}" Margin="3"/>
@@ -79,7 +80,7 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
-                                                <DataGrid Grid.Row="0" Margin="5" Background="White" ItemsSource="{Binding TransitionMatrix ,Converter={StaticResource MatrixToDataViewConverter},Mode=TwoWay}" LoadingRow="OnLoadingRow"/>
+                                                <DataGrid Grid.Row="0" Margin="5" Background="White" ItemsSource="{Binding AdjacenteMatrix ,Converter={StaticResource MatrixToDataViewConverter},Mode=TwoWay}" LoadingRow="OnLoadingRow"/>
                                                 <Grid Grid.Row="1" Margin="2">
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="*"/>
@@ -144,14 +145,27 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                 </Grid.ColumnDefinitions>
                                 <Label Content="WebPageLabel :"></Label>
                                 <ComboBox Grid.Row="0" Grid.Column="1" Margin="3" ItemsSource="{Binding ListWebPages}" SelectedItem="{Binding SelectedPage,Mode=TwoWay}">
-                                    
+
                                 </ComboBox>
                                 <dvc:Chart Grid.Row="1" Background="White" Grid.Column="0" Grid.ColumnSpan="2">
-                                    <dvc:LineSeries Title="ComboBox Selected Page"
-                                        ItemsSource="{Binding Data}"
-                                        IndependentValueBinding="{Binding DampingFactor}"
-                                        DependentValueBinding="{Binding PageRank}" />
+                                    <dvc:LineSeries Title="{Binding SelectedPage}" 
+                                        ItemsSource="{Binding ListDampPr}"
+                                        IndependentValueBinding="{Binding Key}"
+                                        DependentValueBinding="{Binding Value}" >
+                                        
+                                    </dvc:LineSeries>
                                 </dvc:Chart>
+                                <!--<resources:MultiChart Grid.Row="1" Background="White" Grid.Column="0" Grid.ColumnSpan="2" SeriesSource="{Binding DataSourceListDampPr}" >
+                                    <resources:MultiChart.SeriesTemplate >
+                                        <DataTemplate >
+                                            <dvc:LineSeries
+			       Title="{Binding SelectedPage}"
+			       ItemsSource="{Binding [0]}"
+			       IndependentValueBinding="{Binding Value}"
+			       DependentValueBinding="{Binding Key}" />
+                                        </DataTemplate>
+                                    </resources:MultiChart.SeriesTemplate>
+                                </resources:MultiChart>-->
                                 <GroupBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Header="Calculate" Margin="2">
                                     <Grid HorizontalAlignment="Right">
                                         <Grid.ColumnDefinitions>
@@ -159,9 +173,9 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                             <ColumnDefinition Width="60"/>
                                             <ColumnDefinition Width="60"/>
                                         </Grid.ColumnDefinitions>
-                                        <Button Grid.Column="0" Content="Simulate" Margin="3"/>
-                                        <Button Grid.Column="1" Content="Reset" Margin="3"/>
-                                        <Button Grid.Column="2" Content="Export" Margin="3"/>
+                                        <Button Grid.Column="0" Content="Simulate" Margin="3" Command="{Binding StartSimulationCommand}"/>
+                                        <Button Grid.Column="1" Content="Reset" Margin="3" Command="{Binding ResetChartsCommand}"/>
+                                        <Button Grid.Column="2" Content="Export" Margin="3" Command="{Binding ExportChartCommand}"/>
                                     </Grid>
                                 </GroupBox>
                             </Grid>

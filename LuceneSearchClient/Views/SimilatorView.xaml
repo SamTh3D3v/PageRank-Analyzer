@@ -39,8 +39,7 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>                                            
                                         </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="200"/>
@@ -48,17 +47,16 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Matrix Size :" Grid.Row="0" Grid.Column="0"/>
-                                        <TextBox  Grid.Row="0" Grid.Column="1" Text="{Binding MatrixSize,Mode=TwoWay}"/>
-                                        <Label Content="Initial PageRank Values :" Grid.Row="1" Grid.Column="0" />
-                                        <TextBox  Grid.Row="1" Grid.Column="1" Text="{Binding DefaultInitialPageRank,Mode=TwoWay}"/>
-     
-                                        <Label Content="The Damping Factor :" Grid.Row="2" Grid.Column="0" />
-                                        <TextBox  Grid.Row="2" Grid.Column="1" Text="{Binding DampingFactor,Mode=TwoWay}"/>
-                                        <Label Content="Number Of Iterations :" Grid.Row="3" Grid.Column="0" />
-                                        <TextBox  Grid.Row="3" Grid.Column="1" Text="{Binding NumberIterations,Mode=TwoWay}" IsEnabled="{Binding ElementName=AutoIteCheckBox,Path=IsChecked}"/>
-                                        <CheckBox x:Name="AutoIteCheckBox"  Grid.Row="3" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding AutomaticIterations}"/>
-                                        
-                                                                                        
+                                        <TextBox  Grid.Row="0" Grid.Column="1" Text="{Binding MatrixSize,Mode=TwoWay}" Margin="3"/>
+                                       
+
+                                        <Label Content="The Damping Factor :" Grid.Row="1" Grid.Column="0" />
+                                        <TextBox  Grid.Row="1" Grid.Column="1" Text="{Binding DampingFactor,Mode=TwoWay}" Margin="3"/>
+                                        <Label Content="Number Of Iterations :" Grid.Row="2" Grid.Column="0" />
+                                        <TextBox  Grid.Row="2" Grid.Column="1" Margin="3" Text="{Binding NumberIterations,Mode=TwoWay}" IsEnabled="{Binding ElementName=AutoIteCheckBox,Path=IsChecked}"/>
+                                        <CheckBox x:Name="AutoIteCheckBox"  Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding AutomaticIterations}"/>
+
+
                                     </Grid>
                                 </GroupBox>
                                 <GroupBox Header="Initial PageRank Values " Margin="5" Grid.Row="1">
@@ -72,23 +70,39 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
 
                                     </Grid>
                                 </GroupBox>
-                                <GroupBox Header="Transition Matrix" Margin="5" Grid.Row="2">
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="*"/>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                        </Grid.RowDefinitions>
-                                        <DataGrid Grid.Row="0" Margin="5" Background="White" ItemsSource="{Binding TransitionMatrix ,Converter={StaticResource MatrixToDataViewConverter},Mode=TwoWay}" LoadingRow="OnLoadingRow"/>
-                                        <Grid Grid.Row="1" Margin="2">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Button Content="Generate Matrix Randomly" Margin="2" Grid.Column="0" Command="{Binding GenerateMatrixCommand}"/>
-                                            <Button Content="Reset Matrix"  Margin="2" Grid.Column="1" Command="{Binding ResetMatrixCommand}"/>
-                                        </Grid>
-                                    </Grid>
+                                <GroupBox Header="Matrices" Margin="5" Grid.Row="2">
+                                    <TabControl>
+                                        <TabItem Header="Adjancence Matrix">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <DataGrid Grid.Row="0" Margin="5" Background="White" ItemsSource="{Binding TransitionMatrix ,Converter={StaticResource MatrixToDataViewConverter},Mode=TwoWay}" LoadingRow="OnLoadingRow"/>
+                                                <Grid Grid.Row="1" Margin="2">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Button Content="Generate Matrix Randomly" Margin="2" Grid.Column="0" Command="{Binding GenerateMatrixCommand}"/>
+                                                    <Button Content="Reset Matrix"  Margin="2" Grid.Column="1" Command="{Binding ResetMatrixCommand}"/>
+                                                </Grid>
+                                            </Grid>
+                                        </TabItem>
+                                        <TabItem Header="Teleportation Matrix">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <DataGrid Grid.Row="0" Margin="5" Background="White" ItemsSource="{Binding TelePortationMatrix ,Converter={StaticResource MatrixToDataViewConverter},Mode=TwoWay}" LoadingRow="OnLoadingRow"/>
+                                                <Button Content="1/N" Grid.Row="1" Margin="2" Command="{Binding ResetTelePortationCommand}"/>
+                                            </Grid>
+                                        </TabItem>
+                                    </TabControl>
+
                                 </GroupBox>
                                 <GroupBox Header="Page Rank" Margin="5" Grid.Row="3">
                                     <Grid >

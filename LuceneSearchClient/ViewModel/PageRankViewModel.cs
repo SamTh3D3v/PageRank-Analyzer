@@ -1,5 +1,4 @@
-﻿using System;
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Microsoft.Office.Interop.Excel;
 using PageRankCalculator.BusinessModel;
@@ -176,8 +175,8 @@ namespace LuceneSearchClient.ViewModel
                                               WebGraphDataConverter.SetTransitionMatrix(_webGraphDataReader.Pages, _webGraphDataReader.Links);
                                              TransitionMatrix=WebGraphDataConverter.TransitionMatrix;                                              
                                               //Setting The Transportation Matrix 
-                                              TeleportationMatrix=Matrix.E(TransitionMatrix.Length);                                              
-                                              InitialPageRankVector = Vector.e(VectorType.Row, TransitionMatrix.Length);
+                                              TeleportationMatrix=Matrix.E(TransitionMatrix.Size);                                              
+                                              InitialPageRankVector = Vector.e(VectorType.Row, TransitionMatrix.Size);
                                               
                                           }));
             }
@@ -204,7 +203,7 @@ namespace LuceneSearchClient.ViewModel
                     ?? (_setInitialPageRankCommand = new RelayCommand(
                                           () =>
                                           {
-                                              InitialPageRankVector = Vector.e(VectorType.Row, TransitionMatrix.Length);
+                                              InitialPageRankVector = Vector.e(VectorType.Row, TransitionMatrix.Size);
                                           }));
             }
         }
@@ -221,7 +220,7 @@ namespace LuceneSearchClient.ViewModel
                                               ulong nbIterations;
                                               var pageRank = new PageRank(TransitionMatrix, PageRank.DefaultDampingFactor);
                                               PageRankVector = pageRank.GetPageRankVector(InitialPageRankVector,
-                                                  (short) 5, out nbIterations);                                                                                           
+                                                  5, out nbIterations);                                                                                           
                                           }));
             }
         }

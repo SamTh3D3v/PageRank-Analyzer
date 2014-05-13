@@ -16,16 +16,16 @@ namespace LuceneSearchClient.Converters
         {
             if (value == null) return null;
             var matrix = value as Matrix;                        
-            if (matrix.Length == 0) return null;                        
+            if (matrix.Size == 0) return null;                        
             var dataTable = new DataTable();
-            for (ulong column = 0; column < matrix.Length; column++)
+            for (ulong column = 0; column < matrix.Size; column++)
             {
                 dataTable.Columns.Add(new DataColumn(column.ToString(CultureInfo.InvariantCulture)));
             }
-            for (ulong row = 0; row < matrix.Length; row++)
+            for (ulong row = 0; row < matrix.Size; row++)
             {
                 var newRow = dataTable.NewRow();
-                for (ulong column = 0; column < matrix.Length; column++)
+                for (ulong column = 0; column < matrix.Size; column++)
                 {
                     newRow[(int) column] = matrix[row, column];
                 }

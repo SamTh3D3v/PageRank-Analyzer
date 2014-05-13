@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Linq;
 using System.Windows;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -23,6 +25,8 @@ namespace LuceneSearchClient.ViewModel
         public const string AutomaticIterationsPropertyName = "AAutomaticIterations";
         public const string PageRankVectorPropertyName = "PageRankVector";
         public const string TelePortationMatrixPropertyName = "TelePortationMatrix";
+        public const string ListWebPagesPropertyName = "ListWebPages";
+        public const string SelectedPagePropertyName = "SelectedPage";
         #endregion
         #region Fields
         private ulong _matrixSize;
@@ -34,6 +38,8 @@ namespace LuceneSearchClient.ViewModel
         private bool _automaticIterations = true;
         private Vector _pageRank;
         private Matrix _teleportationMatrix;
+        private ObservableCollection<string> _listWebPages = new ObservableCollection<string>();
+        private string _selectedPage;
         #endregion
         #region Properties
         public ulong MatrixSize
@@ -52,6 +58,13 @@ namespace LuceneSearchClient.ViewModel
                 TransitionMatrix = new Matrix(_matrixSize);
                 InitialPageRank = Vector.e(VectorType.Row, _matrixSize);
                 TelePortationMatrix = Matrix.E(_matrixSize);
+                var listpages = new List<string>();
+                for (ulong i = 0; i < _matrixSize; i++)
+                {
+                    listpages.Add(i.ToString(CultureInfo.InvariantCulture));
+                }
+                ListWebPages = new ObservableCollection<string>(listpages);
+                SelectedPage = ListWebPages.First();
             }
         }
         public Matrix TransitionMatrix
@@ -191,6 +204,40 @@ namespace LuceneSearchClient.ViewModel
                 }
                 _teleportationMatrix = value;
                 RaisePropertyChanged(TelePortationMatrixPropertyName);
+            }
+        }
+        public ObservableCollection<string> ListWebPages
+        {
+            get
+            {
+                return _listWebPages;
+            }
+
+            set
+            {
+                if (_listWebPages == value)
+                {
+                    return;
+                }                
+                _listWebPages = value;
+                RaisePropertyChanged(ListWebPagesPropertyName);
+            }
+        }     
+        public string SelectedPage
+        {
+            get
+            {
+                return _selectedPage;
+            }
+
+            set
+            {
+                if (_selectedPage == value)
+                {
+                    return;
+                }                
+                _selectedPage = value;
+                RaisePropertyChanged(SelectedPagePropertyName);
             }
         }
         #endregion

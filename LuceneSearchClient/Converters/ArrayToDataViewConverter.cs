@@ -16,10 +16,10 @@ namespace LuceneSearchClient.Converters
         {
             if (value==null) return null;  
             var vector = value as Vector;                   
-            if (vector.Length == 0) return null;
+            if (vector.Size == 0) return null;
             var dataTable = new DataTable();
             var newRow = dataTable.NewRow();
-            for (ulong column = 0; column < vector.Length; column++)
+            for (ulong column = 0; column < vector.Size; column++)
             {
                 dataTable.Columns.Add(new DataColumn(column.ToString(CultureInfo.InvariantCulture)));
                 newRow[(int) column] = vector[column];

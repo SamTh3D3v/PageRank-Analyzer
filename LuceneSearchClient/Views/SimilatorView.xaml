@@ -131,15 +131,55 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                         </avalonDock:LayoutAnchorable>
                     </avalonDock:LayoutAnchorablePane>
                     <avalonDock:LayoutAnchorablePane DockWidth="300" >
-                        <avalonDock:LayoutAnchorable Title="Damping Factor Chart">
+                        <avalonDock:LayoutAnchorable Title="PageRank/DampingFactor">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
-                                <ComboBox Grid.Row="0" Margin="3"/>
-                                <dvc:Chart Grid.Row="1" Background="White">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="WebPageLabel :"></Label>
+                                <ComboBox Grid.Row="0" Grid.Column="1" Margin="3" ItemsSource="{Binding ListWebPages}" SelectedItem="{Binding SelectedPage,Mode=TwoWay}">
+                                    
+                                </ComboBox>
+                                <dvc:Chart Grid.Row="1" Background="White" Grid.Column="0" Grid.ColumnSpan="2">
+                                    <dvc:LineSeries Title="ComboBox Selected Page"
+                                        ItemsSource="{Binding Data}"
+                                        IndependentValueBinding="{Binding DampingFactor}"
+                                        DependentValueBinding="{Binding PageRank}" />
+                                </dvc:Chart>
+                                <GroupBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Header="Calculate" Margin="2">
+                                    <Grid HorizontalAlignment="Right">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="60"/>
+                                            <ColumnDefinition Width="60"/>
+                                            <ColumnDefinition Width="60"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Button Grid.Column="0" Content="Simulate" Margin="3"/>
+                                        <Button Grid.Column="1" Content="Reset" Margin="3"/>
+                                        <Button Grid.Column="2" Content="Export" Margin="3"/>
+                                    </Grid>
+                                </GroupBox>
+                            </Grid>
+                        </avalonDock:LayoutAnchorable>
+                        <avalonDock:LayoutAnchorable Title="Iterations/DampingFactor">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="WebPageLabel :"></Label>
+                                <ComboBox Grid.Row="0" Grid.Column="1" Margin="3"/>
+                                <dvc:Chart Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Background="White">
                                     <dvc:LineSeries Title="ComboBox Selected Page"
                                         ItemsSource="{Binding Data}"
                                         IndependentValueBinding="{Binding DampingFactor}"

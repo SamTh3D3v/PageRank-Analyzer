@@ -17,7 +17,7 @@ namespace PageRankCalculator.BusinessModel
             get
             {
                 return _transitionMatrix;
-            } 
+            }
         }
 
         #endregion
@@ -32,12 +32,12 @@ namespace PageRankCalculator.BusinessModel
         /// <returns>a N x N matrix representing the links between pages</returns>
         private static Matrix GetAdjacentMatrix(List<Page> pages, List<Link> links)
         {
-            var adjacentMatrix = new Matrix((ulong) pages.Count);
+            var adjacentMatrix = new Matrix((ulong)pages.Count);
             foreach (var page in pages)
             {
                 var tailPages = (from link in links
-                    where link.TailPageId == page.Id
-                    select link.HeadPageId).ToList();
+                                 where link.TailPageId == page.Id
+                                 select link.HeadPageId).ToList();
                 foreach (var tailPage in tailPages)
                 {
                     adjacentMatrix[page.Id, tailPage] = 1;

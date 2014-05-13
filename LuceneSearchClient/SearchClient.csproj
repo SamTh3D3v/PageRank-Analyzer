@@ -102,6 +102,7 @@
     </ApplicationDefinition>
     <Compile Include="Converters\ArrayToDataViewConverter.cs" />
     <Compile Include="Converters\GenerateWebGraphConverter.cs" />
+    <Compile Include="Converters\InitialVectorSetConverter.cs" />
     <Compile Include="Converters\MatrixToDataViewConverter.cs" />
     <Compile Include="Helpers\MultiSeriesChart.cs" />
     <Compile Include="Model\WebSite.cs" />

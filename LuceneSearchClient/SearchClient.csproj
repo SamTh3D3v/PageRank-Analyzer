@@ -42,6 +42,9 @@
     <Reference Include="GalaSoft.MvvmLight.WPF45">
       <HintPath>..\packages\MvvmLightLibs.4.2.30.0\lib\net45\GalaSoft.MvvmLight.WPF45.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation">
       <HintPath>..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
@@ -98,6 +101,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\ArrayToDataViewConverter.cs" />
+    <Compile Include="Converters\GenerateWebGraphConverter.cs" />
     <Compile Include="Converters\MatrixToDataViewConverter.cs" />
     <Compile Include="Helpers\MultiSeriesChart.cs" />
     <Compile Include="Model\WebSite.cs" />
@@ -189,6 +193,10 @@
     <ProjectReference Include="..\PageRankCalculator\PageRankCalculator.csproj">
       <Project>{d31e64f3-ce5c-4a3a-9cbc-66d1c275922e}</Project>
       <Name>PageRankCalculator</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WebGraphMaker\WebGraphMaker.csproj">
+      <Project>{086faf77-79ee-47a1-8119-f2567b4f0c99}</Project>
+      <Name>WebGraphMaker</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

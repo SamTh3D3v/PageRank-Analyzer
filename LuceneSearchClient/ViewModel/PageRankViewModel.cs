@@ -1,7 +1,9 @@
 ﻿using System;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using Microsoft.Office.Interop.Excel;
 using PageRankCalculator.Model;
+using WebGraphMaker.businessLogic;
 
 namespace LuceneSearchClient.ViewModel
 {
@@ -23,6 +25,7 @@ namespace LuceneSearchClient.ViewModel
         private Vector _initialPageRankVector;
         private Matrix _transitionMatrix;
         private Matrix _teleportationMatrix;
+        private Range _range;
         #endregion
         #region Properties 
         public string WebGraphExcelFile
@@ -198,7 +201,8 @@ namespace LuceneSearchClient.ViewModel
                     ?? (_browseCommand = new RelayCommand(
                                           () =>
                                           {
-                                              
+                                              _range = ExcelDataReader.ReadData();
+                                              WebGraphExcelFile = "File Has Been Selected";
                                           }));
             }
         }
@@ -211,7 +215,12 @@ namespace LuceneSearchClient.ViewModel
                     ?? (_generateXmLsCommand = new RelayCommand(
                                           () =>
                                           {
-                                              
+                                              var excelDataConverter = new ExcelDataConverter(_range);
+                                              excelDataConverter.ConvertExelData();
+                                              PagesXmlFile = "Pages Xml File Has Been Setted";
+                                              LinksXmlFile = "Links Xml File Has Been Setted";
+
+
                                           }));
             }
         }

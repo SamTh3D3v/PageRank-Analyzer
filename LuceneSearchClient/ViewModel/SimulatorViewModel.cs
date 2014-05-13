@@ -174,8 +174,7 @@ namespace LuceneSearchClient.ViewModel
                 _pageRank = value;
                 RaisePropertyChanged(PageRankVectorPropertyName);
             }
-        }
-        
+        }       
         #endregion
         #region Ctors and Methods
         public SimulatorViewModel()

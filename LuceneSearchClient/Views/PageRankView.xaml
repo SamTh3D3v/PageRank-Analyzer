@@ -10,6 +10,7 @@
     <Page.Resources>
         <converters:MatrixToDataViewConverter x:Key="MatrixToDataViewConverter" />
         <converters:ArrayToDataViewConverter x:Key="ArrayToDataViewConverter"/>
+        <converters:GenerateWebGraphConverter x:Key="GenerateWebGraphConverter"/>
     </Page.Resources>
 
     <Grid>
@@ -34,13 +35,13 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <Label Content="Web Graph Excel File :"/>
-                <TextBox Grid.Row="0" Grid.Column="1" Margin="5"/>
-                <Button Content="Browse" Grid.Column="2" Grid.Row="0" Margin="5"/>
-                <Button Content="Generate" Grid.Column="3" Grid.Row="0" Margin="5" IsEnabled="False"/>
+                <TextBox Grid.Row="0" Grid.Column="1" Margin="5" Text="{Binding WebGraphExcelFile}" IsEnabled="False" x:Name="WebGraphTextBox"/>
+                <Button Content="Browse" Grid.Column="2" Grid.Row="0" Margin="5" Command="{Binding BrowseCommand}"/>
+                <Button Content="Generate" Grid.Column="3" Grid.Row="0" Margin="5" Command="{Binding GenerateXmlsCommands}" IsEnabled="{Binding ElementName=WebGraphTextBox,Path=Text,Converter={StaticResource GenerateWebGraphConverter}}"/>
                 <Label Content="Pages Xml File :" Grid.Row="1" Grid.Column="0" />
-                <TextBox  Grid.Column="1" Margin="5" Grid.Row="1" IsEnabled="False" Grid.ColumnSpan="3"/>               
+                <TextBox  Grid.Column="1" Margin="5" Grid.Row="1" IsEnabled="False" Grid.ColumnSpan="3" Text="{Binding PagesXmlFile}"/>               
                 <Label Content="Links Xml File :" Grid.Row="2" Grid.Column="0" />
-                <TextBox  Grid.Column="1" Margin="5" Grid.Row="2" IsEnabled="False" Grid.ColumnSpan="3"/>
+                <TextBox  Grid.Column="1" Margin="5" Grid.Row="2" IsEnabled="False" Grid.ColumnSpan="3" Text="{Binding LinksXmlFile}"/>
                 
             </Grid>
         </GroupBox>     
@@ -53,8 +54,8 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <DataGrid Grid.Row="0" Margin="5" Background="White" />
-                        <Button Content="Get Transition Matrix" Margin="2" Grid.Row="1"  Grid.Column="0" Command="{Binding GenerateMatrixCommand}"/>
+                        <DataGrid Grid.Row="0" Margin="5" Background="White" ItemsSource="{Binding TransitionMatrix ,Converter={StaticResource MatrixToDataViewConverter},Mode=TwoWay}" LoadingRow="OnLoadingRow" />
+                        <Button Content="Get Transition Matrix" Margin="2" Grid.Row="1"  Grid.Column="0" Command="{Binding GetTransitionMatrixCommand}"/>
                     </Grid>
                 </TabItem>
                 <TabItem Header="Teleportation Matrix">
@@ -64,8 +65,8 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <DataGrid Grid.Row="0" Margin="5" Background="White" />
-                        <Button Content="1/N" Margin="2" Grid.Row="1"  Grid.Column="0" Command="{Binding GenerateMatrixCommand}"/>
+                        <DataGrid Grid.Row="0" Margin="5" Background="White" ItemsSource="{Binding TeleportationMatrix ,Converter={StaticResource MatrixToDataViewConverter},Mode=TwoWay}" LoadingRow="OnLoadingRow"/>
+                        <Button Content="1/N" Margin="2" Grid.Row="1"  Grid.Column="0" Command="{Binding SetTeleportationCommand}"/>
                     </Grid>
                 </TabItem>
             </TabControl>            
@@ -77,7 +78,7 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <DataGrid Grid.Row="0" Margin="5" Background="White"/>
-                <Button Content="1/N" Margin="2" Grid.Column="1" IsEnabled="False" Command="{Binding ResetInitialPageRankCommand}"/>
+                <Button Content="1/N" Margin="2" Grid.Column="1" IsEnabled="False" Command="{Binding SetInitialPageRankCommand}"/>
 
             </Grid>
         </GroupBox>
@@ -88,7 +89,7 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <DataGrid Grid.Row="0" Margin="5" Background="White" />
-                <Button Content="Calculate Page Rank" Margin="2" Grid.Column="1" IsEnabled="False" Command="{Binding ResetInitialPageRankCommand}"/>
+                <Button Content="Calculate Page Rank" Margin="2" Grid.Column="1" IsEnabled="False" Command="{Binding CalculatePageRankCommand}"/>
 
             </Grid>
         </GroupBox>

@@ -19,6 +19,9 @@ namespace PageRankCalculator.BusinessModel
     {
         #region Properties
 
+        /// <summary>
+        /// Gets List of pages generated after reading WebGraph
+        /// </summary>
         public List<Page> Pages
         {
             get
@@ -27,6 +30,9 @@ namespace PageRankCalculator.BusinessModel
             }
         }
 
+        /// <summary>
+        /// Gets list of links generated after reading WebGraph
+        /// </summary>
         public List<Link> Links
         {
             get
@@ -37,12 +43,13 @@ namespace PageRankCalculator.BusinessModel
 
         #endregion
 
-        #region Constructors
-
-        #endregion
-
         #region Methods
 
+        /// <summary>
+        /// Method that extracts pages and links from WebGraph files 
+        /// </summary>
+        /// <param name="grapheEntity">Determines whether it is about pages or links</param>
+        /// <param name="fileName"> the suggested file to extract data from</param>
         public void ExtractDataFromWebGraph(GraphEntities grapheEntity, string fileName)
         {
             using (Stream reader = new FileStream(fileName, FileMode.Open, FileAccess.Read))
@@ -59,8 +66,6 @@ namespace PageRankCalculator.BusinessModel
                 }
             }
         }
-
-
 
         #endregion
 

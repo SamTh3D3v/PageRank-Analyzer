@@ -40,8 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="businessLogic\ExcelDataConverter.cs" />
-    <Compile Include="businessLogic\ExcelDataReader.cs" />
+    <Compile Include="ExcelDataCovertion\ExcelDataConverter.cs" />
+    <Compile Include="ExcelDataCovertion\ExcelDataReader.cs" />
     <Compile Include="Model\Link.cs" />
     <Compile Include="Model\Page.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

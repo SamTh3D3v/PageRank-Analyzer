@@ -60,8 +60,6 @@ namespace PageRankCalculator.BusinessModel
                 }
             }
 
-
-
         #endregion
 
         #region Fields

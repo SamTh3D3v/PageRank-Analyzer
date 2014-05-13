@@ -24,7 +24,7 @@ namespace PageRankCalculator.BusinessModel
             get
             {
                 return _pages;
-            } 
+            }
         }
 
         public List<Link> Links
@@ -32,7 +32,7 @@ namespace PageRankCalculator.BusinessModel
             get
             {
                 return _links;
-            } 
+            }
         }
 
         #endregion
@@ -43,22 +43,22 @@ namespace PageRankCalculator.BusinessModel
 
         #region Methods
 
-            public void ExtractDataFromWebGraph(GraphEntities grapheEntity, string fileName)
+        public void ExtractDataFromWebGraph(GraphEntities grapheEntity, string fileName)
+        {
+            using (Stream reader = new FileStream(fileName, FileMode.Open, FileAccess.Read))
             {
-                using (Stream reader = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+                if (grapheEntity == GraphEntities.Pages)
                 {
-                    if (grapheEntity == GraphEntities.Pages)
-                    {
-                        var pagesSerializer = new XmlSerializer(typeof(List<Page>));
-                        _pages = (List<Page>)pagesSerializer.Deserialize(reader);
-                    }
-                    else if (grapheEntity == GraphEntities.Links)
-                    {
-                        var pagesSerializer = new XmlSerializer(typeof(List<Link>));
-                        _links = (List<Link>)pagesSerializer.Deserialize(reader);
-                    }
+                    var pagesSerializer = new XmlSerializer(typeof(List<Page>));
+                    _pages = (List<Page>)pagesSerializer.Deserialize(reader);
+                }
+                else if (grapheEntity == GraphEntities.Links)
+                {
+                    var pagesSerializer = new XmlSerializer(typeof(List<Link>));
+                    _links = (List<Link>)pagesSerializer.Deserialize(reader);
                 }
             }
+        }
 
 
 
@@ -66,8 +66,8 @@ namespace PageRankCalculator.BusinessModel
 
         #region Fields
 
-            private List<Page> _pages;                          
-            private List<Link> _links;
+        private List<Page> _pages;
+        private List<Link> _links;
 
         #endregion
     }

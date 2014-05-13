@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using PageRankCalculator.Model;
 using WebGraphMaker.Model;
 
@@ -12,7 +9,9 @@ namespace PageRankCalculator.BusinessModel
     {
         #region Properties
 
-
+        /// <summary>
+        /// Get the Transition matrix resulted from the conversion of a WebGraph
+        /// </summary>
         public static Matrix TransitionMatrix
         {
             get
@@ -23,17 +22,14 @@ namespace PageRankCalculator.BusinessModel
 
         #endregion
 
-        #region Constructors
-        #endregion
-
         #region Methods
 
         /// <summary>
-        /// 
+        /// Gets the adjacence matrix, from a list of pages and the corresponding list of links binding them 
         /// </summary>
-        /// <param name="pages"></param>
-        /// <param name="links"></param>
-        /// <returns></returns>
+        /// <param name="pages">The suggested pages list</param>
+        /// <param name="links">The suggested links list</param>
+        /// <returns>a N x N matrix representing the links between pages</returns>
         private static Matrix GetAdjacentMatrix(List<Page> pages, List<Link> links)
         {
             var adjacentMatrix = new Matrix((ulong) pages.Count);
@@ -50,15 +46,24 @@ namespace PageRankCalculator.BusinessModel
             return adjacentMatrix;
         }
 
+        /// <summary>
+        /// Sets the Transition matrix, from a list of pages and the corresponding list of links binding them
+        /// </summary>
+        /// <param name="pages">The suggested pages list</param>
+        /// <param name="links">The suggested pages list</param>
         public static void SetTransitionMatrix(List<Page> pages, List<Link> links)
         {
             _transitionMatrix = GetAdjacentMatrix(pages, links);
             _transitionMatrix.ToProbablityMatrix();
         }
+        
         #endregion
 
         #region Fields
 
+        /// <summary>
+        /// Represents the Transition matrix generated from converting the WebGraph
+        /// </summary>
         private static Matrix _transitionMatrix;
 
         #endregion

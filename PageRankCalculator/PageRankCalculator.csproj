@@ -46,9 +46,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BusinessModel\PageRank.cs" />
-    <Compile Include="BusinessModel\WebGraphDataConverter.cs" />
-    <Compile Include="BusinessModel\WebGraphDataReader.cs" />
+    <Compile Include="PageRankCalculation\PageRank.cs" />
+    <Compile Include="PageRankCalculation\WebGraphDataConverter.cs" />
+    <Compile Include="PageRankCalculation\WebGraphDataReader.cs" />
     <Compile Include="Model\Matrix.cs" />
     <Compile Include="Model\Vector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

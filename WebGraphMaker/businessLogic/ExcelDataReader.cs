@@ -18,40 +18,54 @@ namespace WebGraphMaker.businessLogic
     public static class ExcelDataReader
     {
         #region Methods
-            private static Workbook LoadWorkbook()
+
+        /// <summary>
+        /// Loads the Workbook from Excel file, outputs the file name of the chosen Excel file
+        /// </summary>
+        /// <param name="fileName">Full name of the chosen Excel file</param>
+        /// <exception cref="NullReferenceException">Throw if no file was chosen</exception>
+        /// <returns>Excel Workbook</returns>
+        private static Workbook LoadWorkbook(out string fileName)
+        {
+            var xlApp = new Application();
+            Workbook xlWorkbook = null;
+
+            var openFileDialog = new OpenFileDialog
             {
-                Debug.WriteLine("Loading Excel file ...");
-                
-                var xlApp = new Application();
-                Workbook xlWorkbook = null;
+                Filter = "Excel Files (.xlsx)|*.xlsx",
+                FilterIndex = 1,
+                Multiselect = false
+            };
 
-                var openFileDialog = new OpenFileDialog
-                {
-                    Filter = "Excel Files (.xlsx)|*.xlsx",
-                    FilterIndex = 1,
-                    Multiselect = false
-                };
+            var dialogResult = openFileDialog.ShowDialog();
 
-                var dialogResult = openFileDialog.ShowDialog();
-
-                if (dialogResult == DialogResult.OK)
-                {
-                    xlWorkbook = xlApp.Workbooks.Open(openFileDialog.FileName);
-                }
-
-                if (xlWorkbook == null) throw new NullReferenceException("Workbook object is null !");
-                return xlWorkbook;
-            
+            if (dialogResult == DialogResult.OK)
+            {
+                fileName = openFileDialog.FileName;
+                xlWorkbook = xlApp.Workbooks.Open(fileName);
+            }
+            else
+            {
+                fileName = null;
             }
 
-            public static Range ReadData()
-            {
-                var r = LoadWorkbook();
-                _Worksheet xlWorksheet = r.Sheets[1];
-                return xlWorksheet.UsedRange;
-            }
+            if (xlWorkbook == null) throw new NullReferenceException("Workbook object is null !");
+            return xlWorkbook;
+
+        }
+
+        /// <summary>
+        /// Reads data from an Excel file, outputs the file name of the chosen Excel file
+        /// </summary>
+        /// <param name="fileName">The full name of the chosen Excel file</param>
+        /// <returns>The used range within the Excel file</returns>
+        public static Range ReadData(out string fileName)
+        {
+            var r = LoadWorkbook(out fileName);
+            _Worksheet xlWorksheet = r.Sheets[1];
+            return xlWorksheet.UsedRange;
+        }
 
         #endregion
-
     }
 }

@@ -24,16 +24,21 @@
     <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="150"/>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="100"/>
         </Grid.ColumnDefinitions>
         <TextBlock Text="Search Terms" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
-        <TextBox x:Name="TxbSearch" Grid.Row="0" Text="{Binding SearchTerms ,Mode=TwoWay}" Grid.Column="1" Margin="5"/>
-        <Button Content="Search" Grid.Row="0" Grid.Column="2" Margin="5"  Command="{Binding SearchCommand}" IsEnabled="{Binding SearchEnabled}"/>
+        <TextBox x:Name="TxbSearch" Grid.Row="0" Text="{Binding SearchTerms ,Mode=TwoWay}" IsEnabled="{Binding SearchEnabled}" Grid.Column="1" Grid.ColumnSpan="2" Margin="5"/>
+        <Button Content="Search" Grid.Row="0" Grid.Column="3" Margin="5"  Command="{Binding SearchCommand}" IsEnabled="{Binding SearchEnabled}"/>
+        <Label Content="Ranking : " Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center"/>
+        <RadioButton GroupName="RankingType" Content="GooglePageRank" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding GooglePrIsSelected}" IsEnabled="{Binding RankingIsCalculated}"/>
+        <RadioButton GroupName="RankingType" Content="AmeliratedPageRank" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding AmelioratedPrIsSelected}" IsEnabled="{Binding RankingIsCalculated}"/>
         <!--<ListBox ItemsSource="{Binding ListSearchResult}" Margin="5" Grid.Row="1" Grid.ColumnSpan="3" Grid.Column="0"
                  Background="LightGray">
             <ListBox.ItemTemplate>
@@ -47,7 +52,7 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>-->
-        <DataGrid Margin="5" Grid.Row="1" Grid.ColumnSpan="3" Grid.Column="0" ItemsSource="{Binding ListSearchResult}"/>
+        <DataGrid Margin="5" Grid.Row="2" Grid.ColumnSpan="4" Grid.Column="0" ItemsSource="{Binding ListSearchResult}"/>
 
 
     </Grid>

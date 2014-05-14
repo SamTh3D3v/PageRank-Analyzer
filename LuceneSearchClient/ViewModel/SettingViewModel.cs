@@ -16,11 +16,13 @@ namespace LuceneSearchClient.ViewModel
         public const string WebSiteUrlPropertyName = "WebSiteUrl";
         public const string WebSiteLocationPropertyName = "WebSiteLocation";
         public const string IndexLocationPropertyName = "IndexLocation";
+        public const string SaveButtonEnabledPropertyName = "SaveButtonEnabled";
         #endregion
         #region Fields
         private String _webSiteUrl = "";
         private String _webSiteLocation = "";
         private String _indexLocation = "";
+        private bool _saveButtonEnabled = false;
         #endregion
         #region Properties         
         public String WebSiteUrl
@@ -55,6 +57,10 @@ namespace LuceneSearchClient.ViewModel
                 }
                 _webSiteLocation = value;
                 RaisePropertyChanged(WebSiteLocationPropertyName);
+                if (WebSiteLocation.Trim() != "" && IndexLocation.Trim() != "")
+                    SaveButtonEnabled = true;
+                else
+                    SaveButtonEnabled = true;
             }
         }
         public String IndexLocation
@@ -72,12 +78,33 @@ namespace LuceneSearchClient.ViewModel
                 }
                 _indexLocation = value;
                 RaisePropertyChanged(IndexLocationPropertyName);
+                if (WebSiteLocation.Trim() != "" && IndexLocation.Trim() != "")
+                    SaveButtonEnabled = true;
+                else
+                    SaveButtonEnabled = true;
+            }
+        }                    
+        public bool SaveButtonEnabled
+        {
+            get
+            {
+                return _saveButtonEnabled;
+            }
+
+            set
+            {
+                if (_saveButtonEnabled == value)
+                {
+                    return;
+                }                
+                _saveButtonEnabled = value;
+                RaisePropertyChanged(SaveButtonEnabledPropertyName);
             }
         }
         #endregion        
         #region  Constructors and Methods
         public SettingViewModel()
-        {
+        {            
         }
         #endregion
         #region Commands
@@ -112,7 +139,6 @@ namespace LuceneSearchClient.ViewModel
             }
         }
         private RelayCommand _saveCommand;
-
         public RelayCommand SaveCommand
         {
             get
@@ -132,7 +158,16 @@ namespace LuceneSearchClient.ViewModel
             }
 
         }
-
+        private RelayCommand _cancelSettingsCommand;
+        public RelayCommand CancelSettingsCommand
+        {
+            get
+            {
+                return _cancelSettingsCommand
+                    ?? (_cancelSettingsCommand = new RelayCommand(
+                                          () => Messenger.Default.Send<NotificationMessage>(new NotificationMessage("killsettingswindow"))));
+            }
+        }
         #endregion
        
     }

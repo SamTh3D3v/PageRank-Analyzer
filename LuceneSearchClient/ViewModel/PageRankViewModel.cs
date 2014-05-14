@@ -4,6 +4,7 @@ using Microsoft.Office.Interop.Excel;
 using PageRankCalculator.BusinessModel;
 using PageRankCalculator.Model;
 using WebGraphMaker.businessLogic;
+using WebGraphMaker.ExcelDataCovertion;
 
 namespace LuceneSearchClient.ViewModel
 {
@@ -16,7 +17,7 @@ namespace LuceneSearchClient.ViewModel
         public const string LinksXmlFilePropertyName = "LinksXmlFile";
         public const string InitialPageRankVectorPropertyName = "InitialPageRankVector";
         public const string TeleportationMatrixPropertyName = "TeleportationMatrix";
-        public const string TransitionMatrixPropertyName = "TransitionMatrix";
+        public const string TransitionMatrixPropertyName = "AdjacenteMatrix";
         public const string PageRankVectorPropertyName = "PageRankVector";
         #endregion
         #region Fields
@@ -233,8 +234,8 @@ namespace LuceneSearchClient.ViewModel
                     ?? (_browseCommand = new RelayCommand(
                                           () =>
                                           {
-                                              _range = ExcelDataReader.ReadData();
-                                              WebGraphExcelFile = "File Has Been Selected";
+                                              _range = ExcelDataReader.ReadData(out _webGraphExcelFile);
+                                              RaisePropertyChanged(WebGraphExcelFile);
                                           }));
             }
         }
@@ -248,9 +249,9 @@ namespace LuceneSearchClient.ViewModel
                                           () =>
                                           {
                                               var excelDataConverter = new ExcelDataConverter(_range);
-                                              excelDataConverter.ConvertExelData();
-                                              PagesXmlFile = "D:\\Page2.xml"; //Until The FileName Getter Is Implemented
-                                              LinksXmlFile = "D:\\Link2.xml";
+                                              excelDataConverter.ConvertExelData(out _pagesXmlFile,out _linksXmlFile);
+                                              RaisePropertyChanged(PagesXmlFile);
+                                              RaisePropertyChanged(LinksXmlFile);                                             
                                           }));
             }
         }

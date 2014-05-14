@@ -18,6 +18,9 @@ namespace LuceneSearchClient.ViewModel
         public const string SearchTermsPropertyName = "SearchTerms";
         public const string SearchEnabledPropertyName = "SearchEnabled";
         public const string WebSitePropertyName = "WebSite";
+        public const string GooglePrIsSelectedPropertyName = "GooglePrIsSelected";
+        public const string AmelioratedPrIsSelectedPropertyName = "AmelioratedPrIsSelected";
+        public const string RankingIsCalculatedPropertyName = "RankingIsCalculated";
         #endregion
         #region Fields
         private ObservableCollection<DocumentHit> _listSearchResult;
@@ -25,8 +28,10 @@ namespace LuceneSearchClient.ViewModel
         private HtmlIndexer _indexer;
         private WebSite _webSite;
         private Searcher _searcher;
-        private bool _searchEnabled = false; 
-        
+        private bool _searchEnabled =false;
+        private bool _amelioratedPrIsSelected;
+        private bool _googlePrIsSelected;
+        private bool _rankingIsCalculated ;
         #endregion
         #region Properties
         public WebSite WebSite
@@ -96,6 +101,59 @@ namespace LuceneSearchClient.ViewModel
                 }
                 _searchTerms = value;
                 RaisePropertyChanged(SearchTermsPropertyName);
+            }
+        }     
+        public bool GooglePrIsSelected
+        {
+            get
+            {
+                return _googlePrIsSelected;
+            }
+
+            set
+            {
+                if (_googlePrIsSelected == value)
+                {
+                    return;
+                }
+                
+                _googlePrIsSelected = value;
+                RaisePropertyChanged(GooglePrIsSelectedPropertyName);
+            }
+        }
+        public bool AmelioratedPrIsSelected
+        {
+            get
+            {
+                return _amelioratedPrIsSelected;
+            }
+
+            set
+            {
+                if (_amelioratedPrIsSelected == value)
+                {
+                    return;
+                }
+                
+                _amelioratedPrIsSelected = value;
+                RaisePropertyChanged(AmelioratedPrIsSelectedPropertyName);
+            }
+        }        
+        public bool RankingIsCalculated
+        {
+            get
+            {
+                return _rankingIsCalculated;
+            }
+
+            set
+            {
+                if (_rankingIsCalculated == value)
+                {
+                    return;
+                }                
+                _rankingIsCalculated = value;
+                RaisePropertyChanged(RankingIsCalculatedPropertyName);
             }
         }
         #endregion

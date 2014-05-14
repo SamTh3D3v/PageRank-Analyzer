@@ -3,7 +3,7 @@ using System.Linq;
 using PageRankCalculator.Model;
 using WebGraphMaker.Model;
 
-namespace PageRankCalculator.BusinessModel
+namespace PageRankCalculator.PageRankCalculation
 {
     public static class WebGraphDataConverter
     {

@@ -1,19 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Linq;
 using System.Xml.Serialization;
-using PageRankCalculator.Model;
-using WebGraphMaker.businessLogic;
+using WebGraphMaker.ExcelDataCovertion;
 using WebGraphMaker.Model;
 
-namespace PageRankCalculator.BusinessModel
+namespace PageRankCalculator.PageRankCalculation
 {
     public class WebGraphDataReader
     {

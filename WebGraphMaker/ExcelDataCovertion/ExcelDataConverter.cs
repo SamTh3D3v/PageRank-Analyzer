@@ -2,17 +2,12 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using Microsoft.Office.Interop.Excel;
 using WebGraphMaker.Model;
-using System.Diagnostics;
 
-namespace WebGraphMaker.businessLogic
+namespace WebGraphMaker.ExcelDataCovertion
 {
     public class ExcelDataConverter
     {

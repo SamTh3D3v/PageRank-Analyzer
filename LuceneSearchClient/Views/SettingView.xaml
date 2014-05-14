@@ -6,7 +6,7 @@
         xmlns:ignore="http://www.ignore.com"
         mc:Ignorable="d ignore" ShowInTaskbar="False" FocusManager.FocusedElement="{Binding ElementName=TxbSiteUrl}"
     WindowStartupLocation="CenterScreen" WindowStyle="None" 
-        DataContext="{Binding SettingViewMModel, Source={StaticResource Locator}}" Width="329.194" Height="118.552" >
+        DataContext="{Binding SettingViewMModel, Source={StaticResource Locator}}" Width="330" Height="120" >
 <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -14,7 +14,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    <Grid>
+    <Grid Height="111" VerticalAlignment="Top">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="Auto"/>

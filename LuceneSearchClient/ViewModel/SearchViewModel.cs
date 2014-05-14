@@ -2,12 +2,14 @@
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading;
+using System.Windows.Interop;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using LuceneSearchClient.Model;
 using LuceneSearchLibrary;
 using LuceneSearchLibrary.Model;
+using PageRankCalculator.Model;
 
 namespace LuceneSearchClient.ViewModel
 {  
@@ -31,7 +33,8 @@ namespace LuceneSearchClient.ViewModel
         private bool _searchEnabled =false;
         private bool _amelioratedPrIsSelected;
         private bool _googlePrIsSelected;
-        private bool _rankingIsCalculated ;
+        private bool _rankingIsCalculated =false;
+        private Vector _pageRankVector;
         #endregion
         #region Properties
         public WebSite WebSite
@@ -169,7 +172,14 @@ namespace LuceneSearchClient.ViewModel
                 WebSite = website;
                 var indexingThread = new Thread(new ThreadStart(Indexing));
                 indexingThread.Start();
-            });   
+            });
+            Messenger.Default.Register<Vector>(this,"Pr_Is_Calculated", (pr) =>
+            {               
+                    RankingIsCalculated = true;
+                    _pageRankVector = pr;
+
+
+            });
         }
         private void Indexing()
         {

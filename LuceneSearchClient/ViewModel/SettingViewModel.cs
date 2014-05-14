@@ -104,7 +104,8 @@ namespace LuceneSearchClient.ViewModel
         #endregion        
         #region  Constructors and Methods
         public SettingViewModel()
-        {            
+        {      
+      
         }
         #endregion
         #region Commands

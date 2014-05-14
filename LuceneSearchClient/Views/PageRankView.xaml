@@ -37,7 +37,7 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <Label Content="Web Graph Excel File :"/>
-                <TextBox Grid.Row="0" Grid.Column="1" Margin="5" Text="{Binding WebGraphExcelFile}" IsEnabled="False" x:Name="WebGraphTextBox"/>
+                <TextBox Grid.Row="0" Grid.Column="1" Margin="5" Text="{Binding WebGraphExcelFile,Mode=TwoWay}" IsEnabled="False" x:Name="WebGraphTextBox"/>
                 <Button Content="Browse" Grid.Column="2" Grid.Row="0" Margin="5" Command="{Binding BrowseCommand}"/>
                 <Button Content="Generate" Grid.Column="3" Grid.Row="0" Margin="5" Command="{Binding GenerateXmlsCommands}" IsEnabled="{Binding ElementName=WebGraphTextBox,Path=Text,Converter={StaticResource GenerateWebGraphConverter}}"/>
                 <Label Content="Pages Xml File :" Grid.Row="1" Grid.Column="0" />

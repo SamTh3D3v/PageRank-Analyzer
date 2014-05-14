@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Office.Interop.Excel;
 using PageRankCalculator.BusinessModel;
 using PageRankCalculator.Model;
@@ -221,7 +222,8 @@ namespace LuceneSearchClient.ViewModel
                                               ulong nbIterations;
                                               var pageRank = new PageRank(TransitionMatrix, PageRank.DefaultDampingFactor);
                                               PageRankVector = pageRank.GetPageRankVector(InitialPageRankVector,
-                                                  5, out nbIterations);                                                                                           
+                                                  5, out nbIterations);       
+                                              Messenger.Default.Send<NotificationMessage>(new NotificationMessage("Pr_Is_Calculated"));                                      
                                           }));
             }
         }

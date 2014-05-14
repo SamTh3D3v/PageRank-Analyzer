@@ -22,7 +22,7 @@ namespace PageRankCalculator.BusinessModel
 
         #region Properties
 
-            /// <summary>
+        /// <summary>
         /// Gets the value of the Damping Factor d : factor used to calculate the Google matrix, amortize between the transition matrix and the teleportation matrix
             /// </summary>
             /// <value>Value less or equal than 1, greater or equal than 0</value>
@@ -99,7 +99,7 @@ namespace PageRankCalculator.BusinessModel
             _transitionMatrix = transitionMatrix;
              _teleportationMatrix = teleportationMatrix;
              _dampinFactor = dampingFactor;
-        }
+        }   
             
         /// <summary>
         /// Initialize a new instance of the <b>PageRank</b> Class, using the Transition matrix, the specific Teleportation matrix

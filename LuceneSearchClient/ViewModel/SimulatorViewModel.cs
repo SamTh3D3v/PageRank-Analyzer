@@ -26,9 +26,10 @@ namespace LuceneSearchClient.ViewModel
         public const string PageRankVectorPropertyName = "PageRankVector";
         public const string TelePortationMatrixPropertyName = "TelePortationMatrix";
         public const string ListWebPagesPropertyName = "ListWebPages";
-        public const string SelectedPagePropertyName = "SelectedPage";
+        public const string SelectedPagePropertyName = "SelectedPage";        
         public const string DataSourceListDampPrPropertyName = "DataSourceListDampPr";
         public const string ListDampPrPropertyName = "ListDampPr";
+        public const string ListDampItPropertyName = "ListDampIt";
         #endregion
         #region Fields
         private ulong _matrixSize;
@@ -41,9 +42,10 @@ namespace LuceneSearchClient.ViewModel
         private Vector _pageRank;
         private Matrix _teleportationMatrix;
         private ObservableCollection<string> _listWebPages = new ObservableCollection<string>();
-        private string _selectedPage;
+        private string _selectedPage;        
         private List<List<KeyValuePair<float, float>>> _dataSourceListDampPr = new List<List<KeyValuePair<float, float>>>();
-        private List<KeyValuePair<float, float>> _listDampPr;
+        private ObservableCollection<KeyValuePair<float, float>> _listDampPr;
+        private ObservableCollection<KeyValuePair<float, ulong>> _listDampIt;
 
         #endregion
         #region Properties
@@ -246,9 +248,9 @@ namespace LuceneSearchClient.ViewModel
                 if (DataSourceListDampPr == null || _selectedPage==null) return;
                 if (DataSourceListDampPr.Count == 0) return;
                 
-                ListDampPr = DataSourceListDampPr[int.Parse(SelectedPage.Trim())];
+                ListDampPr = new ObservableCollection<KeyValuePair<float, float>>(DataSourceListDampPr[int.Parse(SelectedPage.Trim())]);
             }
-        }
+        }        
         public List<List<KeyValuePair<float, float>>> DataSourceListDampPr
         {
             get
@@ -267,7 +269,7 @@ namespace LuceneSearchClient.ViewModel
                 RaisePropertyChanged(DataSourceListDampPrPropertyName);
             }
         }
-        public List<KeyValuePair<float, float>> ListDampPr
+        public ObservableCollection<KeyValuePair<float, float>> ListDampPr
         {
             get
             {
@@ -283,6 +285,24 @@ namespace LuceneSearchClient.ViewModel
 
                 _listDampPr = value;
                 RaisePropertyChanged(ListDampPrPropertyName);
+            }
+        }
+        public ObservableCollection<KeyValuePair<float, ulong>> ListDampIt
+        {
+            get
+            {
+                return _listDampIt;
+            }
+
+            set
+            {
+                if (_listDampIt == value)
+                {
+                    return;
+                }
+
+                _listDampIt = value;
+                RaisePropertyChanged(ListDampItPropertyName);
             }
         }
         #endregion
@@ -386,13 +406,13 @@ namespace LuceneSearchClient.ViewModel
                                           }));
             }
         }
-        private RelayCommand _startSimulationCommand;
-        public RelayCommand StartSimulationCommand
+        private RelayCommand _startSimulationPrCommand;
+        public RelayCommand StartSimulationPrCommand
         {
             get
             {
-                return _startSimulationCommand
-                    ?? (_startSimulationCommand = new RelayCommand(
+                return _startSimulationPrCommand
+                    ?? (_startSimulationPrCommand = new RelayCommand(
                                           () =>
                                           {
                                               DataSourceListDampPr = new List<List<KeyValuePair<float, float>>>();
@@ -415,6 +435,7 @@ namespace LuceneSearchClient.ViewModel
                                                       DataSourceListDampPr[(int)i].Add(new KeyValuePair<float, float>(dampFactor, prVector[i]));
                                                   }
                                               }
+                                              ListDampPr = new ObservableCollection<KeyValuePair<float, float>>(DataSourceListDampPr[int.Parse(SelectedPage.Trim())]);
                                               //ulong nbIterations = 0;
                                               //AdjacenteMatrix.ToProbablityMatrix();
                                               //RaisePropertyChanged(TransitionMatrixPropertyName);
@@ -427,26 +448,77 @@ namespace LuceneSearchClient.ViewModel
                                           }));
             }
         }
-        private RelayCommand _resetChartsCommand;
-        public RelayCommand ResetChartsCommand
+        private RelayCommand _resetChartsPrCommand;
+        public RelayCommand ResetChartsPrCommand
         {
             get
             {
-                return _resetChartsCommand
-                    ?? (_resetChartsCommand = new RelayCommand(
+                return _resetChartsPrCommand
+                    ?? (_resetChartsPrCommand = new RelayCommand(
                                           () =>
                                           {
 
                                           }));
             }
         }
-        private RelayCommand _exportChartCommand;
-        public RelayCommand ExportChartCommand
+        private RelayCommand _exportChartPrCommand;
+        public RelayCommand ExportChartPrCommand
         {
             get
             {
-                return _exportChartCommand
-                    ?? (_exportChartCommand = new RelayCommand(
+                return _exportChartPrCommand
+                    ?? (_exportChartPrCommand = new RelayCommand(
+                                          () =>
+                                          {
+
+                                          }));
+            }
+        }
+        private RelayCommand _startSimulationItCommand;
+        public RelayCommand StartSimulationItCommand
+        {
+            get
+            {
+                return _startSimulationItCommand
+                    ?? (_startSimulationItCommand = new RelayCommand(
+                                          () =>
+                                          {
+                                              ListDampIt = new ObservableCollection<KeyValuePair<float, ulong>>();                                            
+                                              for (float dampFactor = 0; dampFactor <= 1; dampFactor += 0.1f)
+                                              {
+
+
+                                                  ulong nbIterations = 0;
+                                                  var transitionMatrix = new Matrix(AdjacenteMatrix);
+                                                  transitionMatrix.ToProbablityMatrix();
+                                                  var pageRank = new PageRank(transitionMatrix, dampFactor, TelePortationMatrix);
+                                                  pageRank.GetPageRankVector(InitialPageRank, 5,
+                                                      out nbIterations);
+                                                  ListDampIt.Add(new KeyValuePair<float, ulong>(dampFactor, nbIterations));                                                 
+                                              }                                                                                           
+                                          }));
+            }
+        }
+        private RelayCommand _resetChartsItCommand;
+        public RelayCommand ResetChartsItCommand
+        {
+            get
+            {
+                return _resetChartsItCommand
+                    ?? (_resetChartsItCommand = new RelayCommand(
+                                          () =>
+                                          {
+
+                                          }));
+            }
+        }
+        private RelayCommand _exportChartItCommand;
+        public RelayCommand ExportChartItCommand
+        {
+            get
+            {
+                return _exportChartItCommand
+                    ?? (_exportChartItCommand = new RelayCommand(
                                           () =>
                                           {
 

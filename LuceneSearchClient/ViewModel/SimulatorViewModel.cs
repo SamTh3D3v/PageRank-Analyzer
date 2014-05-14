@@ -6,8 +6,8 @@ using System.Linq;
 using System.Windows;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using PageRankCalculator.BusinessModel;
 using PageRankCalculator.Model;
+using PageRankCalculator.PageRankCalculation;
 using Vector = PageRankCalculator.Model.Vector;
 
 namespace LuceneSearchClient.ViewModel

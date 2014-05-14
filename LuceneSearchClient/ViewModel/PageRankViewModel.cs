@@ -2,9 +2,8 @@
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Office.Interop.Excel;
-using PageRankCalculator.BusinessModel;
 using PageRankCalculator.Model;
-using WebGraphMaker.businessLogic;
+using PageRankCalculator.PageRankCalculation;
 using WebGraphMaker.ExcelDataCovertion;
 
 namespace LuceneSearchClient.ViewModel

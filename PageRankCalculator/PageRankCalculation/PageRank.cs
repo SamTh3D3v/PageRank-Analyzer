@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 using PageRankCalculator.Model;
-using WebGraphMaker.Model;
 
-namespace PageRankCalculator.BusinessModel
+namespace PageRankCalculator.PageRankCalculation
 {
     public class PageRank
     {

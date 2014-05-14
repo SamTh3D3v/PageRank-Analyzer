@@ -1,19 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Microsoft.Office;
-using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Excel;
 using Application = Microsoft.Office.Interop.Excel.Application;
 
-
-namespace WebGraphMaker.businessLogic
+namespace WebGraphMaker.ExcelDataCovertion
 {
     public static class ExcelDataReader
     {

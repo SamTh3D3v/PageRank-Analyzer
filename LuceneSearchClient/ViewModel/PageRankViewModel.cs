@@ -17,7 +17,7 @@ namespace LuceneSearchClient.ViewModel
         public const string LinksXmlFilePropertyName = "LinksXmlFile";
         public const string InitialPageRankVectorPropertyName = "InitialPageRankVector";
         public const string TeleportationMatrixPropertyName = "TeleportationMatrix";
-        public const string TransitionMatrixPropertyName = "AdjacenteMatrix";
+        public const string TransitionMatrixPropertyName = "TransitionMatrix";
         public const string PageRankVectorPropertyName = "PageRankVector";
         #endregion
         #region Fields
@@ -174,7 +174,7 @@ namespace LuceneSearchClient.ViewModel
                                               _webGraphDataReader.ExtractDataFromWebGraph(GraphEntities.Pages,PagesXmlFile);
                                               _webGraphDataReader.ExtractDataFromWebGraph(GraphEntities.Links, LinksXmlFile);
                                               WebGraphDataConverter.SetTransitionMatrix(_webGraphDataReader.Pages, _webGraphDataReader.Links);
-                                             TransitionMatrix=WebGraphDataConverter.TransitionMatrix;                                              
+                                             TransitionMatrix=WebGraphDataConverter.TransitionMatrix;                                               
                                               //Setting The Transportation Matrix 
                                               TeleportationMatrix=Matrix.E(TransitionMatrix.Size);                                              
                                               InitialPageRankVector = Vector.e(VectorType.Row, TransitionMatrix.Size);
@@ -235,8 +235,10 @@ namespace LuceneSearchClient.ViewModel
                     ?? (_browseCommand = new RelayCommand(
                                           () =>
                                           {
+                                              string excelfile;
                                               _range = ExcelDataReader.ReadData(out _webGraphExcelFile);
-                                              RaisePropertyChanged(WebGraphExcelFile);
+                                              RaisePropertyChanged(WebGraphExcelFilePropertyName);
+                                              
                                           }));
             }
         }
@@ -251,8 +253,8 @@ namespace LuceneSearchClient.ViewModel
                                           {
                                               var excelDataConverter = new ExcelDataConverter(_range);
                                               excelDataConverter.ConvertExelData(out _pagesXmlFile,out _linksXmlFile);
-                                              RaisePropertyChanged(PagesXmlFile);
-                                              RaisePropertyChanged(LinksXmlFile);                                             
+                                              RaisePropertyChanged(PagesXmlFilePropertyName);
+                                              RaisePropertyChanged(LinksXmlFilePropertyName);                                             
                                           }));
             }
         }

@@ -222,7 +222,7 @@ namespace LuceneSearchClient.ViewModel
                                               var pageRank = new PageRank(TransitionMatrix, PageRank.DefaultDampingFactor);
                                               PageRankVector = pageRank.GetPageRankVector(InitialPageRankVector,
                                                   5, out nbIterations);       
-                                              Messenger.Default.Send<NotificationMessage>(new NotificationMessage("Pr_Is_Calculated"));                                      
+                                              Messenger.Default.Send<Vector>(PageRankVector,"Pr_Is_Calculated");                                      
                                           }));
             }
         }

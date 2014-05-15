@@ -53,7 +53,8 @@ namespace WebGraphMaker.ExcelDataCovertion
         {
             var r = LoadWorkbook(out fileName);
             _Worksheet xlWorksheet = r.Sheets[1];
-            return xlWorksheet.UsedRange;
+            var tmp = xlWorksheet.UsedRange;
+            return tmp;
         }
 
         #endregion

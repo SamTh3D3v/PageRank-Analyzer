@@ -45,7 +45,6 @@ namespace WebGraphMaker.ExcelDataCovertion
 
                              if (_pages.Count == 0)
                              {
-                                 Debug.WriteLine(idCount);
                                  _pages.Add(new Model.Page()
                                  {
 
@@ -77,8 +76,6 @@ namespace WebGraphMaker.ExcelDataCovertion
         /// </summary>
                 private void GenerateLinksList()
                 {
-                    _links = new List<Model.Link>();
-
                     int rowCount = _worksheetRange.Rows.Count;
                     
                     for (int i = 1; i <= rowCount; i++)

@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ignore="http://www.ignore.com"
       xmlns:converters="clr-namespace:LuceneSearchClient.Converters"
+      xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d ignore" d:DesignHeight="500" d:DesignWidth="700"
         DataContext="{Binding PageRankViewModel, Source={StaticResource Locator}}">
     <Page.Resources>
@@ -12,7 +13,7 @@
         <converters:ArrayToDataViewConverter x:Key="VectorToDataViewConverter"/>
         <converters:GenerateWebGraphConverter x:Key="GenerateWebGraphConverter"/>
         <converters:InitialVectorSetConverter x:Key="InitialVectorSetConverter"/>
-        
+
     </Page.Resources>
 
     <Grid>
@@ -41,12 +42,12 @@
                 <Button Content="Browse" Grid.Column="2" Grid.Row="0" Margin="5" Command="{Binding BrowseCommand}"/>
                 <Button Content="Generate" Grid.Column="3" Grid.Row="0" Margin="5" Command="{Binding GenerateXmlsCommands}" IsEnabled="{Binding ElementName=WebGraphTextBox,Path=Text,Converter={StaticResource GenerateWebGraphConverter}}"/>
                 <Label Content="Pages Xml File :" Grid.Row="1" Grid.Column="0" />
-                <TextBox  Grid.Column="1" Margin="5" Grid.Row="1" IsEnabled="False" Grid.ColumnSpan="3" Text="{Binding PagesXmlFile}"/>               
+                <TextBox  Grid.Column="1" Margin="5" Grid.Row="1" IsEnabled="False" Grid.ColumnSpan="3" Text="{Binding PagesXmlFile}"/>
                 <Label Content="Links Xml File :" Grid.Row="2" Grid.Column="0" />
                 <TextBox x:Name="LinksXmlBox"  Grid.Column="1" Margin="5" Grid.Row="2" IsEnabled="False" Grid.ColumnSpan="3" Text="{Binding LinksXmlFile}"/>
-                
+
             </Grid>
-        </GroupBox>     
+        </GroupBox>
         <GroupBox Header="Matrices" Margin="5" Grid.Row="1">
             <TabControl>
                 <TabItem Header="Transition Matrix">
@@ -71,7 +72,7 @@
                         <Button Content="1/N" HorizontalAlignment="Right" Margin="2" Grid.Row="1"  Grid.Column="0"  IsEnabled="{Binding InitialPageRankVector,Converter={StaticResource InitialVectorSetConverter}}" Command="{Binding SetTeleportationCommand}"/>
                     </Grid>
                 </TabItem>
-            </TabControl>            
+            </TabControl>
         </GroupBox>
         <GroupBox Header="Initial PageRank Values " Margin="5" Grid.Row="2">
             <Grid>

@@ -159,6 +159,29 @@ namespace LuceneSearchClient.ViewModel
                 RaisePropertyChanged(RankingIsCalculatedPropertyName);
             }
         }
+
+        public const string BusyIndicatorPropertyName = "BusyIndicator";
+
+        private bool _busyIndicator = false;
+
+        public bool BusyIndicator
+        {
+            get
+            {
+                return _busyIndicator;
+            }
+
+            set
+            {
+                if (_busyIndicator == value)
+                {
+                    return;
+                }
+                
+                _busyIndicator = value;
+                RaisePropertyChanged(BusyIndicatorPropertyName);
+            }
+        }
         #endregion
         #region Commands
 
@@ -170,6 +193,7 @@ namespace LuceneSearchClient.ViewModel
             Messenger.Default.Register<WebSite>(this, "savesettings", (website) =>
             {
                 WebSite = website;
+                BusyIndicator = true;
                 var indexingThread = new Thread(new ThreadStart(Indexing));
                 indexingThread.Start();
             });
@@ -177,8 +201,6 @@ namespace LuceneSearchClient.ViewModel
             {               
                     RankingIsCalculated = true;
                     _pageRankVector = pr;
-
-
             });
         }
         private void Indexing()
@@ -188,6 +210,7 @@ namespace LuceneSearchClient.ViewModel
             _indexer.Close();
             _searcher = new Searcher(_webSite.WebSiteIndex);
             SearchEnabled = true;
+            BusyIndicator = false;
 
         }
         #endregion 

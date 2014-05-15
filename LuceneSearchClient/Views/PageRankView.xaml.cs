@@ -14,6 +14,6 @@ namespace LuceneSearchClient.Views
         private void OnLoadingRow(object sender, DataGridRowEventArgs e)
         {        
             e.Row.Header = e.Row.GetIndex();        
-        }     
+        }      
     }
 }

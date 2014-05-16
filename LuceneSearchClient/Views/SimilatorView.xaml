@@ -86,7 +86,13 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
-                                                <DataGrid Grid.Row="0" Margin="5" Background="White" ItemsSource="{Binding AdjacenteMatrix ,Converter={StaticResource MatrixToDataViewConverter},Mode=TwoWay}" LoadingRow="OnLoadingRow"/>
+                                                <DataGrid Grid.Row="0" Margin="5" Background="White" ItemsSource="{Binding AdjacenteMatrix ,Converter={StaticResource MatrixToDataViewConverter},Mode=TwoWay}" LoadingRow="OnLoadingRow">
+                                                    <i:Interaction.Triggers>
+                                                        <i:EventTrigger EventName="CellEditEnding">
+                                                            <command:EventToCommand PassEventArgsToCommand="True" Command="{Binding AdjMatCellEditEndingCommand}"/>
+                                                        </i:EventTrigger>
+                                                    </i:Interaction.Triggers>
+                                                </DataGrid>
                                                 <Grid Grid.Row="1" Margin="2">
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="*"/>
@@ -104,7 +110,25 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
-                                                <DataGrid Grid.Row="0" Margin="5" Background="White" ItemsSource="{Binding TelePortationMatrix ,Converter={StaticResource MatrixToDataViewConverter},Mode=TwoWay}" LoadingRow="OnLoadingRow"/>
+                                                <DataGrid Grid.Row="0" Margin="5" Background="White" ItemsSource="{Binding TelePortationMatrix ,Converter={StaticResource MatrixToDataViewConverter},Mode=TwoWay}" LoadingRow="OnLoadingRow">
+                                                    <i:Interaction.Triggers>
+                                                        <i:EventTrigger EventName="CellEditEnding">
+                                                            <command:EventToCommand PassEventArgsToCommand="True" Command="{Binding TelMatCellEditEndingCommand}"/>
+                                                        </i:EventTrigger>
+                                                    </i:Interaction.Triggers>
+                                                </DataGrid>
+                                                <Button Content="1/N" Grid.Row="1" Margin="2" Command="{Binding ResetTelePortationCommand}"/>
+                                            </Grid>
+                                        </TabItem>
+                                        <TabItem Header="Transition Matrix" Visibility="{Binding TransitionMatrixIsCalculated,Mode=TwoWay}" >
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <DataGrid Grid.Row="0" Margin="5" Background="White" ItemsSource="{Binding TransitionMatrix ,Converter={StaticResource MatrixToDataViewConverter},Mode=TwoWay}" LoadingRow="OnLoadingRow" IsReadOnly="True">                                                  
+                                                </DataGrid>
                                                 <Button Content="1/N" Grid.Row="1" Margin="2" Command="{Binding ResetTelePortationCommand}"/>
                                             </Grid>
                                         </TabItem>

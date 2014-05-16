@@ -19,7 +19,7 @@ namespace LuceneSearchClient.ViewModel
     {
         #region Consts
         public const string MatrixSizePropertyName = "MatrixSize";
-        public const string TransitionMatrixPropertyName = "AdjacenteMatrix";
+        public const string AdjacenceMatrixPropertyName = "AdjacenteMatrix";
         public const string DefaultInitialPageRankPropertyName = "DefaultInitialPageRank";
         public const string DampingFactorPropertyName = "DampingFactor";
         public const string NumberIterationsPropertyName = "NumberIterations";
@@ -32,10 +32,13 @@ namespace LuceneSearchClient.ViewModel
         public const string DataSourceListDampPrPropertyName = "DataSourceListDampPr";
         public const string ListDampPrPropertyName = "ListDampPr";
         public const string ListDampItPropertyName = "ListDampIt";
+        public const string TransitionMatrixPropertyName = "TransitionMatrix";
+        public const string TransitionMatrixIsCalculatedPropertyName = "TransitionMatrixIsCalculated";
         #endregion
         #region Fields
         private ulong _matrixSize;
         private Matrix _adjacenteMatrix;
+        private Matrix _transitionMatrix;
         private float _dampingFactor;
         private float _defaultInitialPageRank;
         private ulong _numberIterations;
@@ -48,6 +51,7 @@ namespace LuceneSearchClient.ViewModel
         private List<List<KeyValuePair<float, float>>> _dataSourceListDampPr = new List<List<KeyValuePair<float, float>>>();
         private ObservableCollection<KeyValuePair<float, float>> _listDampPr;
         private ObservableCollection<KeyValuePair<float, ulong>> _listDampIt;
+        private Visibility _transitionMatrixIsCalculated = Visibility.Hidden;
 
         #endregion
         #region Properties
@@ -91,7 +95,45 @@ namespace LuceneSearchClient.ViewModel
                 }
 
                 _adjacenteMatrix = value;
+                RaisePropertyChanged(AdjacenceMatrixPropertyName);
+            }
+        }
+        public Matrix TransitionMatrix
+        {
+            get
+            {
+                return _transitionMatrix;
+            }
+
+            set
+            {
+                if (_transitionMatrix == value)
+                {
+                    return;
+                }
+                
+                _transitionMatrix = value;
                 RaisePropertyChanged(TransitionMatrixPropertyName);
+                TransitionMatrixIsCalculated=Visibility.Visible;
+            }
+        }
+        public Visibility TransitionMatrixIsCalculated
+        {
+            get
+            {
+                return _transitionMatrixIsCalculated;
+            }
+
+            set
+            {
+                if (_transitionMatrixIsCalculated == value)
+                {
+                    return;
+                }
+
+                
+                _transitionMatrixIsCalculated = value;
+                RaisePropertyChanged(TransitionMatrixIsCalculatedPropertyName);
             }
         }
         public float DampingFactor
@@ -334,7 +376,7 @@ namespace LuceneSearchClient.ViewModel
                                                   }
 
                                               }
-                                              RaisePropertyChanged(TransitionMatrixPropertyName);
+                                              RaisePropertyChanged(AdjacenceMatrixPropertyName);
                                           }));
             }
         }
@@ -374,9 +416,10 @@ namespace LuceneSearchClient.ViewModel
                                           () =>
                                           {
                                               ulong nbIterations = 0;
-                                              var transitionMatrix = new Matrix(AdjacenteMatrix);
-                                              transitionMatrix.ToProbablityMatrix();
-                                              var pageRank = new PageRank(transitionMatrix, DampingFactor, TelePortationMatrix);
+                                              TransitionMatrix = new Matrix(AdjacenteMatrix);
+                                              TransitionMatrix.ToProbablityMatrix();
+                                              RaisePropertyChanged(TransitionMatrixPropertyName);
+                                              var pageRank = new PageRank(_transitionMatrix, DampingFactor, TelePortationMatrix);
                                               PageRankVector = !AutomaticIterations ? pageRank.GetPageRankVector(InitialPageRank, 5, out nbIterations) : pageRank.GetPageRankVector(InitialPageRank, (ulong)NumberIterations);
                                               NumberIterations = nbIterations;                                         
                                           }));
@@ -440,7 +483,7 @@ namespace LuceneSearchClient.ViewModel
                                               ListDampPr = new ObservableCollection<KeyValuePair<float, float>>(DataSourceListDampPr[int.Parse(SelectedPage.Trim())]);
                                               //ulong nbIterations = 0;
                                               //AdjacenteMatrix.ToProbablityMatrix();
-                                              //RaisePropertyChanged(TransitionMatrixPropertyName);
+                                              //RaisePropertyChanged(AdjacenceMatrixPropertyName);
                                               //var pageRank = new PageRank(AdjacenteMatrix, DampingFactor);
                                               //// pageRank.GoogleMatrix();
                                               //PageRankVector = !AutomaticIterations ? pageRank.GetPageRankVector(InitialPageRank, (short)5, out nbIterations) : pageRank.GetPageRankVector(InitialPageRank, (ulong)NumberIterations);
@@ -543,6 +586,38 @@ namespace LuceneSearchClient.ViewModel
                            }));
             }
         }
+
+        private RelayCommand<DataGridCellEditEndingEventArgs> _adjMatCellEditEndingCommand;
+        public RelayCommand<DataGridCellEditEndingEventArgs> AdjMatCellEditEndingCommand
+        {
+            get
+            {
+                return _adjMatCellEditEndingCommand
+                    ?? (_adjMatCellEditEndingCommand = new RelayCommand<DataGridCellEditEndingEventArgs>(
+                                          (args) =>
+                                          {
+                                              var editedTextbox = args.EditingElement as TextBox;
+                                              if (editedTextbox != null)
+                                                  AdjacenteMatrix[(ulong)args.Row.GetIndex(), (ulong)args.Column.DisplayIndex] = float.Parse(editedTextbox.Text.Replace(",", "."), CultureInfo.InvariantCulture);
+                                          }));
+            }
+        }
+        private RelayCommand<DataGridCellEditEndingEventArgs> _telMatCellEditEndingCommand;
+        public RelayCommand<DataGridCellEditEndingEventArgs> TelMatCellEditEndingCommand
+        {
+            get
+            {
+                return _telMatCellEditEndingCommand
+                    ?? (_telMatCellEditEndingCommand = new RelayCommand<DataGridCellEditEndingEventArgs>(
+                                          (args) =>
+                                          {
+                                              var editedTextbox = args.EditingElement as TextBox;
+                                              if (editedTextbox != null)
+                                                  TelePortationMatrix[(ulong)args.Row.GetIndex(), (ulong)args.Column.DisplayIndex] = float.Parse(editedTextbox.Text.Replace(",", "."), CultureInfo.InvariantCulture);
+                                          }));
+            }
+        }
+
         #endregion
 
 

@@ -10,6 +10,8 @@
 xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
       xmlns:converters="clr-namespace:LuceneSearchClient.Converters"
       xmlns:resources="clr-namespace:LuceneSearchClient.Resources"
+      xmlns:command="http://www.galasoft.ch/mvvmlight"
+      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
 
       mc:Ignorable="d ignore" d:DesignHeight="500" d:DesignWidth="700"
         DataContext="{Binding SimulatorViewModel, Source={StaticResource Locator}}">
@@ -49,8 +51,6 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Matrix Size :" Grid.Row="0" Grid.Column="0"/>
                                         <TextBox  Grid.Row="0" Grid.Column="1" Text="{Binding MatrixSize,Mode=TwoWay}" Margin="3"/>
-
-
                                         <Label Content="The Damping Factor :" Grid.Row="1" Grid.Column="0" />
                                         <TextBox  Grid.Row="1" Grid.Column="1" Text="{Binding DampingFactor,Mode=TwoWay}" Margin="3"/>
                                         <Label Content="Number Of Iterations :" Grid.Row="2" Grid.Column="0" />
@@ -66,7 +66,13 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
-                                        <DataGrid Grid.Row="0" Margin="5" Background="White" ItemsSource="{Binding InitialPageRank,Converter={StaticResource ArrayToDataViewConverter},Mode=TwoWay}"/>
+                                        <DataGrid Grid.Row="0" Margin="5" Background="White" ItemsSource="{Binding InitialPageRank,Converter={StaticResource ArrayToDataViewConverter},Mode=TwoWay}">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="CellEditEnding">
+                                                    <command:EventToCommand PassEventArgsToCommand="True" Command="{Binding InitialVecCellEditEndingCommand}"/>
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </DataGrid>
                                         <Button Content="1/N" Margin="2" Grid.Column="1" Command="{Binding ResetInitialPageRankCommand}"/>
 
                                     </Grid>

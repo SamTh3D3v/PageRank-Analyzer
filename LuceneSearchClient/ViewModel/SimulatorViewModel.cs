@@ -4,10 +4,12 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using PageRankCalculator.Model;
 using PageRankCalculator.PageRankCalculation;
+using TextBox = System.Windows.Controls.TextBox;
 using Vector = PageRankCalculator.Model.Vector;
 
 namespace LuceneSearchClient.ViewModel
@@ -523,6 +525,22 @@ namespace LuceneSearchClient.ViewModel
                                           {
 
                                           }));
+            }
+        }
+
+        private RelayCommand<DataGridCellEditEndingEventArgs> _initialVecCellEditEndingCommand;
+        public RelayCommand<DataGridCellEditEndingEventArgs> InitialVecCellEditEndingCommand
+        {
+            get
+            {
+                return _initialVecCellEditEndingCommand
+                       ?? (_initialVecCellEditEndingCommand = new RelayCommand<DataGridCellEditEndingEventArgs>(
+                           (args) =>
+                           {                               
+                               var editedTextbox = args.EditingElement as TextBox;                               
+                               if (editedTextbox !=null)                              
+                               InitialPageRank[(ulong)args.Column.DisplayIndex] = float.Parse(editedTextbox.Text.Replace(",","."), CultureInfo.InvariantCulture);
+                           }));
             }
         }
         #endregion

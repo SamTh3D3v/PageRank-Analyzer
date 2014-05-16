@@ -178,6 +178,7 @@ namespace LuceneSearchClient.ViewModel
                                               //Setting The Transportation Matrix 
                                               TeleportationMatrix=Matrix.E(TransitionMatrix.Size);                                              
                                               InitialPageRankVector = Vector.e(VectorType.Row, TransitionMatrix.Size);
+                                              Messenger.Default.Send<WebGraphDataReader>(_webGraphDataReader,"WebGraphDataReader");
                                               
                                           }));
             }
@@ -222,7 +223,8 @@ namespace LuceneSearchClient.ViewModel
                                               var pageRank = new PageRank(TransitionMatrix, PageRank.DefaultDampingFactor);
                                               PageRankVector = pageRank.GetPageRankVector(InitialPageRankVector,
                                                   5, out nbIterations);       
-                                              Messenger.Default.Send<Vector>(PageRankVector,"Pr_Is_Calculated");                                      
+                                              Messenger.Default.Send<Vector>(PageRankVector,"Pr_Is_Calculated"); 
+                                              
                                           }));
             }
         }
@@ -254,7 +256,8 @@ namespace LuceneSearchClient.ViewModel
                                               var excelDataConverter = new ExcelDataConverter(_range);
                                               excelDataConverter.ConvertExelData(out _pagesXmlFile,out _linksXmlFile);
                                               RaisePropertyChanged(PagesXmlFilePropertyName);
-                                              RaisePropertyChanged(LinksXmlFilePropertyName);                                             
+                                              RaisePropertyChanged(LinksXmlFilePropertyName);  
+                                              
                                           }));
             }
         }

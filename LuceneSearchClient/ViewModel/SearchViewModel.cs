@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Windows.Interop;
 using GalaSoft.MvvmLight;
@@ -10,31 +11,37 @@ using LuceneSearchClient.Model;
 using LuceneSearchLibrary;
 using LuceneSearchLibrary.Model;
 using PageRankCalculator.Model;
+using PageRankCalculator.PageRankCalculation;
 
 namespace LuceneSearchClient.ViewModel
-{  
+{
     public class SearchViewModel : ViewModelBase
     {
         #region Consts
-         public const string ListSearchResultPropertyName = "ListSearchResult";
+        public const string ListSearchResultPropertyName = "ListSearchResult";
         public const string SearchTermsPropertyName = "SearchTerms";
         public const string SearchEnabledPropertyName = "SearchEnabled";
         public const string WebSitePropertyName = "WebSite";
         public const string GooglePrIsSelectedPropertyName = "GooglePrIsSelected";
         public const string AmelioratedPrIsSelectedPropertyName = "AmelioratedPrIsSelected";
         public const string RankingIsCalculatedPropertyName = "RankingIsCalculated";
+        public const string BusyIndicatorPropertyName = "BusyIndicator";
+        public const string ListPagesPropertyName = "ListPages";
         #endregion
         #region Fields
         private ObservableCollection<DocumentHit> _listSearchResult;
+        private ObservableCollection<DocumentHit> _listPages;
         private String _searchTerms;
         private HtmlIndexer _indexer;
         private WebSite _webSite;
         private Searcher _searcher;
-        private bool _searchEnabled =false;
+        private bool _searchEnabled = false;
         private bool _amelioratedPrIsSelected;
         private bool _googlePrIsSelected;
-        private bool _rankingIsCalculated =false;
+        private bool _rankingIsCalculated = false;
         private Vector _pageRankVector;
+        private bool _busyIndicator = false;
+        private WebGraphDataReader _webGraphDataReader;
         #endregion
         #region Properties
         public WebSite WebSite
@@ -105,7 +112,7 @@ namespace LuceneSearchClient.ViewModel
                 _searchTerms = value;
                 RaisePropertyChanged(SearchTermsPropertyName);
             }
-        }     
+        }
         public bool GooglePrIsSelected
         {
             get
@@ -119,7 +126,7 @@ namespace LuceneSearchClient.ViewModel
                 {
                     return;
                 }
-                
+
                 _googlePrIsSelected = value;
                 RaisePropertyChanged(GooglePrIsSelectedPropertyName);
             }
@@ -137,11 +144,11 @@ namespace LuceneSearchClient.ViewModel
                 {
                     return;
                 }
-                
+
                 _amelioratedPrIsSelected = value;
                 RaisePropertyChanged(AmelioratedPrIsSelectedPropertyName);
             }
-        }        
+        }
         public bool RankingIsCalculated
         {
             get
@@ -154,16 +161,11 @@ namespace LuceneSearchClient.ViewModel
                 if (_rankingIsCalculated == value)
                 {
                     return;
-                }                
+                }
                 _rankingIsCalculated = value;
                 RaisePropertyChanged(RankingIsCalculatedPropertyName);
             }
         }
-
-        public const string BusyIndicatorPropertyName = "BusyIndicator";
-
-        private bool _busyIndicator = false;
-
         public bool BusyIndicator
         {
             get
@@ -177,11 +179,28 @@ namespace LuceneSearchClient.ViewModel
                 {
                     return;
                 }
-                
+
                 _busyIndicator = value;
                 RaisePropertyChanged(BusyIndicatorPropertyName);
             }
         }
+        public ObservableCollection<DocumentHit> ListPages
+        {
+            get
+            {
+                return _listPages;
+            }
+
+            set
+            {
+                if (_listPages == value)
+                {
+                    return;
+                }
+                _listPages = value;
+                RaisePropertyChanged(ListPagesPropertyName);
+            }
+        }      
         #endregion
         #region Commands
 
@@ -197,10 +216,14 @@ namespace LuceneSearchClient.ViewModel
                 var indexingThread = new Thread(new ThreadStart(Indexing));
                 indexingThread.Start();
             });
-            Messenger.Default.Register<Vector>(this,"Pr_Is_Calculated", (pr) =>
-            {               
-                    RankingIsCalculated = true;
-                    _pageRankVector = pr;
+            Messenger.Default.Register<Vector>(this, "Pr_Is_Calculated", (pr) =>
+            {
+                RankingIsCalculated = true;
+                _pageRankVector = pr;
+            });
+            Messenger.Default.Register<WebGraphDataReader>(this, "WebGraphDataReader", (wg) =>
+            {
+                _webGraphDataReader = wg;
             });
         }
         private void Indexing()
@@ -213,7 +236,7 @@ namespace LuceneSearchClient.ViewModel
             BusyIndicator = false;
 
         }
-        #endregion 
+        #endregion
         #region Commands
         private RelayCommand _searchCommand;
         public RelayCommand SearchCommand
@@ -225,6 +248,15 @@ namespace LuceneSearchClient.ViewModel
                                           () =>
                                           {
                                               ListSearchResult = new ObservableCollection<DocumentHit>(_searcher.Search(SearchTerms));
+                                              if (RankingIsCalculated)
+                                              {
+                                                  foreach (var doc in ListSearchResult)
+                                                  {                                                      
+                                                      var index = _webGraphDataReader.Pages.Where(
+                                                          (x) => x.UriString == doc.Link).Select((x) => x.Id).FirstOrDefault();                                                                                               
+                                                          doc.PageRank = _pageRankVector[index];
+                                                  }
+                                              }
                                           }));
             }
         }
@@ -236,6 +268,48 @@ namespace LuceneSearchClient.ViewModel
                 return _onloadCommand
                     ?? (_onloadCommand = new RelayCommand(
                                           () => Messenger.Default.Send<NotificationMessage>(new NotificationMessage("opensettingswindow"))));
+            }
+        }
+        private RelayCommand _onloadAllPagesCommand;
+        public RelayCommand OnloadAllPagesCommand
+        {
+            get
+            {
+                return _onloadAllPagesCommand
+                    ?? (_onloadAllPagesCommand = new RelayCommand(
+                                          () =>
+                                          {
+                                              BusyIndicator = true;
+                                              var listAllPages = _indexer.ListIndexedDocs;
+                                              //Update The PageRank Values
+                                              if (RankingIsCalculated)
+                                              {
+
+                                                  foreach (var doc in listAllPages)
+                                                  {                                                      
+                                                      var index = _webGraphDataReader.Pages.Where(
+                                                          (x) => x.UriString == doc.Link).Select((x) => x.Id).FirstOrDefault();                                                                                                       
+                                                          doc.PageRank = _pageRankVector[index];
+                                                  }
+                                              }
+                                              //if (AmelioratedRankingIsCalculated)
+                                              //{
+
+                                              //    foreach (var doc in listAllPages)
+                                              //    {
+                                              //        var index = _webGraphDataReader.Pages.Where(
+                                              //            (x) => x.UriString == doc.Link).Select((x) => x.Id).FirstOrDefault();
+                                              //        doc.PageRank = _amelioratedPageRankVector[index];
+                                              //    }
+                                              //}
+                                            
+                                              //Get all Pages 
+                                              if (_indexer !=null)
+                                                  ListPages = new ObservableCollection<DocumentHit>(listAllPages); 
+                                              //Update The PageRank And The AmelioratedPageRank Value If Calculated
+                                              BusyIndicator = false;
+
+                                          }));
             }
         }
         #endregion

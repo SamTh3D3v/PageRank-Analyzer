@@ -51,7 +51,7 @@ namespace LuceneSearchLibrary
                     Path=doc.Get("path"),
                     Link = doc.Get("link"),
                     Score = hits[i].Score,
-                    PageRank = 1  //PageRank To Be Calcumated
+                    PageRank = 0 //PageRank To Be Calculated
                 });              
             }
             return listHits;

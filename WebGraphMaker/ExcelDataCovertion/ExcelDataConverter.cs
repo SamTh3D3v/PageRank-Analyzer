@@ -76,6 +76,9 @@ namespace WebGraphMaker.ExcelDataCovertion
         /// </summary>
                 private void GenerateLinksList()
                 {
+                    //SamUpdate
+                    _links = new List<Model.Link>();
+
                     int rowCount = _worksheetRange.Rows.Count;
                     
                     for (int i = 1; i <= rowCount; i++)

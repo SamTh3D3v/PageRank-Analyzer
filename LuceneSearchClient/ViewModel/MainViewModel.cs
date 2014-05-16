@@ -97,6 +97,21 @@ namespace LuceneSearchClient.ViewModel
                                           }));
             }
         }
+
+        private RelayCommand _allPagesCommand;  
+   
+        public RelayCommand AllPagesCommand
+        {
+            get
+            {
+                return _allPagesCommand
+                    ?? (_allPagesCommand = new RelayCommand(
+                                          () =>
+                                          {
+                                              NavigationUri = new Uri("../Views/AllPagesView.xaml", UriKind.RelativeOrAbsolute);  
+                                          }));
+            }
+        }
         #endregion            
     }
 }

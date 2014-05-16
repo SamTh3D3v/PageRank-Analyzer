@@ -111,6 +111,9 @@
     <Compile Include="ViewModel\SettingViewModel.cs" />
     <Compile Include="ViewModel\SimulatorViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="Views\AllPagesView.xaml.cs">
+      <DependentUpon>AllPagesView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PageRankView.xaml.cs">
       <DependentUpon>PageRankView.xaml</DependentUpon>
     </Compile>
@@ -142,6 +145,10 @@
     <Page Include="Skins\MainSkin.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AllPagesView.xaml">
+      <SubType>Form</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PageRankView.xaml">
       <SubType>Form</SubType>

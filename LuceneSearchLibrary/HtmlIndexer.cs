@@ -10,18 +10,40 @@ using Lucene.Net.Index;
 using Lucene.Net.Store;
 using Lucene.Net.Documents;
 using Lucene.Net.Util;
+using LuceneSearchLibrary.Model;
 
 namespace LuceneSearchLibrary
 {
     public class HtmlIndexer
     {
+        #region Consts
+        public const string ListIndexedDocsPropertyName = "ListIndexedDocs";
+        #endregion
         #region Fields  
         private readonly IndexWriter _writer;
         private string _webSiteDirectory;
         private string _pattern;
         private string _webSiteLink;
+        private List<DocumentHit> _listIndexedDocs = new List<DocumentHit>();
         #endregion
-        #region Properties
+        #region Properties        
+        public List<DocumentHit> ListIndexedDocs
+        {
+            get
+            {
+                return _listIndexedDocs;
+            }
+
+            set
+            {
+                if (_listIndexedDocs != null && _listIndexedDocs == value)
+                {
+                    return;
+                }
+
+                _listIndexedDocs = value;                
+            }
+        }
         #endregion       
         #region Constructors
         public  HtmlIndexer(string indexDirectory,string webSiteLink)
@@ -38,6 +60,7 @@ namespace LuceneSearchLibrary
             }
 			_writer.UseCompoundFile = true;
             _webSiteLink = webSiteLink;
+            
 		}
         #endregion
         #region Methods
@@ -73,14 +96,20 @@ namespace LuceneSearchLibrary
             doc.Add(new Field("path", relativePath, Field.Store.YES, Field.Index.NO));
             doc.Add(new Field("link", _webSiteLink + relativePath.Replace("\\","/"), Field.Store.YES, Field.Index.NO));
             doc.Add(new Field("title", GetPageTitle(html), Field.Store.YES, Field.Index.ANALYZED));
-            _writer.AddDocument(doc);
+            _writer.AddDocument(doc); 
+            _listIndexedDocs.Add(new DocumentHit()
+            {
+                Link = doc.Get("link"),            
+               Path = doc.Get("path") ,
+               Title = doc.Get("title"), 
+               PageRank = 0 ,
+               PageRankAmeliorated = 0           
+            });
         }
         private static string ParseHtml(string html)
         {
             string temp = Regex.Replace(html, "<[^>]*>", "");
             return temp.Replace("&nbsp;", " ");
-
-
         }
         private static string GetPageTitle(string html)
         {

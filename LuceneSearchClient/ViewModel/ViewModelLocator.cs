@@ -25,7 +25,7 @@ namespace LuceneSearchClient.ViewModel
             SimpleIoc.Default.Register<SettingViewModel>();
             SimpleIoc.Default.Register<SearchViewModel>();
             SimpleIoc.Default.Register<SimulatorViewModel>();
-            SimpleIoc.Default.Register<PageRankViewModel>();
+            SimpleIoc.Default.Register<PageRankViewModel>();            
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance",
@@ -79,7 +79,7 @@ namespace LuceneSearchClient.ViewModel
             {
                 return ServiceLocator.Current.GetInstance<PageRankViewModel>();
             }
-        }
+        }          
         public static void Cleanup()
         {
         }

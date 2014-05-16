@@ -419,8 +419,9 @@ namespace LuceneSearchClient.ViewModel
                                               TransitionMatrix = new Matrix(AdjacenteMatrix);
                                               TransitionMatrix.ToProbablityMatrix();
                                               RaisePropertyChanged(TransitionMatrixPropertyName);
-                                              var pageRank = new PageRank(_transitionMatrix, DampingFactor, TelePortationMatrix);
+                                              var pageRank = new PageRank(TransitionMatrix, DampingFactor, TelePortationMatrix);
                                               PageRankVector = !AutomaticIterations ? pageRank.GetPageRankVector(InitialPageRank, 5, out nbIterations) : pageRank.GetPageRankVector(InitialPageRank, (ulong)NumberIterations);
+                                              if (!AutomaticIterations)                                             
                                               NumberIterations = nbIterations;                                         
                                           }));
             }

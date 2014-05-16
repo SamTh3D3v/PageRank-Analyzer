@@ -20,7 +20,7 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
         <converters:ArrayToDataViewConverter x:Key="ArrayToDataViewConverter"/>
     </Page.Resources>
     <Grid>
-        <avalonDock:DockingManager x:Name="dockingManager">
+        <avalonDock:DockingManager >
             <avalonDock:LayoutRoot>
                 <avalonDock:LayoutPanel Orientation="Horizontal">
                     <!--<avalonDock:LayoutDocumentPane>
@@ -66,14 +66,18 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
-                                        <DataGrid Grid.Row="0" Margin="5" Background="White" ItemsSource="{Binding InitialPageRank,Converter={StaticResource ArrayToDataViewConverter},Mode=TwoWay}">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <DataGrid Grid.ColumnSpan="2" Grid.Row="0" Margin="5" Background="White" ItemsSource="{Binding InitialPageRank,Converter={StaticResource ArrayToDataViewConverter},Mode=TwoWay}">
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="CellEditEnding">
                                                     <command:EventToCommand PassEventArgsToCommand="True" Command="{Binding InitialVecCellEditEndingCommand}"/>
                                                 </i:EventTrigger>
                                             </i:Interaction.Triggers>
-                                        </DataGrid>
-                                        <Button Content="1/N" Margin="2" Grid.Column="1" Command="{Binding ResetInitialPageRankCommand}"/>
+                                        </DataGrid>                                        
+                                        <Button Grid.Row="1" Content="1/N" Margin="2" Grid.Column="1" Command="{Binding ResetInitialPageRankCommand}"/>
 
                                     </Grid>
                                 </GroupBox>
@@ -107,8 +111,7 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                             <Grid>
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="*"/>
-                                                    <RowDefinition Height="Auto"/>
-                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>                                                    
                                                 </Grid.RowDefinitions>
                                                 <DataGrid Grid.Row="0" Margin="5" Background="White" ItemsSource="{Binding TelePortationMatrix ,Converter={StaticResource MatrixToDataViewConverter},Mode=TwoWay}" LoadingRow="OnLoadingRow">
                                                     <i:Interaction.Triggers>
@@ -117,19 +120,16 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                                         </i:EventTrigger>
                                                     </i:Interaction.Triggers>
                                                 </DataGrid>
-                                                <Button Content="1/N" Grid.Row="1" Margin="2" Command="{Binding ResetTelePortationCommand}"/>
+                                                <Button Content="1/N" Grid.Row="1" Margin="2" HorizontalAlignment="Right" Command="{Binding ResetTelePortationCommand}"/>
                                             </Grid>
                                         </TabItem>
                                         <TabItem Header="Transition Matrix" Visibility="{Binding TransitionMatrixIsCalculated,Mode=TwoWay}" >
                                             <Grid>
                                                 <Grid.RowDefinitions>
-                                                    <RowDefinition Height="*"/>
-                                                    <RowDefinition Height="Auto"/>
-                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="*"/>                                                    
                                                 </Grid.RowDefinitions>
                                                 <DataGrid Grid.Row="0" Margin="5" Background="White" ItemsSource="{Binding TransitionMatrix ,Converter={StaticResource MatrixToDataViewConverter},Mode=TwoWay}" LoadingRow="OnLoadingRow" IsReadOnly="True">                                                  
-                                                </DataGrid>
-                                                <Button Content="1/N" Grid.Row="1" Margin="2" Command="{Binding ResetTelePortationCommand}"/>
+                                                </DataGrid>                                                
                                             </Grid>
                                         </TabItem>
                                     </TabControl>

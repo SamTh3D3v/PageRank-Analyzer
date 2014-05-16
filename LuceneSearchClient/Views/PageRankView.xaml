@@ -23,6 +23,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <GroupBox Header="WebGraph" Grid.Row="0">
             <Grid >
@@ -101,6 +102,21 @@
                 </Grid.ColumnDefinitions>
                 <DataGrid Grid.Row="0" Grid.ColumnSpan="2" Margin="5" Background="White" ItemsSource="{Binding PageRankVector,Converter={StaticResource VectorToDataViewConverter}}" />
                 <Button Grid.Row="1" Content="Calculate Page Rank" Margin="2" Grid.Column="1" IsEnabled="{Binding InitialPageRankVector,Converter={StaticResource InitialVectorSetConverter}}" Command="{Binding CalculatePageRankCommand}"/>
+
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="Ameliorated PageRank " Margin="10,10,0,0" Grid.Row="4">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <DataGrid Grid.Row="0" Grid.ColumnSpan="2" Margin="5" Background="White" ItemsSource="{Binding AmelioratedPageRankVector,Converter={StaticResource VectorToDataViewConverter}}" />
+                <Button Grid.Row="1" Content="Calculate Ameliorated Page Rank" Margin="2" Grid.Column="1" IsEnabled="{Binding InitialPageRankVector,Converter={StaticResource InitialVectorSetConverter}}" Command="{Binding CalculateAmelioratedPageRankCommand}"/>
 
             </Grid>
         </GroupBox>

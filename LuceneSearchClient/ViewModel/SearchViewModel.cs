@@ -25,6 +25,7 @@ namespace LuceneSearchClient.ViewModel
         public const string GooglePrIsSelectedPropertyName = "GooglePrIsSelected";
         public const string AmelioratedPrIsSelectedPropertyName = "AmelioratedPrIsSelected";
         public const string RankingIsCalculatedPropertyName = "RankingIsCalculated";
+        public const string ARankingIsCalculatedPropertyName = "ARankingIsCalculated";
         public const string BusyIndicatorPropertyName = "BusyIndicator";
         public const string ListPagesPropertyName = "ListPages";
         #endregion
@@ -39,7 +40,9 @@ namespace LuceneSearchClient.ViewModel
         private bool _amelioratedPrIsSelected;
         private bool _googlePrIsSelected;
         private bool _rankingIsCalculated = false;
+        private bool _aRankingIsCalculated = false; 
         private Vector _pageRankVector;
+        private Vector _aPageRankVector;
         private bool _busyIndicator = false;
         private WebGraphDataReader _webGraphDataReader;
         #endregion
@@ -165,6 +168,24 @@ namespace LuceneSearchClient.ViewModel
                 _rankingIsCalculated = value;
                 RaisePropertyChanged(RankingIsCalculatedPropertyName);
             }
+        }     
+        public bool ARankingIsCalculated
+        {
+            get
+            {
+                return _aRankingIsCalculated;
+            }
+
+            set
+            {
+                if (_aRankingIsCalculated == value)
+                {
+                    return;
+                }
+                
+                _aRankingIsCalculated = value;
+                RaisePropertyChanged(ARankingIsCalculatedPropertyName);
+            }
         }
         public bool BusyIndicator
         {
@@ -221,6 +242,12 @@ namespace LuceneSearchClient.ViewModel
                 RankingIsCalculated = true;
                 _pageRankVector = pr;
             });
+            Messenger.Default.Register<Vector>(this, "APr_Is_Calculated", (pr) =>
+            {
+                ARankingIsCalculated = true;
+                _aPageRankVector = pr;
+            });
+            
             Messenger.Default.Register<WebGraphDataReader>(this, "WebGraphDataReader", (wg) =>
             {
                 _webGraphDataReader = wg;
@@ -253,8 +280,19 @@ namespace LuceneSearchClient.ViewModel
                                                   foreach (var doc in ListSearchResult)
                                                   {                                                      
                                                       var index = _webGraphDataReader.Pages.Where(
-                                                          (x) => x.UriString == doc.Link).Select((x) => x.Id).FirstOrDefault();                                                                                               
-                                                          doc.PageRank = _pageRankVector[index];
+                                                          (x) => x.UriString == doc.Link).Select((x) => x.Id);
+                                                      if (index.Count()!=0)                                                                                          
+                                                          doc.PageRank = _pageRankVector[index.FirstOrDefault()];
+                                                  }
+                                              }
+                                              if (ARankingIsCalculated)
+                                              {
+                                                  foreach (var doc in ListSearchResult)
+                                                  {
+                                                      var index = _webGraphDataReader.Pages.Where(
+                                                          (x) => x.UriString == doc.Link).Select((x) => x.Id);
+                                                      if (index.Count() != 0)
+                                                          doc.PageRankAmeliorated = _aPageRankVector[index.FirstOrDefault()];
                                                   }
                                               }
                                           }));
@@ -280,6 +318,7 @@ namespace LuceneSearchClient.ViewModel
                                           () =>
                                           {
                                               BusyIndicator = true;
+                                              if(_indexer==null) return;
                                               var listAllPages = _indexer.ListIndexedDocs;
                                               //Update The PageRank Values
                                               if (RankingIsCalculated)
@@ -292,19 +331,16 @@ namespace LuceneSearchClient.ViewModel
                                                           doc.PageRank = _pageRankVector[index];
                                                   }
                                               }
-                                              //if (AmelioratedRankingIsCalculated)
-                                              //{
+                                              if (ARankingIsCalculated)
+                                              {
 
-                                              //    foreach (var doc in listAllPages)
-                                              //    {
-                                              //        var index = _webGraphDataReader.Pages.Where(
-                                              //            (x) => x.UriString == doc.Link).Select((x) => x.Id).FirstOrDefault();
-                                              //        doc.PageRank = _amelioratedPageRankVector[index];
-                                              //    }
-                                              //}
-                                            
-                                              //Get all Pages 
-                                              if (_indexer !=null)
+                                                  foreach (var doc in listAllPages)
+                                                  {
+                                                      var index = _webGraphDataReader.Pages.Where(
+                                                          (x) => x.UriString == doc.Link).Select((x) => x.Id).FirstOrDefault();
+                                                      doc.PageRankAmeliorated = _aPageRankVector[index];
+                                                  }
+                                              }                                                                                         
                                                   ListPages = new ObservableCollection<DocumentHit>(listAllPages); 
                                               //Update The PageRank And The AmelioratedPageRank Value If Calculated
                                               BusyIndicator = false;

@@ -19,6 +19,7 @@ namespace LuceneSearchClient.ViewModel
         public const string TeleportationMatrixPropertyName = "TeleportationMatrix";
         public const string TransitionMatrixPropertyName = "TransitionMatrix";
         public const string PageRankVectorPropertyName = "PageRankVector";
+        public const string AmelioratedPageRankVectorPropertyName = "AmelioratedPageRankVector";
         #endregion
         #region Fields
         private string _linksXmlFile = "";
@@ -29,6 +30,7 @@ namespace LuceneSearchClient.ViewModel
         private Matrix _teleportationMatrix;
         private Range _range;
         private Vector _pageRankVector;
+        private Vector _amelioratedPageRankVector;
         private WebGraphDataReader _webGraphDataReader;
         #endregion
         #region Properties 
@@ -153,6 +155,24 @@ namespace LuceneSearchClient.ViewModel
                 RaisePropertyChanged(PageRankVectorPropertyName);
             }
         }
+        public Vector AmelioratedPageRankVector
+        {
+            get
+            {
+                return _amelioratedPageRankVector;
+            }
+
+            set
+            {
+                if (_amelioratedPageRankVector == value)
+                {
+                    return;
+                }
+                
+                _amelioratedPageRankVector = value;
+                RaisePropertyChanged(AmelioratedPageRankVectorPropertyName);
+            }
+        }
         #endregion
         #region Ctos and Methods
         public PageRankViewModel()
@@ -225,6 +245,24 @@ namespace LuceneSearchClient.ViewModel
                                                   5, out nbIterations);       
                                               Messenger.Default.Send<Vector>(PageRankVector,"Pr_Is_Calculated"); 
                                               
+                                          }));
+            }
+        }
+
+        private RelayCommand _calculateAmelioratedPageRankCommand;
+        public RelayCommand CalculateAmelioratedPageRankCommand
+        {
+            get
+            {
+                return _calculateAmelioratedPageRankCommand
+                    ?? (_calculateAmelioratedPageRankCommand = new RelayCommand(
+                                          () =>
+                                          {
+                                              ulong nbIterations;
+                                              var pageRank = new PageRank(TransitionMatrix, PageRank.DefaultDampingFactor);
+                                              AmelioratedPageRankVector = pageRank.GetAmelioratedPageRankVector(InitialPageRankVector,
+                                                  5, out nbIterations);
+                                              Messenger.Default.Send<Vector>(AmelioratedPageRankVector, "APr_Is_Calculated"); 
                                           }));
             }
         }

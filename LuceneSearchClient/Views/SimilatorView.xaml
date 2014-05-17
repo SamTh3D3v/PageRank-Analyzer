@@ -13,7 +13,7 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
       xmlns:command="http://www.galasoft.ch/mvvmlight"
       xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
 
-      mc:Ignorable="d ignore" d:DesignHeight="500" d:DesignWidth="700"
+      mc:Ignorable="d ignore" d:DesignHeight="500" d:DesignWidth="900"
         DataContext="{Binding SimulatorViewModel, Source={StaticResource Locator}}">
     <Page.Resources>
         <converters:MatrixToDataViewConverter x:Key="MatrixToDataViewConverter" />
@@ -30,8 +30,7 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                         <avalonDock:LayoutAnchorable Title="Define Matrix">
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"/>                                    
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
@@ -56,32 +55,9 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                         <Label Content="Number Of Iterations :" Grid.Row="2" Grid.Column="0" />
                                         <TextBox  Grid.Row="2" Grid.Column="1" Margin="3" Text="{Binding NumberIterations,Mode=TwoWay}" IsEnabled="{Binding ElementName=AutoIteCheckBox,Path=IsChecked}"/>
                                         <CheckBox x:Name="AutoIteCheckBox"  Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding AutomaticIterations}"/>
-
-
                                     </Grid>
-                                </GroupBox>
-                                <GroupBox Header="Initial PageRank Values " Margin="5" Grid.Row="1">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                        </Grid.RowDefinitions>
-                                        <DataGrid Grid.ColumnSpan="2" Grid.Row="0" Margin="5" Background="White" ItemsSource="{Binding InitialPageRank,Converter={StaticResource ArrayToDataViewConverter},Mode=TwoWay}">
-                                            <i:Interaction.Triggers>
-                                                <i:EventTrigger EventName="CellEditEnding">
-                                                    <command:EventToCommand PassEventArgsToCommand="True" Command="{Binding InitialVecCellEditEndingCommand}"/>
-                                                </i:EventTrigger>
-                                            </i:Interaction.Triggers>
-                                        </DataGrid>                                        
-                                        <Button Grid.Row="1" Content="1/N" Margin="2" Grid.Column="1" Command="{Binding ResetInitialPageRankCommand}"/>
-
-                                    </Grid>
-                                </GroupBox>
-                                <GroupBox Header="Matrices" Margin="5" Grid.Row="2">
+                                </GroupBox>                           
+                                <GroupBox Header="Matrices" Margin="5" Grid.Row="1">
                                     <TabControl>
                                         <TabItem Header="Adjancence Matrix">
                                             <Grid>
@@ -135,27 +111,46 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                     </TabControl>
 
                                 </GroupBox>
-                                <GroupBox Header="Page Rank" Margin="5" Grid.Row="3">
+                                <GroupBox Header="Calculation" Margin="5" Grid.Row="2">
                                     <Grid >
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="*"/>
-                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="70"/>
+                                            <RowDefinition Height="70"/>
+                                            <RowDefinition Height="70"/>
+                                            <RowDefinition Height="70"/>
                                         </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
                                             <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="100"/>
-                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
-                                        <Grid Grid.Row="0" Grid.ColumnSpan="3">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="Auto"/>
-                                            </Grid.ColumnDefinitions>
-                                            <DataGrid Grid.Row="0" Margin="5" Background="White" ItemsSource="{Binding PageRankVector,Converter={StaticResource ArrayToDataViewConverter},Mode=TwoWay}"/>
-                                            <Button Content="Reset" Margin="2" Grid.Column="1" Command="{Binding ResetPageRankVector}"/>
-                                        </Grid>
-                                        <Button Content="CalculPageRank" Grid.Column="1" Grid.Row="1" Command="{Binding CalculatePageRankCommand}" Margin="3"/>
-                                        <Button Content="Show Report" Grid.Column="2" Grid.Row="1" Command="{Binding ShowPageRankRepportsCommand}" Margin="3"/>
+                                        <Label Grid.Column="0" Grid.Row="0" Content="Initial Vector: "></Label>
+                                        <DataGrid  Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Margin="5" Background="White" ItemsSource="{Binding InitialPageRank,Converter={StaticResource ArrayToDataViewConverter},Mode=TwoWay}">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="CellEditEnding">
+                                                    <command:EventToCommand PassEventArgsToCommand="True" Command="{Binding InitialVecCellEditEndingCommand}"/>
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </DataGrid>
+                                        <Button Grid.Row="0" Content="1/N" Margin="2" Grid.Column="3" Command="{Binding ResetInitialPageRankCommand}" VerticalAlignment="Center"/>
+
+                                        <Label Grid.Column="0" Grid.Row="1" Content="PageRank: "></Label>
+                                        <DataGrid Grid.Row="1" Grid.Column="1" Margin="5" Background="White" ItemsSource="{Binding PageRankVector,Converter={StaticResource ArrayToDataViewConverter},Mode=TwoWay}" IsReadOnly="True"/>
+                                        <Button Content="Calculate" Grid.Column="2" Grid.Row="1" Command="{Binding CalculatePageRankCommand}" Margin="3" VerticalAlignment="Center"/>
+                                        <Button Content="Reset" Margin="2" Grid.Column="3" Grid.Row="1" Command="{Binding ResetPageRankVector}" VerticalAlignment="Center"/>
+
+                                        <Label Grid.Column="0" Grid.Row="2" Content="Ameliorated PR: "></Label>
+                                        <DataGrid Grid.Row="2" Grid.Column="1" Margin="5" Background="White" ItemsSource="{Binding AmelioratedPageRankVector,Converter={StaticResource ArrayToDataViewConverter},Mode=TwoWay}" IsReadOnly="True"/>
+                                        <Button Content="Calculate" Grid.Column="2" Grid.Row="2" Command="{Binding CalculateAmelioratedPageRankCommand}" Margin="3" VerticalAlignment="Center"/>
+                                        <Button Content="Reset" Margin="2" Grid.Column="3" Grid.Row="2" Command="{Binding ResetAmelioratedPageRankVector}" VerticalAlignment="Center"/>
+
+                                        <Label Grid.Column="0" Grid.Row="3" Content="EignValues: "></Label>
+                                        <DataGrid Grid.Row="3" Grid.Column="1" Margin="5" Grid.ColumnSpan="2" Background="White" ItemsSource="{Binding EignValuesVector,Converter={StaticResource ArrayToDataViewConverter},Mode=TwoWay}" IsReadOnly="True"/>
+                                        <Button Content="Calculate" Grid.Column="3" Grid.Row="3" Command="{Binding CalculateEignValuesCommand}" Margin="3" VerticalAlignment="Center"/>                                        
+
+
+
                                     </Grid>
                                 </GroupBox>
                             </Grid>

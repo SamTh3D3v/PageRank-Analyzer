@@ -34,6 +34,8 @@ namespace LuceneSearchClient.ViewModel
         public const string ListDampItPropertyName = "ListDampIt";
         public const string TransitionMatrixPropertyName = "TransitionMatrix";
         public const string TransitionMatrixIsCalculatedPropertyName = "TransitionMatrixIsCalculated";
+        public const string AmelioratedPageRankVectorPropertyName = "AmelioratedPageRankVector";
+        public const string EignValuesVectorPropertyName = "EignValuesVector";
         #endregion
         #region Fields
         private ulong _matrixSize;
@@ -52,7 +54,8 @@ namespace LuceneSearchClient.ViewModel
         private ObservableCollection<KeyValuePair<float, float>> _listDampPr;
         private ObservableCollection<KeyValuePair<float, ulong>> _listDampIt;
         private Visibility _transitionMatrixIsCalculated = Visibility.Hidden;
-
+        private Vector _amelioratedPageRankVector;
+        private Vector _eignValuesVector;
         #endregion
         #region Properties
         public ulong MatrixSize
@@ -239,6 +242,24 @@ namespace LuceneSearchClient.ViewModel
                 _pageRank = value;
                 RaisePropertyChanged(PageRankVectorPropertyName);
             }
+        }       
+        public Vector AmelioratedPageRankVector
+        {
+            get
+            {
+                return _amelioratedPageRankVector;
+            }
+
+            set
+            {
+                if (_amelioratedPageRankVector == value)
+                {
+                    return;
+                }
+                
+                _amelioratedPageRankVector = value;
+                RaisePropertyChanged(AmelioratedPageRankVectorPropertyName);
+            }
         }
         public Matrix TelePortationMatrix
         {
@@ -347,6 +368,24 @@ namespace LuceneSearchClient.ViewModel
 
                 _listDampIt = value;
                 RaisePropertyChanged(ListDampItPropertyName);
+            }
+        }
+        public Vector EignValuesVector
+        {
+            get
+            {
+                return _eignValuesVector;
+            }
+
+            set
+            {
+                if (_eignValuesVector == value)
+                {
+                    return;
+                }
+                
+                _eignValuesVector = value;
+                RaisePropertyChanged(EignValuesVectorPropertyName);
             }
         }
         #endregion
@@ -618,9 +657,58 @@ namespace LuceneSearchClient.ViewModel
                                           }));
             }
         }
-
+        private RelayCommand _calculateAmelioratedPageRankCommand;
+        public RelayCommand CalculateAmelioratedPageRankCommand
+        {
+            get
+            {
+                return _calculateAmelioratedPageRankCommand
+                    ?? (_calculateAmelioratedPageRankCommand = new RelayCommand(
+                                          () =>
+                                          {
+                                               ulong nbIterations = 0;
+                                              TransitionMatrix = new Matrix(AdjacenteMatrix);
+                                              TransitionMatrix.ToProbablityMatrix();
+                                              RaisePropertyChanged(TransitionMatrixPropertyName);
+                                              var amPageRank = new PageRank(TransitionMatrix, DampingFactor, TelePortationMatrix);
+                                              AmelioratedPageRankVector = !AutomaticIterations ? amPageRank.GetAmelioratedPageRankVector(InitialPageRank, 5, out nbIterations) : amPageRank.GetAmelioratedPageRankVector(InitialPageRank, (ulong)NumberIterations);
+                                              if (!AutomaticIterations)                                             
+                                              NumberIterations = nbIterations;
+                                          }));
+            }
+        }
+        private RelayCommand _resetAmelioratedPageRankVector;
+        public RelayCommand ResetAmelioratedPageRankVector
+        {
+            get
+            {
+                return  _resetAmelioratedPageRankVector
+                    ?? ( _resetAmelioratedPageRankVector = new RelayCommand(
+                                          () =>
+                                          {
+                                              AmelioratedPageRankVector = InitialPageRank;
+                                          }));
+            }
+        }
+        private RelayCommand _calculateEignValuesCommand;
+        public RelayCommand CalculateEignValuesCommand
+        {
+            get
+            {
+                return _calculateEignValuesCommand
+                    ?? (_calculateEignValuesCommand = new RelayCommand(
+                                          () =>
+                                          {
+                                              var listEv = TransitionMatrix.Eigenvalues();
+                                              EignValuesVector=new Vector(VectorType.Row,(ulong) listEv.Count);
+                                              for (int i = 0; i < listEv.Count; i++)
+                                              {
+                                                  EignValuesVector[(ulong)i] = listEv[i];
+                                              }  
+                                            RaisePropertyChanged(EignValuesVectorPropertyName);
+                                          }));
+            }
+        }
         #endregion
-
-
     }
 }

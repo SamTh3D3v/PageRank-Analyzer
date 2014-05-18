@@ -98,7 +98,6 @@
     <Compile Include="Converters\GenerateWebGraphConverter.cs" />
     <Compile Include="Converters\InitialVectorSetConverter.cs" />
     <Compile Include="Converters\MatrixToDataViewConverter.cs" />
-    <Compile Include="Helpers\MultiSeriesChart.cs" />
     <Compile Include="Model\WebSite.cs" />
     <Compile Include="Resources\MultiChart.cs" />
     <Compile Include="Resources\WeakEventing\CollectionChangedWeakEventSource.cs" />
@@ -208,10 +207,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\Images\" />
-    <Folder Include="Design\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

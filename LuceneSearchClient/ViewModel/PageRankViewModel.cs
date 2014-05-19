@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight;
+﻿using System.Windows.Forms;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Office.Interop.Excel;
@@ -33,7 +34,7 @@ namespace LuceneSearchClient.ViewModel
         private Vector _amelioratedPageRankVector;
         private WebGraphDataReader _webGraphDataReader;
         #endregion
-        #region Properties 
+        #region Properties
         public string WebGraphExcelFile
         {
             get
@@ -47,11 +48,11 @@ namespace LuceneSearchClient.ViewModel
                 {
                     return;
                 }
-                
+
                 _webGraphExcelFile = value;
                 RaisePropertyChanged(WebGraphExcelFilePropertyName);
             }
-        }   
+        }
         public string PagesXmlFile
         {
             get
@@ -64,7 +65,7 @@ namespace LuceneSearchClient.ViewModel
                 if (_pagesXmlFile == value)
                 {
                     return;
-                }                
+                }
                 _pagesXmlFile = value;
                 RaisePropertyChanged(PagesXmlFilePropertyName);
             }
@@ -85,7 +86,7 @@ namespace LuceneSearchClient.ViewModel
                 _linksXmlFile = value;
                 RaisePropertyChanged(LinksXmlFilePropertyName);
             }
-        }  
+        }
         public Vector InitialPageRankVector
         {
             get
@@ -98,11 +99,11 @@ namespace LuceneSearchClient.ViewModel
                 if (_initialPageRankVector == value)
                 {
                     return;
-                }                
+                }
                 _initialPageRankVector = value;
                 RaisePropertyChanged(InitialPageRankVectorPropertyName);
             }
-        }                    
+        }
         public Matrix TransitionMatrix
         {
             get
@@ -116,11 +117,11 @@ namespace LuceneSearchClient.ViewModel
                 {
                     return;
                 }
-                
+
                 _transitionMatrix = value;
                 RaisePropertyChanged(TransitionMatrixPropertyName);
             }
-        }                   
+        }
         public Matrix TeleportationMatrix
         {
             get
@@ -133,7 +134,7 @@ namespace LuceneSearchClient.ViewModel
                 if (_teleportationMatrix == value)
                 {
                     return;
-                }                
+                }
                 _teleportationMatrix = value;
                 RaisePropertyChanged(TeleportationMatrixPropertyName);
             }
@@ -150,7 +151,7 @@ namespace LuceneSearchClient.ViewModel
                 if (_pageRankVector == value)
                 {
                     return;
-                }                
+                }
                 _pageRankVector = value;
                 RaisePropertyChanged(PageRankVectorPropertyName);
             }
@@ -168,7 +169,7 @@ namespace LuceneSearchClient.ViewModel
                 {
                     return;
                 }
-                
+
                 _amelioratedPageRankVector = value;
                 RaisePropertyChanged(AmelioratedPageRankVectorPropertyName);
             }
@@ -190,16 +191,16 @@ namespace LuceneSearchClient.ViewModel
                     ?? (_getTransitionMatrixCommand = new RelayCommand(
                                           () =>
                                           {
-                                              _webGraphDataReader=new WebGraphDataReader();
-                                              _webGraphDataReader.ExtractDataFromWebGraph(GraphEntities.Pages,PagesXmlFile);
+                                              _webGraphDataReader = new WebGraphDataReader();
+                                              _webGraphDataReader.ExtractDataFromWebGraph(GraphEntities.Pages, PagesXmlFile);
                                               _webGraphDataReader.ExtractDataFromWebGraph(GraphEntities.Links, LinksXmlFile);
                                               WebGraphDataConverter.SetTransitionMatrix(_webGraphDataReader.Pages, _webGraphDataReader.Links);
-                                             TransitionMatrix=WebGraphDataConverter.TransitionMatrix;                                               
+                                              TransitionMatrix = WebGraphDataConverter.TransitionMatrix;
                                               //Setting The Transportation Matrix 
-                                              TeleportationMatrix=Matrix.E(TransitionMatrix.Size);                                              
+                                              TeleportationMatrix = Matrix.E(TransitionMatrix.Size);
                                               InitialPageRankVector = Vector.e(VectorType.Row, TransitionMatrix.Size);
-                                              Messenger.Default.Send<WebGraphDataReader>(_webGraphDataReader,"WebGraphDataReader");
-                                              
+                                              Messenger.Default.Send<WebGraphDataReader>(_webGraphDataReader, "WebGraphDataReader");
+
                                           }));
             }
         }
@@ -212,11 +213,11 @@ namespace LuceneSearchClient.ViewModel
                     ?? (_setTeleportationCommand = new RelayCommand(
                                           () =>
                                           {
-                                              
+
                                           }));
             }
         }
-        private RelayCommand _setInitialPageRankCommand;      
+        private RelayCommand _setInitialPageRankCommand;
         public RelayCommand SetInitialPageRankCommand
         {
             get
@@ -242,9 +243,9 @@ namespace LuceneSearchClient.ViewModel
                                               ulong nbIterations;
                                               var pageRank = new PageRank(TransitionMatrix, PageRank.DefaultDampingFactor);
                                               PageRankVector = pageRank.GetPageRankVector(InitialPageRankVector,
-                                                  5, out nbIterations);       
-                                              Messenger.Default.Send<Vector>(PageRankVector,"Pr_Is_Calculated"); 
-                                              
+                                                  5, out nbIterations);
+                                              Messenger.Default.Send<Vector>(PageRankVector, "Pr_Is_Calculated");
+
                                           }));
             }
         }
@@ -262,7 +263,7 @@ namespace LuceneSearchClient.ViewModel
                                               var pageRank = new PageRank(TransitionMatrix, PageRank.DefaultDampingFactor);
                                               AmelioratedPageRankVector = pageRank.GetAmelioratedPageRankVector(InitialPageRankVector,
                                                   5, out nbIterations);
-                                              Messenger.Default.Send<Vector>(AmelioratedPageRankVector, "APr_Is_Calculated"); 
+                                              Messenger.Default.Send<Vector>(AmelioratedPageRankVector, "APr_Is_Calculated");
                                           }));
             }
         }
@@ -275,10 +276,19 @@ namespace LuceneSearchClient.ViewModel
                     ?? (_browseCommand = new RelayCommand(
                                           () =>
                                           {
-                                              string excelfile;
-                                              _range = ExcelDataReader.ReadData(out _webGraphExcelFile);
-                                              RaisePropertyChanged(WebGraphExcelFilePropertyName);
-                                              
+                                              var openFileDialog = new OpenFileDialog
+                                                        {
+                                                            Filter = "Excel Files (.xlsx)|*.xlsx",
+                                                            FilterIndex = 1,
+                                                            Multiselect = false
+                                                        };
+                                              var dialogResult = openFileDialog.ShowDialog();
+                                              if (dialogResult == DialogResult.OK)
+                                              {
+                                                  WebGraphExcelFile = openFileDialog.FileName;
+                                                  _range = ExcelDataReader.ReadData(_webGraphExcelFile);
+                                              }
+
                                           }));
             }
         }
@@ -292,15 +302,27 @@ namespace LuceneSearchClient.ViewModel
                                           () =>
                                           {
                                               var excelDataConverter = new ExcelDataConverter(_range);
-                                              excelDataConverter.ConvertExelData(out _pagesXmlFile,out _linksXmlFile);
-                                              RaisePropertyChanged(PagesXmlFilePropertyName);
-                                              RaisePropertyChanged(LinksXmlFilePropertyName);  
-                                              
+                                              var saveFileDialog = new SaveFileDialog
+                                                     {
+                                                         Filter = "txt files (*.xml)|*.xml",
+                                                         FilterIndex = 2,
+                                                         RestoreDirectory = true
+                                                     };
+                                              if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                                              {
+                                                  PagesXmlFile = saveFileDialog.FileName;
+                                              }                                           
+                                              if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                                              {
+                                                  LinksXmlFile = saveFileDialog.FileName;
+                                              }
+                                              excelDataConverter.ConvertExelData(_pagesXmlFile, _linksXmlFile);
+
                                           }));
             }
         }
         #endregion
 
-       
+
     }
 }

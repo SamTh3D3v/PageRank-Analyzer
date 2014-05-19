@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace LuceneSearchClient.Views
 {
@@ -10,6 +11,7 @@ namespace LuceneSearchClient.Views
         public SimilatorView()
         {
             InitializeComponent();
+           
         }
 
         private void OnLoadingRow(object sender, DataGridRowEventArgs e)

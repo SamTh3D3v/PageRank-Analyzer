@@ -30,7 +30,7 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                         <avalonDock:LayoutAnchorable Title="Define Matrix">
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>                                    
+                                    <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
@@ -49,14 +49,14 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Matrix Size :" Grid.Row="0" Grid.Column="0"/>
-                                        <TextBox  Grid.Row="0" Grid.Column="1" Text="{Binding MatrixSize,Mode=TwoWay}" Margin="3"/>
+                                        <TextBox  Grid.Row="0" Grid.Column="1" Text="{Binding MatrixSize,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Margin="3" x:Name="MatSizeBox" />
                                         <Label Content="The Damping Factor :" Grid.Row="1" Grid.Column="0" />
                                         <TextBox  Grid.Row="1" Grid.Column="1" Text="{Binding DampingFactor,Mode=TwoWay}" Margin="3"/>
                                         <Label Content="Number Of Iterations :" Grid.Row="2" Grid.Column="0" />
                                         <TextBox  Grid.Row="2" Grid.Column="1" Margin="3" Text="{Binding NumberIterations,Mode=TwoWay}" IsEnabled="{Binding ElementName=AutoIteCheckBox,Path=IsChecked}"/>
                                         <CheckBox x:Name="AutoIteCheckBox"  Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding AutomaticIterations}"/>
                                     </Grid>
-                                </GroupBox>                           
+                                </GroupBox>
                                 <GroupBox Header="Matrices" Margin="5" Grid.Row="1">
                                     <TabControl>
                                         <TabItem Header="Adjancence Matrix">
@@ -87,7 +87,7 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                             <Grid>
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="*"/>
-                                                    <RowDefinition Height="Auto"/>                                                    
+                                                    <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
                                                 <DataGrid Grid.Row="0" Margin="5" Background="White" ItemsSource="{Binding TelePortationMatrix ,Converter={StaticResource MatrixToDataViewConverter},Mode=TwoWay}" LoadingRow="OnLoadingRow">
                                                     <i:Interaction.Triggers>
@@ -102,10 +102,10 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                         <TabItem Header="Transition Matrix" Visibility="{Binding TransitionMatrixIsCalculated,Mode=TwoWay}" >
                                             <Grid>
                                                 <Grid.RowDefinitions>
-                                                    <RowDefinition Height="*"/>                                                    
+                                                    <RowDefinition Height="*"/>
                                                 </Grid.RowDefinitions>
-                                                <DataGrid Grid.Row="0" Margin="5" Background="White" ItemsSource="{Binding TransitionMatrix ,Converter={StaticResource MatrixToDataViewConverter},Mode=TwoWay}" LoadingRow="OnLoadingRow" IsReadOnly="True">                                                  
-                                                </DataGrid>                                                
+                                                <DataGrid Grid.Row="0" Margin="5" Background="White" ItemsSource="{Binding TransitionMatrix ,Converter={StaticResource MatrixToDataViewConverter},Mode=TwoWay}" LoadingRow="OnLoadingRow" IsReadOnly="True">
+                                                </DataGrid>
                                             </Grid>
                                         </TabItem>
                                     </TabControl>
@@ -147,8 +147,15 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
 
                                         <Label Grid.Column="0" Grid.Row="3" Content="EignValues: "></Label>
                                         <DataGrid Grid.Row="3" Grid.Column="1" Margin="5" Grid.ColumnSpan="2" Background="White" ItemsSource="{Binding EignValuesVector,Converter={StaticResource ArrayToDataViewConverter},Mode=TwoWay}" IsReadOnly="True"/>
-                                        <Button Content="Calculate" Grid.Column="3" Grid.Row="3" Command="{Binding CalculateEignValuesCommand}" Margin="3" VerticalAlignment="Center"/>                                        
-
+                                        <StackPanel  Grid.Column="3" Grid.Row="3" VerticalAlignment="Center">
+                                            <Button Content="Calculate" Command="{Binding CalculateEignValuesCommand}" Margin="3" />
+                                            <ComboBox  Margin="3" >
+                                                <ComboBoxItem Content="Google Matrix" IsSelected="True" />
+                                                <ComboBoxItem Content="Transition Matrix" />
+                                                <ComboBoxItem Content="Adjacence Matrix" />                                                
+                                            </ComboBox>
+                                            
+                                        </StackPanel>
 
 
                                     </Grid>
@@ -175,7 +182,7 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                         ItemsSource="{Binding ListDampPr}"
                                         IndependentValueBinding="{Binding Key}"
                                         DependentValueBinding="{Binding Value}" >
-                                        
+
                                     </dvc:LineSeries>
                                 </dvc:Chart>
                                 <!--<resources:MultiChart Grid.Row="1" Background="White" Grid.Column="0" Grid.ColumnSpan="2" SeriesSource="{Binding DataSourceListDampPr}" >
@@ -206,7 +213,7 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                         <avalonDock:LayoutAnchorable Title="Iterations/DampingFactor">
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    
+
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
@@ -214,7 +221,7 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                     <ColumnDefinition Width="100"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                 <dvc:Chart Background="White" Grid.Column="0" Grid.ColumnSpan="2">
+                                <dvc:Chart Background="White" Grid.Column="0" Grid.ColumnSpan="2">
                                     <dvc:LineSeries Title="DampingFactor/Iters" 
                                         ItemsSource="{Binding ListDampIt,Mode=TwoWay}"
                                         IndependentValueBinding="{Binding Key}"

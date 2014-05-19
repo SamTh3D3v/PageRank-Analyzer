@@ -15,36 +15,19 @@ namespace WebGraphMaker.ExcelDataCovertion
         #region Methods
 
         /// <summary>
-        /// Loads the Workbook from Excel file, outputs the file name of the chosen Excel file
+        /// Loads the Workbook from Excel file filename 
         /// </summary>
         /// <param name="fileName">Full name of the chosen Excel file</param>
         /// <exception cref="NullReferenceException">Throw if no file was chosen</exception>
         /// <returns>Excel Workbook</returns>
-        private static Workbook LoadWorkbook(out string fileName)
+        private static Workbook LoadWorkbook(string fileName)
         {
             var xlApp = new Application();
-            Workbook xlWorkbook = null;
-
-            var openFileDialog = new OpenFileDialog
-            {
-                Filter = "Excel Files (.xlsx)|*.xlsx",
-                FilterIndex = 1,
-                Multiselect = false
-            };
-
-            var dialogResult = openFileDialog.ShowDialog();
-
-            if (dialogResult == DialogResult.OK)
-            {
-                fileName = openFileDialog.FileName;
-
+            Workbook xlWorkbook = null;          
+            if (fileName!=null)
+            {                
                 xlWorkbook = xlApp.Workbooks.Open(fileName);
-            }
-            else
-            {
-                fileName = null;
-            }
-
+            }            
             if (xlWorkbook == null) throw new NullReferenceException("Workbook object is null !");
             return xlWorkbook;
 
@@ -55,9 +38,9 @@ namespace WebGraphMaker.ExcelDataCovertion
         /// </summary>
         /// <param name="fileName">The full name of the chosen Excel file</param>
         /// <returns>The used range within the Excel file</returns>
-        public static Range ReadData(out string fileName)
+        public static Range ReadData(string fileName)
         {
-            var r = LoadWorkbook(out fileName);
+            var r = LoadWorkbook(fileName);
             _Worksheet xlWorksheet = r.Sheets[1];
             var tmp = xlWorksheet.UsedRange;
             return tmp;

@@ -1,4 +1,7 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Windows.Forms;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
@@ -6,6 +9,7 @@ using Microsoft.Office.Interop.Excel;
 using PageRankCalculator.Model;
 using PageRankCalculator.PageRankCalculation;
 using WebGraphMaker.ExcelDataCovertion;
+using Xceed.Wpf.Toolkit;
 
 namespace LuceneSearchClient.ViewModel
 {
@@ -33,6 +37,8 @@ namespace LuceneSearchClient.ViewModel
         private Vector _pageRankVector;
         private Vector _amelioratedPageRankVector;
         private WebGraphDataReader _webGraphDataReader;
+        private BackgroundWorker _worker;
+        private ExcelDataConverter _excelDataConverter;
         #endregion
         #region Properties
         public string WebGraphExcelFile
@@ -283,14 +289,32 @@ namespace LuceneSearchClient.ViewModel
                                                             Multiselect = false
                                                         };
                                               var dialogResult = openFileDialog.ShowDialog();
-                                              if (dialogResult == DialogResult.OK)
-                                              {
+                                              if (dialogResult != DialogResult.OK) return;                                              
                                                   WebGraphExcelFile = openFileDialog.FileName;
-                                                  _range = ExcelDataReader.ReadData(_webGraphExcelFile);
-                                              }
+                                                  //This Operation Need To Be Calculated In a Worker
 
+                                                  Debug.WriteLine("Generate Rang From Excel Started");
+                                                  var time = DateTime.Now;
+                                                  //Start THe Busy Indicator 
+                                                  //ind.IsBusy = true;
+                                                  _worker = new BackgroundWorker();
+                                                  _worker.DoWork += GenerateRang;
+                                                  _worker.RunWorkerCompleted += GenerateRangCompleted;
+                                                  _worker.RunWorkerAsync();
+                                                  Debug.WriteLine("Genertate Excel Frome Excel Terminated, Elapsed Time Is : " + (DateTime.Now - time) + " Miliseconds");                                                                                                
                                           }));
             }
+        }
+        private void GenerateRangCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            Debug.WriteLine("Excel Generation Compeleted");
+            //Update The Busy Indicator  
+            //ind.IsBusy = false;
+        }
+
+        private void GenerateRang(object sender, DoWorkEventArgs e)
+        {
+            _range = ExcelDataReader.ReadData(_webGraphExcelFile);
         }
         private RelayCommand _generateXmLsCommand;
         public RelayCommand GenerateXmlsCommands
@@ -301,25 +325,41 @@ namespace LuceneSearchClient.ViewModel
                     ?? (_generateXmLsCommand = new RelayCommand(
                                           () =>
                                           {
-                                              var excelDataConverter = new ExcelDataConverter(_range);
+                                              _excelDataConverter = new ExcelDataConverter(_range);
                                               var saveFileDialog = new SaveFileDialog
                                                      {
                                                          Filter = "txt files (*.xml)|*.xml",
                                                          FilterIndex = 2,
                                                          RestoreDirectory = true
                                                      };
-                                              if (saveFileDialog.ShowDialog() == DialogResult.OK)
-                                              {
-                                                  PagesXmlFile = saveFileDialog.FileName;
-                                              }                                           
-                                              if (saveFileDialog.ShowDialog() == DialogResult.OK)
-                                              {
-                                                  LinksXmlFile = saveFileDialog.FileName;
-                                              }
-                                              excelDataConverter.ConvertExelData(_pagesXmlFile, _linksXmlFile);
+                                              if (saveFileDialog.ShowDialog() != DialogResult.OK) return;
+                                              PagesXmlFile = saveFileDialog.FileName;
+                                              if (saveFileDialog.ShowDialog() != DialogResult.OK) return;
+                                              LinksXmlFile = saveFileDialog.FileName;
+                                              //OPeration Need To  Be done In A Worker 
+                                              Debug.WriteLine("Operation Started");
+                                              var time = DateTime.Now;
+                                              //Start THe Busy Indicator 
+                                              //ind.IsBusy = true;
+                                              _worker = new BackgroundWorker();
+                                              _worker.DoWork += GenerateXmlFiles;
+                                              _worker.RunWorkerCompleted += GenerateXmlFilesCompeleted;
+                                              _worker.RunWorkerAsync();
+                                              Debug.WriteLine("Operation Terminated Elapsed Time Is : " + (DateTime.Now - time) + " Miliseconds"); //About 500 Ms For a WebGraph Of 300 Nodes 
 
                                           }));
             }
+        }
+        private void GenerateXmlFilesCompeleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            Debug.WriteLine("Xmls Generation Compeleted");
+            //Update The Busy Indicator  
+            //ind.IsBusy = false;
+        }
+
+        private void GenerateXmlFiles(object sender, DoWorkEventArgs e)
+        {
+            _excelDataConverter.ConvertExelData(_pagesXmlFile, _linksXmlFile);
         }
         #endregion
 

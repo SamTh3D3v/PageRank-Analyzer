@@ -35,6 +35,8 @@ namespace LuceneSearchLibrary
         //Changes
         public IEnumerable<DocumentHit> Search(String term)
         {
+            if (term == null) return null;
+           
             var analyzer = new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_30);
             var parser = new QueryParser(Lucene.Net.Util.Version.LUCENE_30, "text", analyzer);
             var query = parser.Parse(term);                      

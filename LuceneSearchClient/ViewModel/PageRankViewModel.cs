@@ -253,9 +253,6 @@ namespace LuceneSearchClient.ViewModel
                                               TeleportationMatrix = Matrix.E(TransitionMatrix.Size);
                                               InitialPageRankVector = Vector.e(VectorType.Row, TransitionMatrix.Size);
                                               Messenger.Default.Send<WebGraphDataReader>(_webGraphDataReader, "WebGraphDataReader");
-
-
-
                                           }));
             }
         }
@@ -367,10 +364,10 @@ namespace LuceneSearchClient.ViewModel
                                               var time = DateTime.Now;
                                               //Start THe Busy Indicator 
                                               //ind.IsBusy = true;
-                                              _worker = new BackgroundWorker();
-                                              _worker.DoWork += GenerateRang;
-                                              _worker.RunWorkerCompleted += GenerateRangCompleted;
-                                              _worker.RunWorkerAsync();
+                                              var worker = new BackgroundWorker();
+                                              worker.DoWork += GenerateRang;
+                                              worker.RunWorkerCompleted += GenerateRangCompleted;
+                                              worker.RunWorkerAsync();
                                               Debug.WriteLine("Genertate Excel Frome Excel Terminated, Elapsed Time Is : " + (DateTime.Now - time) + " Miliseconds");
                                           }));
             }
@@ -412,10 +409,10 @@ namespace LuceneSearchClient.ViewModel
                                               var time = DateTime.Now;
                                               //Start THe Busy Indicator 
                                               //ind.IsBusy = true;
-                                              _worker = new BackgroundWorker();
-                                              _worker.DoWork += GenerateXmlFiles;
-                                              _worker.RunWorkerCompleted += GenerateXmlFilesCompeleted;
-                                              _worker.RunWorkerAsync();
+                                               var worker = new BackgroundWorker();
+                                              worker.DoWork += GenerateXmlFiles;
+                                              worker.RunWorkerCompleted += GenerateXmlFilesCompeleted;
+                                              worker.RunWorkerAsync();
                                               Debug.WriteLine("Operation Terminated Elapsed Time Is : " + (DateTime.Now - time) + " Miliseconds"); //About 500 Ms For a WebGraph Of 300 Nodes 
 
                                           }));

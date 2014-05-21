@@ -94,7 +94,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Converters\ArrayToDataViewConverter.cs" />
+    <Compile Include="Converters\VectorToDataViewColumnConverter.cs" />
+    <Compile Include="Converters\VectorToDataViewRowConverter.cs" />
     <Compile Include="Converters\GenerateWebGraphConverter.cs" />
     <Compile Include="Converters\InitialVectorSetConverter.cs" />
     <Compile Include="Converters\MatrixToDataViewConverter.cs" />

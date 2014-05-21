@@ -17,7 +17,7 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
         DataContext="{Binding SimulatorViewModel, Source={StaticResource Locator}}">
     <Page.Resources>
         <converters:MatrixToDataViewConverter x:Key="MatrixToDataViewConverter" />
-        <converters:ArrayToDataViewConverter x:Key="ArrayToDataViewConverter"/>
+        <converters:VectorToDataViewRowConverter x:Key="ArrayToDataViewConverter"/>
     </Page.Resources>
     <Grid>
         <avalonDock:DockingManager >

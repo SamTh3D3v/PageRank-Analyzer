@@ -10,7 +10,7 @@ using PageRankCalculator.Model;
 
 namespace LuceneSearchClient.Converters
 {
-    public class ArrayToDataViewConverter : IValueConverter
+    public class VectorToDataViewRowConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

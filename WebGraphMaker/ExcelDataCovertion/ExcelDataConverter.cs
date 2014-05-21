@@ -32,10 +32,8 @@ namespace WebGraphMaker.ExcelDataCovertion
         private void GeneratePagesList()
         {
             _pages = new List<Model.Page>();
-
             int rowCount = _worksheetRange.Rows.Count;
             int colCount = _worksheetRange.Columns.Count;
-
             ulong idCount = 0;
             for (int i = 1; i <= rowCount; i++)
             {

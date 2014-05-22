@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
@@ -28,7 +29,7 @@ namespace LuceneSearchClient.ViewModel
         public const string PageRankVectorPropertyName = "PageRankVector";
         public const string TelePortationMatrixPropertyName = "TelePortationMatrix";
         public const string ListWebPagesPropertyName = "ListWebPages";
-        public const string SelectedPagePropertyName = "SelectedPage";        
+        public const string SelectedPagePropertyName = "SelectedPage";
         public const string DataSourceListDampPrPropertyName = "DataSourceListDampPr";
         public const string ListDampPrPropertyName = "ListDampPr";
         public const string ListDampItPropertyName = "ListDampIt";
@@ -36,9 +37,11 @@ namespace LuceneSearchClient.ViewModel
         public const string TransitionMatrixIsCalculatedPropertyName = "TransitionMatrixIsCalculated";
         public const string AmelioratedPageRankVectorPropertyName = "AmelioratedPageRankVector";
         public const string EignValuesVectorPropertyName = "EignValuesVector";
+        public const string ListPrPagesPropertyName = "ListPrPages";
         #endregion
         #region Fields
         private ulong _matrixSize;
+        private ObservableCollection<KeyValuePair<float, float>> _listPrPages;
         private Matrix _adjacenteMatrix;
         private Matrix _transitionMatrix;
         private float _dampingFactor;
@@ -49,7 +52,7 @@ namespace LuceneSearchClient.ViewModel
         private Vector _pageRank;
         private Matrix _teleportationMatrix;
         private ObservableCollection<string> _listWebPages = new ObservableCollection<string>();
-        private string _selectedPage;        
+        private string _selectedPage;
         private List<List<KeyValuePair<float, float>>> _dataSourceListDampPr = new List<List<KeyValuePair<float, float>>>();
         private ObservableCollection<KeyValuePair<float, float>> _listDampPr;
         private ObservableCollection<KeyValuePair<float, ulong>> _listDampIt;
@@ -114,10 +117,10 @@ namespace LuceneSearchClient.ViewModel
                 {
                     return;
                 }
-                
+
                 _transitionMatrix = value;
                 RaisePropertyChanged(TransitionMatrixPropertyName);
-                TransitionMatrixIsCalculated=Visibility.Visible;
+                TransitionMatrixIsCalculated = Visibility.Visible;
             }
         }
         public Visibility TransitionMatrixIsCalculated
@@ -134,7 +137,7 @@ namespace LuceneSearchClient.ViewModel
                     return;
                 }
 
-                
+
                 _transitionMatrixIsCalculated = value;
                 RaisePropertyChanged(TransitionMatrixIsCalculatedPropertyName);
             }
@@ -242,7 +245,7 @@ namespace LuceneSearchClient.ViewModel
                 _pageRank = value;
                 RaisePropertyChanged(PageRankVectorPropertyName);
             }
-        }       
+        }
         public Vector AmelioratedPageRankVector
         {
             get
@@ -256,7 +259,7 @@ namespace LuceneSearchClient.ViewModel
                 {
                     return;
                 }
-                
+
                 _amelioratedPageRankVector = value;
                 RaisePropertyChanged(AmelioratedPageRankVectorPropertyName);
             }
@@ -310,12 +313,12 @@ namespace LuceneSearchClient.ViewModel
                 }
                 _selectedPage = value;
                 RaisePropertyChanged(SelectedPagePropertyName);
-                if (DataSourceListDampPr == null || _selectedPage==null) return;
+                if (DataSourceListDampPr == null || _selectedPage == null) return;
                 if (DataSourceListDampPr.Count == 0) return;
-                
+
                 ListDampPr = new ObservableCollection<KeyValuePair<float, float>>(DataSourceListDampPr[int.Parse(SelectedPage.Trim())]);
             }
-        }        
+        }
         public List<List<KeyValuePair<float, float>>> DataSourceListDampPr
         {
             get
@@ -370,6 +373,53 @@ namespace LuceneSearchClient.ViewModel
                 RaisePropertyChanged(ListDampItPropertyName);
             }
         }
+
+        
+
+        
+
+
+        public ObservableCollection<KeyValuePair<float, float>> ListPrPages
+        {
+            get
+            {
+                return _listPrPages;
+            }
+
+            set
+            {
+                if (_listPrPages == value)
+                {
+                    return;
+                }
+                _listPrPages = value;
+                RaisePropertyChanged(ListPrPagesPropertyName);
+            }
+        }
+
+        public const string ListAprPagesPropertyName = "ListAprPages";
+
+        private ObservableCollection<KeyValuePair<float, float>> _listAprPages;
+
+
+        public ObservableCollection<KeyValuePair<float, float>> ListAprPages
+        {
+            get
+            {
+                return _listAprPages;
+            }
+
+            set
+            {
+                if (_listAprPages == value)
+                {
+                    return;
+                }
+
+                _listAprPages = value;
+                RaisePropertyChanged(ListAprPagesPropertyName);
+            }
+        }
         public Vector EignValuesVector
         {
             get
@@ -383,7 +433,7 @@ namespace LuceneSearchClient.ViewModel
                 {
                     return;
                 }
-                
+
                 _eignValuesVector = value;
                 RaisePropertyChanged(EignValuesVectorPropertyName);
             }
@@ -459,9 +509,11 @@ namespace LuceneSearchClient.ViewModel
                                               TransitionMatrix.ToProbablityMatrix();
                                               RaisePropertyChanged(TransitionMatrixPropertyName);
                                               var pageRank = new PageRank(TransitionMatrix, DampingFactor, TelePortationMatrix);
-                                              PageRankVector = !AutomaticIterations ? pageRank.GetPageRankVector(InitialPageRank, 5, out nbIterations) : pageRank.GetPageRankVector(InitialPageRank, (ulong)NumberIterations);
-                                              if (!AutomaticIterations)                                             
-                                              NumberIterations = nbIterations;                                         
+                                              var dateTime = DateTime.Now;
+                                              PageRankVector = !AutomaticIterations ? pageRank.GetPageRankVector(InitialPageRank, 10, out nbIterations) : pageRank.GetPageRankVector(InitialPageRank, (ulong)NumberIterations);
+                                              Debug.WriteLine("PageRank Calculated In -> " + (DateTime.Now - dateTime).Milliseconds + " Miliseconds , Iterations ->" + NumberIterations);
+                                              if (!AutomaticIterations)
+                                                  NumberIterations = nbIterations;
                                           }));
             }
         }
@@ -534,6 +586,27 @@ namespace LuceneSearchClient.ViewModel
             }
         }
         private RelayCommand _resetChartsPrCommand;
+        private RelayCommand _startSimulationPrAprCommand;
+        public RelayCommand StartSimulationPrAprCommand
+        {
+            get
+            {
+                return _startSimulationPrAprCommand
+                    ?? (_startSimulationPrAprCommand = new RelayCommand(
+                                          () =>
+                                          {
+                                              var listPr = new List<KeyValuePair<float, float>>();
+                                              var listAPr = new List<KeyValuePair<float, float>>();
+                                              for (float page = 0; page < TransitionMatrix.Size; page++)
+                                              {                                                  
+                                                  listPr.Add(new KeyValuePair<float, float>(page, PageRankVector[(ulong)page]));
+                                                  listAPr.Add(new KeyValuePair<float, float>(page, AmelioratedPageRankVector[(ulong)page]));
+                                              }
+                                              ListPrPages = new ObservableCollection<KeyValuePair<float, float>>(listPr);
+                                              ListAprPages= new ObservableCollection<KeyValuePair<float, float>>(listAPr);
+                                          }));
+            }
+        }
         public RelayCommand ResetChartsPrCommand
         {
             get
@@ -568,7 +641,7 @@ namespace LuceneSearchClient.ViewModel
                     ?? (_startSimulationItCommand = new RelayCommand(
                                           () =>
                                           {
-                                              ListDampIt = new ObservableCollection<KeyValuePair<float, ulong>>();                                            
+                                              ListDampIt = new ObservableCollection<KeyValuePair<float, ulong>>();
                                               for (float dampFactor = 0; dampFactor <= 1; dampFactor += 0.1f)
                                               {
 
@@ -579,8 +652,8 @@ namespace LuceneSearchClient.ViewModel
                                                   var pageRank = new PageRank(transitionMatrix, dampFactor, TelePortationMatrix);
                                                   pageRank.GetPageRankVector(InitialPageRank, 5,
                                                       out nbIterations);
-                                                  ListDampIt.Add(new KeyValuePair<float, ulong>(dampFactor, nbIterations));                                                 
-                                              }                                                                                           
+                                                  ListDampIt.Add(new KeyValuePair<float, ulong>(dampFactor, nbIterations));
+                                              }
                                           }));
             }
         }
@@ -619,10 +692,10 @@ namespace LuceneSearchClient.ViewModel
                 return _initialVecCellEditEndingCommand
                        ?? (_initialVecCellEditEndingCommand = new RelayCommand<DataGridCellEditEndingEventArgs>(
                            (args) =>
-                           {                               
-                               var editedTextbox = args.EditingElement as TextBox;                               
-                               if (editedTextbox !=null)                              
-                               InitialPageRank[(ulong)args.Column.DisplayIndex] = float.Parse(editedTextbox.Text.Replace(",","."), CultureInfo.InvariantCulture);
+                           {
+                               var editedTextbox = args.EditingElement as TextBox;
+                               if (editedTextbox != null)
+                                   InitialPageRank[(ulong)args.Column.DisplayIndex] = float.Parse(editedTextbox.Text.Replace(",", "."), CultureInfo.InvariantCulture);
                            }));
             }
         }
@@ -666,14 +739,16 @@ namespace LuceneSearchClient.ViewModel
                     ?? (_calculateAmelioratedPageRankCommand = new RelayCommand(
                                           () =>
                                           {
-                                               ulong nbIterations = 0;
+                                              ulong nbIterations = 0;
                                               TransitionMatrix = new Matrix(AdjacenteMatrix);
                                               TransitionMatrix.ToProbablityMatrix();
                                               RaisePropertyChanged(TransitionMatrixPropertyName);
                                               var amPageRank = new PageRank(TransitionMatrix, DampingFactor, TelePortationMatrix);
-                                              AmelioratedPageRankVector = !AutomaticIterations ? amPageRank.GetAmelioratedPageRankVector(InitialPageRank, 5, out nbIterations) : amPageRank.GetAmelioratedPageRankVector(InitialPageRank, (ulong)NumberIterations);
-                                              if (!AutomaticIterations)                                             
-                                              NumberIterations = nbIterations;
+                                              var dateTime = DateTime.Now;
+                                              AmelioratedPageRankVector = !AutomaticIterations ? amPageRank.GetAmelioratedPageRankVector(InitialPageRank, 10, out nbIterations) : amPageRank.GetAmelioratedPageRankVector(InitialPageRank, (ulong)NumberIterations);
+                                              Debug.WriteLine("Ameliorated PageRank Calculated In ->" + (DateTime.Now - dateTime).Milliseconds + " Miliseconds , Iterations ->" + NumberIterations);
+                                              if (!AutomaticIterations)
+                                                  NumberIterations = nbIterations;
                                           }));
             }
         }
@@ -682,8 +757,8 @@ namespace LuceneSearchClient.ViewModel
         {
             get
             {
-                return  _resetAmelioratedPageRankVector
-                    ?? ( _resetAmelioratedPageRankVector = new RelayCommand(
+                return _resetAmelioratedPageRankVector
+                    ?? (_resetAmelioratedPageRankVector = new RelayCommand(
                                           () =>
                                           {
                                               AmelioratedPageRankVector = InitialPageRank;
@@ -700,12 +775,12 @@ namespace LuceneSearchClient.ViewModel
                                           () =>
                                           {
                                               var listEv = TransitionMatrix.Eigenvalues();
-                                              EignValuesVector=new Vector(VectorType.Row,(ulong) listEv.Count);
+                                              EignValuesVector = new Vector(VectorType.Row, (ulong)listEv.Count);
                                               for (int i = 0; i < listEv.Count; i++)
                                               {
                                                   EignValuesVector[(ulong)i] = listEv[i];
-                                              }  
-                                            RaisePropertyChanged(EignValuesVectorPropertyName);
+                                              }
+                                              RaisePropertyChanged(EignValuesVectorPropertyName);
                                           }));
             }
         }

@@ -364,11 +364,15 @@ namespace LuceneSearchClient.ViewModel
                                               var time = DateTime.Now;
                                               //Start THe Busy Indicator 
                                               //ind.IsBusy = true;
-                                              var worker = new BackgroundWorker();
-                                              worker.DoWork += GenerateRang;
-                                              worker.RunWorkerCompleted += GenerateRangCompleted;
-                                              worker.RunWorkerAsync();
-                                              Debug.WriteLine("Genertate Excel Frome Excel Terminated, Elapsed Time Is : " + (DateTime.Now - time) + " Miliseconds");
+                                              //var worker = new BackgroundWorker();
+                                              //worker.DoWork += GenerateRang;
+                                              //worker.RunWorkerCompleted += GenerateRangCompleted;
+                                              //worker.RunWorkerAsync();
+                                              //Debug.WriteLine("Genertate Excel Frome Excel Terminated, Elapsed Time Is : " + (DateTime.Now - time) + " Miliseconds");
+
+                                              _range = ExcelDataReader.ReadData(_webGraphExcelFile);
+                                              GenerateButtonIsEnabled = true;
+
                                           }));
             }
         }
@@ -409,11 +413,14 @@ namespace LuceneSearchClient.ViewModel
                                               var time = DateTime.Now;
                                               //Start THe Busy Indicator 
                                               //ind.IsBusy = true;
-                                               var worker = new BackgroundWorker();
-                                              worker.DoWork += GenerateXmlFiles;
-                                              worker.RunWorkerCompleted += GenerateXmlFilesCompeleted;
-                                              worker.RunWorkerAsync();
-                                              Debug.WriteLine("Operation Terminated Elapsed Time Is : " + (DateTime.Now - time) + " Miliseconds"); //About 500 Ms For a WebGraph Of 300 Nodes 
+                                              // var worker = new BackgroundWorker();
+                                              //worker.DoWork += GenerateXmlFiles;
+                                              //worker.RunWorkerCompleted += GenerateXmlFilesCompeleted;
+                                              //worker.RunWorkerAsync();
+                                              //Debug.WriteLine("Operation Terminated Elapsed Time Is : " + (DateTime.Now - time) + " Miliseconds"); //About 500 Ms For a WebGraph Of 300 Nodes 
+                                              _excelDataConverter.ConvertExelData(_pagesXmlFile, _linksXmlFile);
+                                              GetTrMatButIsEnabled = true;
+
 
                                           }));
             }

@@ -18,6 +18,8 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
     <Page.Resources>
         <converters:MatrixToDataViewConverter x:Key="MatrixToDataViewConverter" />
         <converters:VectorToDataViewRowConverter x:Key="ArrayToDataViewConverter"/>
+        <converters:VectorToDataViewColumnConverter x:Key="VectorToDataViewColumnConverter"/>
+        <converters:InitialVectorSetConverter x:Key="InitialVectorSetConverter"/>
     </Page.Resources>
     <Grid>
         <avalonDock:DockingManager >
@@ -26,38 +28,35 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                     <!--<avalonDock:LayoutDocumentPane>
                      
                     </avalonDock:LayoutDocumentPane>-->
-                    <avalonDock:LayoutAnchorablePane DockWidth="300">
-                        <avalonDock:LayoutAnchorable Title="Define Matrix">
+                    <avalonDock:LayoutAnchorablePane  >
+                        <avalonDock:LayoutAnchorable Title="Define Matrix" >
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>                                    
                                 </Grid.RowDefinitions>
-                                <GroupBox Header="PageRank Settings" Margin="5" Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="150"/>
+                                </Grid.ColumnDefinitions>
+                                <GroupBox Header="PageRank Settings" Margin="5" Grid.Row="0" Grid.ColumnSpan="3" Background="WhiteSmoke">
                                     <Grid>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>                                                                                        
                                         </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="200"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="130"/>
+                                            <ColumnDefinition Width="*"/>                                            
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Matrix Size :" Grid.Row="0" Grid.Column="0"/>
                                         <TextBox  Grid.Row="0" Grid.Column="1" Text="{Binding MatrixSize,Mode=TwoWay}" Margin="3" x:Name="MatSizeBox" /> <!--UpdateSourceTrigger=PropertyChanged-->
                                         <Label Content="The Damping Factor :" Grid.Row="1" Grid.Column="0" />
                                         <TextBox  Grid.Row="1" Grid.Column="1" Text="{Binding DampingFactor,Mode=TwoWay}" Margin="3"/>
-                                        <Label Content="Number Of Iterations :" Grid.Row="2" Grid.Column="0" />
-                                        <TextBox  Grid.Row="2" Grid.Column="1" Margin="3" Text="{Binding NumberIterations,Mode=TwoWay}" IsEnabled="{Binding ElementName=AutoIteCheckBox,Path=IsChecked}"/>
-                                        <CheckBox x:Name="AutoIteCheckBox"  Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding AutomaticIterations}"/>
-                                    </Grid>
+                                         </Grid>
                                 </GroupBox>
-                                <GroupBox Header="Matrices" Margin="5" Grid.Row="1">
+                                <GroupBox Header="Matrices" Margin="5" Grid.Row="1" Grid.Column="0" Background="WhiteSmoke">
                                     <TabControl>
                                         <TabItem Header="Adjancence Matrix">
                                             <Grid>
@@ -108,10 +107,26 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                                 </DataGrid>
                                             </Grid>
                                         </TabItem>
-                                    </TabControl>
-
+                                    </TabControl>                                    
                                 </GroupBox>
-                                <GroupBox Header="Calculation" Margin="5" Grid.Row="2">
+                                <GridSplitter Width="5" Grid.Row="1" Grid.Column="1"></GridSplitter>
+                                <GroupBox Grid.Column="2" Grid.Row="1" Header="Initial Page Rank">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <DataGrid Grid.Row="0"  Margin="5" Background="White" ItemsSource="{Binding InitialPageRank,Converter={StaticResource VectorToDataViewColumnConverter},Mode=TwoWay}" LoadingRow="OnLoadingRow" >
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="CellEditEnding">
+                                                    <command:EventToCommand PassEventArgsToCommand="True" Command="{Binding InitialVecCellEditEndingCommand}"/>
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </DataGrid>
+                                        <Button Grid.Row="1" Content="1/N" Margin="5" Grid.Column="0" VerticalAlignment="Center" IsEnabled="{Binding InitialPageRank,Converter={StaticResource InitialVectorSetConverter}}" Command="{Binding ResetInitialPageRankCommand}"/>
+                                    </Grid>
+                                </GroupBox>
+                                <!--<GroupBox Header="Calculation" Margin="5" Grid.Row="2" Visibility="Hidden">
                                     <Grid >
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="70"/>
@@ -159,12 +174,110 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
 
 
                                     </Grid>
-                                </GroupBox>
+                                </GroupBox>-->
                             </Grid>
+                        </avalonDock:LayoutAnchorable >
+                    </avalonDock:LayoutAnchorablePane>
+                    <avalonDock:LayoutAnchorablePane DockWidth="300" >
+                        <avalonDock:LayoutAnchorable Title="Page Rank" >
+                            <GroupBox Header="PageRank" Margin="5" Background="WhiteSmoke">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>                                      
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>                                       
+                                    </Grid.ColumnDefinitions>  
+                                    <GroupBox Header="Google pr" Grid.Row="0" Grid.Column="0">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Content="Number Of Iterations :" Grid.Row="0" Grid.Column="0" />
+                                            <TextBox  Grid.Row="0" Grid.Column="1" Margin="3" Text="{Binding PrNumberIterations,Mode=TwoWay}" IsEnabled="{Binding ElementName=AutoIteCheckBoxPr,Path=IsChecked}"/>
+                                            <CheckBox x:Name="AutoIteCheckBoxPr"  Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding AutomaticIterations}"/>
+
+                                            <Label Content="Convergence Crt :" Grid.Row="1" Grid.Column="0" />
+                                            <TextBox  Grid.Row="1" Grid.Column="1" Margin="3" Grid.ColumnSpan="2" Text="{Binding PrPrecision,Mode=TwoWay}" />
+                                            
+                                            <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Right" Content="Calculate" Margin="3" Command="{Binding CalculatePageRankCommand}"/>
+
+                                        </Grid>
+                                          </GroupBox>
+                                    <GroupBox Header="Ameliorated pr" Grid.Row="0" Grid.Column="1">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Content="Number Of Iterations :" Grid.Row="0" Grid.Column="0" />
+                                            <TextBox  Grid.Row="0" Grid.Column="1" Margin="3" Text="{Binding AprNumberOfIteration,Mode=TwoWay}" IsEnabled="{Binding ElementName=AutoIteCheckBoxAPr,Path=IsChecked}"/>
+                                            <CheckBox x:Name="AutoIteCheckBoxAPr"  Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding AutomaticIterations}"/>
+
+                                            <Label Content="Convergence Crt :" Grid.Row="1" Grid.Column="0" />
+                                            <TextBox  Grid.Row="1" Grid.Column="1" Margin="3" Grid.ColumnSpan="2" Text="{Binding Aprprecision,Mode=TwoWay}" />
+
+                                            <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Right" Content="Calculate" Margin="3" Command="{Binding CalculateAmelioratedPageRankCommand}"/>
+                                        </Grid>
+                                    </GroupBox>
+                                    <DataGrid  Grid.Column="0" Grid.Row="1" Margin="5" Background="White" ItemsSource="{Binding PageRankVector,Converter={StaticResource VectorToDataViewColumnConverter}}" LoadingRow="OnLoadingRow"/>
+                                    <DataGrid  Grid.Column="1" Grid.Row="1" Margin="5" Background="White" ItemsSource="{Binding AmelioratedPageRankVector,Converter={StaticResource VectorToDataViewColumnConverter}}" LoadingRow="OnLoadingRow" />
+
+                                    
+                                </Grid>
+                            </GroupBox>
+                        </avalonDock:LayoutAnchorable >
+                        <avalonDock:LayoutAnchorable Title="EignValues" >
+                            <GroupBox Header="Eign Values" Margin="5" Background="WhiteSmoke">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>                                        
+                                    </Grid.ColumnDefinitions>
+                                    <GroupBox Header="Settings" Grid.Row="0" Grid.Column="0">
+                                        <Grid> 
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>                                                
+                                            </Grid.ColumnDefinitions>                                                                                  
+                                            <Label Content="Matrice :" Grid.Row="0" Grid.Column="0" />
+                                            <ComboBox  Margin="3" Grid.Column="1" Grid.Row="0">
+                                                <ComboBoxItem Content="Google Matrix" IsSelected="True" />
+                                                <ComboBoxItem Content="Transition Matrix" />
+                                                <ComboBoxItem Content="Adjacence Matrix" />
+                                            </ComboBox>
+                                            <Button Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Right" Content="Calculate" Margin="3" Command="{Binding CalculateEignValuesCommand}"/>
+                                        </Grid>
+                                    </GroupBox>
+                                    <DataGrid Grid.Row="1"  Margin="5" Grid.ColumnSpan="2" Background="White" ItemsSource="{Binding EignValuesVector,Converter={StaticResource VectorToDataViewColumnConverter},Mode=TwoWay}" IsReadOnly="True"/>                                 
+                                </Grid>
+                            </GroupBox>
                         </avalonDock:LayoutAnchorable>
                     </avalonDock:LayoutAnchorablePane>
                     <avalonDock:LayoutAnchorablePane DockWidth="300" >
-                        <avalonDock:LayoutAnchorable Title="PageRank/DampingFactor">
+                        <avalonDock:LayoutAnchorable Title="PageRank/DampingFactor" IsVisible="False">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
@@ -210,7 +323,7 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                 </GroupBox>
                             </Grid>
                         </avalonDock:LayoutAnchorable>
-                        <avalonDock:LayoutAnchorable Title="Iterations/DampingFactor">
+                        <avalonDock:LayoutAnchorable Title="Iterations/DampingFactor" IsVisible="False">
                             <Grid>
                                 <Grid.RowDefinitions>
 
@@ -242,8 +355,7 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                 </GroupBox>
                             </Grid>
                         </avalonDock:LayoutAnchorable>
-
-                        <avalonDock:LayoutAnchorable Title="Pr-APr/Pages">
+                        <avalonDock:LayoutAnchorable Title="Pr-APr/Pages" IsVisible="False">
                             <Grid>
                                 <Grid.RowDefinitions>
 
@@ -279,8 +391,7 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                     </Grid>
                                 </GroupBox>
                             </Grid>
-                        </avalonDock:LayoutAnchorable>
-                        
+                        </avalonDock:LayoutAnchorable>                     
                     </avalonDock:LayoutAnchorablePane>
                 </avalonDock:LayoutPanel>
 

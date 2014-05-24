@@ -22,7 +22,6 @@ namespace LuceneSearchLibrary
         private IndexSearcher _searcher;
         #endregion
         #region Properties
-
         #endregion
         #region Constructors
         public Searcher(String indexDirectory)

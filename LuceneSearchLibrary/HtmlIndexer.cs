@@ -48,7 +48,6 @@ namespace LuceneSearchLibrary
         #region Constructors
         public  HtmlIndexer(string indexDirectory,string webSiteLink)
 		{
-
             try
             {
                 _writer = new IndexWriter(FSDirectory.Open(indexDirectory), new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_30), true, IndexWriter.MaxFieldLength.LIMITED);

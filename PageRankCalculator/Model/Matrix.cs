@@ -12,7 +12,6 @@ namespace PageRankCalculator.Model
     public class Matrix
     {
         #region Properties
-
         /// <summary>
         /// Gets the size of the current instance of the Matrix
         /// </summary>
@@ -23,11 +22,8 @@ namespace PageRankCalculator.Model
                 return _size;
             }
         }
-
         #endregion
-
         #region Indexers
-
         /// <summary>
         /// Gets the row or the column Vector at the specified row or column index resp.
         /// </summary>
@@ -93,7 +89,6 @@ namespace PageRankCalculator.Model
         }
 
         #endregion
-
         #region Constructors
         /// <summary>
         /// Initialize a new instance of the <b>Matrix</b> Class using the specified size
@@ -140,9 +135,7 @@ namespace PageRankCalculator.Model
         }
 
         #endregion
-
         #region Operators
-
         /// <summary>
         /// Additioning two Square matrices of the same size
         /// </summary>
@@ -170,7 +163,6 @@ namespace PageRankCalculator.Model
             }
             return additionResultMatrix;
         }
-
         /// <summary>
         /// Multplicating two Square matrices of the same size
         /// </summary>
@@ -209,7 +201,6 @@ namespace PageRankCalculator.Model
             }
             return multiplicationResultMatrix;
         }
-
         /// <summary>
         /// Multiplicating a row Vector and a square Matrix of the same size
         /// </summary>
@@ -253,7 +244,6 @@ namespace PageRankCalculator.Model
             }
             return multiplicationResultVector;
         }
-
         /// <summary>
         /// Multiplicating a square Matrix and a column Vector of the same size
         /// </summary>
@@ -283,7 +273,6 @@ namespace PageRankCalculator.Model
             }
             return multiplicationResultVector;
         }
-
         /// <summary>
         /// Multiplicating a float number and a square Matrix
         /// </summary>
@@ -302,7 +291,6 @@ namespace PageRankCalculator.Model
                 }
             return multiplicationResultMatrix;
         }
-
         /// <summary>
         /// Calculates a square matrix raised to the power of power
         /// </summary>
@@ -327,7 +315,6 @@ namespace PageRankCalculator.Model
 
             return powerResultMatrix;
         }
-
         /// <summary>
         /// Compares two square matrices of the same size
         /// </summary>
@@ -363,7 +350,6 @@ namespace PageRankCalculator.Model
             }
             return isEqual;            
         }
-
         /// <summary>
         /// Compares two square matrices of the same size
         /// </summary>
@@ -374,7 +360,6 @@ namespace PageRankCalculator.Model
         {
             return !(x == y);
         }
-
         /// <summary>
         /// Compares two square matrices of the same size
         /// </summary>
@@ -397,7 +382,6 @@ namespace PageRankCalculator.Model
             }
             return isGreater;
         }
-
         /// <summary>
         /// Compares two square matrices of the same size
         /// </summary>
@@ -418,7 +402,6 @@ namespace PageRankCalculator.Model
             }
             return true;
         }
-
         /// <summary>
         /// Compares two square matrices of the same size
         /// </summary>
@@ -429,7 +412,6 @@ namespace PageRankCalculator.Model
         {
             return !(x >= y);
         }
-
         /// <summary>
         /// Compares two square matrices of the same size
         /// </summary>
@@ -440,9 +422,7 @@ namespace PageRankCalculator.Model
         {
             return !(x > y);
         }
-
         #endregion
-
         #region Method
 
         /// <summary>

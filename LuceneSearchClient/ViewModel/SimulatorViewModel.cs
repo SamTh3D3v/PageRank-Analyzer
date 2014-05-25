@@ -41,6 +41,10 @@ namespace LuceneSearchClient.ViewModel
         public const string AprNumberOfIterationPropertyName = "AprNumberOfIteration";
         public const string PrPrecisionPropertyName = "PrPrecision";
         public const string AprprecisionPropertyName = "Aprprecision";
+        public const string ListAprPagesPropertyName = "ListAprPages";
+        public const string GoogleMatrixIsCalculatedPropertyName = "GoogleMatrixIsCalculated";
+        public const string GoogleMatrixPropertyName = "GoogleMatrix";
+        public const string AutomaticIterationsAprPropertyName = "AutomaticIterationsApr";
         #endregion
         #region Fields
         private ulong _matrixSize;
@@ -51,7 +55,8 @@ namespace LuceneSearchClient.ViewModel
         private float _defaultInitialPageRank;
         private ulong _prNumberIterations;
         private Vector _initialPageRank;
-        private bool _automaticIterations = true;
+        private bool _automaticIterations = false;        
+        private bool _automaticIterationsApr = false;
         private Vector _pageRank;
         private Matrix _teleportationMatrix;
         private ObservableCollection<string> _listWebPages = new ObservableCollection<string>();
@@ -65,6 +70,9 @@ namespace LuceneSearchClient.ViewModel
         private ulong _aprNumberOfIteration;
         private short _aprPrecesion = 5;
         private short _prPrecision = 5;
+        private ObservableCollection<KeyValuePair<float, float>> _listAprPages;
+        private Matrix _googleMatrix;
+        private Visibility _googleMatrixIsCalculated = Visibility.Hidden;           
         #endregion
         #region Properties
         public ulong MatrixSize
@@ -289,6 +297,24 @@ namespace LuceneSearchClient.ViewModel
                 RaisePropertyChanged(AutomaticIterationsPropertyName);
             }
         }
+        public bool AutomaticIterationsApr
+        {
+            get
+            {
+                return _automaticIterationsApr;
+            }
+
+            set
+            {
+                if (_automaticIterationsApr == value)
+                {
+                    return;
+                }
+                
+                _automaticIterationsApr = value;
+                RaisePropertyChanged(AutomaticIterationsAprPropertyName);
+            }
+        }
         public Vector PageRankVector
         {
             get
@@ -433,12 +459,6 @@ namespace LuceneSearchClient.ViewModel
                 RaisePropertyChanged(ListDampItPropertyName);
             }
         }
-
-        
-
-        
-
-
         public ObservableCollection<KeyValuePair<float, float>> ListPrPages
         {
             get
@@ -455,13 +475,7 @@ namespace LuceneSearchClient.ViewModel
                 _listPrPages = value;
                 RaisePropertyChanged(ListPrPagesPropertyName);
             }
-        }
-
-        public const string ListAprPagesPropertyName = "ListAprPages";
-
-        private ObservableCollection<KeyValuePair<float, float>> _listAprPages;
-
-
+        }                
         public ObservableCollection<KeyValuePair<float, float>> ListAprPages
         {
             get
@@ -498,12 +512,49 @@ namespace LuceneSearchClient.ViewModel
                 RaisePropertyChanged(EignValuesVectorPropertyName);
             }
         }
+        public Matrix GoogleMatrix
+        {
+            get
+            {
+                return _googleMatrix;
+            }
+
+            set
+            {
+                if (_googleMatrix == value)
+                {
+                    return;
+                }
+
+                _googleMatrix = value;
+                RaisePropertyChanged(GoogleMatrixPropertyName);
+                GoogleMatrixIsCalculated = Visibility.Visible;
+            }
+        }
+        public Visibility GoogleMatrixIsCalculated
+        {
+            get
+            {
+                return _googleMatrixIsCalculated;
+            }
+
+            set
+            {
+                if (_googleMatrixIsCalculated == value)
+                {
+                    return;
+                }
+                _googleMatrixIsCalculated = value;
+                RaisePropertyChanged(GoogleMatrixIsCalculatedPropertyName);
+            }
+        }      
         #endregion
         #region Ctors and Methods
         public SimulatorViewModel()
         {
             DampingFactor = PageRank.DefaultDampingFactor;
             PrNumberIterations = 100;
+            AprNumberOfIteration = 100;
         }
         #endregion
         #region Commands
@@ -568,7 +619,8 @@ namespace LuceneSearchClient.ViewModel
                                               TransitionMatrix = new Matrix(AdjacenteMatrix);
                                               TransitionMatrix.ToProbablityMatrix();
                                               RaisePropertyChanged(TransitionMatrixPropertyName);
-                                              var pageRank = new PageRank(TransitionMatrix, DampingFactor, TelePortationMatrix);
+                                              var pageRank = new PageRank(TransitionMatrix, DampingFactor, TelePortationMatrix);                                              
+                                              GoogleMatrix = pageRank.GetGoogleMatrix();
                                               var dateTime = DateTime.Now;
                                               PageRankVector = !AutomaticIterations ? pageRank.GetPageRankVector(InitialPageRank, PrPrecision, out prNbIterations) : pageRank.GetPageRankVector(InitialPageRank, (ulong)PrNumberIterations);
                                               Debug.WriteLine("PageRank Calculated In -> " + (DateTime.Now - dateTime).Milliseconds + " Miliseconds , Iterations ->" + PrNumberIterations);
@@ -805,9 +857,9 @@ namespace LuceneSearchClient.ViewModel
                                               RaisePropertyChanged(TransitionMatrixPropertyName);
                                               var amPageRank = new PageRank(TransitionMatrix, DampingFactor, TelePortationMatrix);
                                               var dateTime = DateTime.Now;
-                                              AmelioratedPageRankVector = !AutomaticIterations ? amPageRank.GetAmelioratedPageRankVector(InitialPageRank, PrPrecision, out aprNbIterations) : amPageRank.GetAmelioratedPageRankVector(InitialPageRank, (ulong)aprNbIterations);
+                                              AmelioratedPageRankVector = !AutomaticIterationsApr ? amPageRank.GetAmelioratedPageRankVector(InitialPageRank, PrPrecision, out aprNbIterations) : amPageRank.GetAmelioratedPageRankVector(InitialPageRank, (ulong)aprNbIterations);
                                               Debug.WriteLine("Ameliorated PageRank Calculated In ->" + (DateTime.Now - dateTime).Milliseconds + " Miliseconds , Iterations ->" + PrNumberIterations);
-                                              if (!AutomaticIterations)
+                                              if (!AutomaticIterationsApr)
                                                   AprNumberOfIteration = aprNbIterations;
                                           }));
             }

@@ -40,7 +40,7 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                     <ColumnDefinition Width="10"/>
                                     <ColumnDefinition Width="150"/>
                                 </Grid.ColumnDefinitions>
-                                <GroupBox Header="PageRank Settings" Margin="5" Grid.Row="0" Grid.ColumnSpan="3" Background="WhiteSmoke">
+                                <GroupBox Header="Settings" Margin="5" Grid.Row="0" Grid.ColumnSpan="3" Background="WhiteSmoke">
                                     <Grid>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto"/>
@@ -107,10 +107,19 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                                 </DataGrid>
                                             </Grid>
                                         </TabItem>
+                                        <TabItem Header="Google Matrix" Visibility="{Binding GoogleMatrixIsCalculated,Mode=TwoWay}" >
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+                                                <DataGrid Grid.Row="0" Margin="5" Background="White" ItemsSource="{Binding GoogleMatrix ,Converter={StaticResource MatrixToDataViewConverter},Mode=TwoWay}" LoadingRow="OnLoadingRow" IsReadOnly="True">
+                                                </DataGrid>
+                                            </Grid>
+                                        </TabItem>
                                     </TabControl>                                    
                                 </GroupBox>
-                                <GridSplitter Width="5" Grid.Row="1" Grid.Column="1"></GridSplitter>
-                                <GroupBox Grid.Column="2" Grid.Row="1" Header="Initial Page Rank">
+                                <GridSplitter Width="5" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center"></GridSplitter>
+                                <GroupBox Grid.Column="2" Grid.Row="1" Header="Initial Page Rank" Margin="5" Background="WhiteSmoke">
                                     <Grid>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="*"/>
@@ -179,7 +188,7 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                         </avalonDock:LayoutAnchorable >
                     </avalonDock:LayoutAnchorablePane>
                     <avalonDock:LayoutAnchorablePane DockWidth="300" >
-                        <avalonDock:LayoutAnchorable Title="Page Rank" >
+                        <avalonDock:LayoutAnchorable Title="Calculation" >
                             <GroupBox Header="PageRank" Margin="5" Background="WhiteSmoke">
                                 <Grid>
                                     <Grid.RowDefinitions>
@@ -190,15 +199,15 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>                                       
                                     </Grid.ColumnDefinitions>  
-                                    <GroupBox Header="Google pr" Grid.Row="0" Grid.Column="0">
-                                        <Grid>
+                                    <GroupBox Header="Google pr" Grid.Row="0" Grid.Column="0" >
+                                        <Grid >
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto"/>
                                                 <RowDefinition Height="Auto"/>
                                                 <RowDefinition Height="Auto"/>
                                             </Grid.RowDefinitions>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="120"/>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
@@ -227,7 +236,7 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                             </Grid.ColumnDefinitions>
                                             <Label Content="Number Of Iterations :" Grid.Row="0" Grid.Column="0" />
                                             <TextBox  Grid.Row="0" Grid.Column="1" Margin="3" Text="{Binding AprNumberOfIteration,Mode=TwoWay}" IsEnabled="{Binding ElementName=AutoIteCheckBoxAPr,Path=IsChecked}"/>
-                                            <CheckBox x:Name="AutoIteCheckBoxAPr"  Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding AutomaticIterations}"/>
+                                            <CheckBox x:Name="AutoIteCheckBoxAPr"  Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding AutomaticIterationsApr}"/>
 
                                             <Label Content="Convergence Crt :" Grid.Row="1" Grid.Column="0" />
                                             <TextBox  Grid.Row="1" Grid.Column="1" Margin="3" Grid.ColumnSpan="2" Text="{Binding Aprprecision,Mode=TwoWay}" />
@@ -235,8 +244,8 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                             <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Right" Content="Calculate" Margin="3" Command="{Binding CalculateAmelioratedPageRankCommand}"/>
                                         </Grid>
                                     </GroupBox>
-                                    <DataGrid  Grid.Column="0" Grid.Row="1" Margin="5" Background="White" ItemsSource="{Binding PageRankVector,Converter={StaticResource VectorToDataViewColumnConverter}}" LoadingRow="OnLoadingRow"/>
-                                    <DataGrid  Grid.Column="1" Grid.Row="1" Margin="5" Background="White" ItemsSource="{Binding AmelioratedPageRankVector,Converter={StaticResource VectorToDataViewColumnConverter}}" LoadingRow="OnLoadingRow" />
+                                    <DataGrid  Grid.Column="0" Grid.Row="1" Margin="5" Background="White" ItemsSource="{Binding PageRankVector,Converter={StaticResource VectorToDataViewColumnConverter}}" LoadingRow="OnLoadingRow" Width="150"/>
+                                    <DataGrid  Grid.Column="1" Grid.Row="1" Margin="5" Background="White" ItemsSource="{Binding AmelioratedPageRankVector,Converter={StaticResource VectorToDataViewColumnConverter}}" LoadingRow="OnLoadingRow" Width="150"/>
 
                                     
                                 </Grid>

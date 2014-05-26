@@ -34,7 +34,7 @@ namespace WebGraphMaker.ExcelDataCovertion
         }
 
         /// <summary>
-        /// Reads data from an Excel file, outputs the file name of the chosen Excel file
+        /// Reads data from an Excel file, inputs the file name of the chosen Excel file
         /// </summary>
         /// <param name="fileName">The full name of the chosen Excel file</param>
         /// <returns>The used range within the Excel file</returns>

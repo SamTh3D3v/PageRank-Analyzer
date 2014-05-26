@@ -128,7 +128,6 @@ namespace PageRankCalculator.PageRankCalculation
             }
             return pageRankVector;
         }
-
         /// <summary>
         /// Calculate the PageRank of all pages represented by the Transition matrix, using the initialVector and the degree of convergence
         /// </summary>
@@ -174,7 +173,6 @@ namespace PageRankCalculator.PageRankCalculation
 
             return pageRankVector;
         }
-
         /// <summary>
         /// Calculate the PageRank of all pages represented by the Transition matrix, using the initialVector and the number of itterations, This method 
         /// uses a calulated variant DampingFactor that corresponds to each page <see cref="GetVariantDampingFactorMatrix"/>
@@ -199,7 +197,6 @@ namespace PageRankCalculator.PageRankCalculation
             }
             return pageRankVector;
         }
-
         /// <summary>
         /// Calculate the PageRank of all pages represented by the Transition matrix, using the initialVector and the degree of convergence, This method 
         /// uses a calulated variant DampingFactor that corresponds to each page <see cref="GetVariantDampingFactorMatrix"/>
@@ -258,7 +255,6 @@ namespace PageRankCalculator.PageRankCalculation
 
             return pageRankVector;
         }
-
         /// <summary>
         /// Calculate the diagonal matrix containing the DampingFactors corresponding to each page, 
         /// this method is used for the ameliorated version of the GetPageRankVector <see>
@@ -287,7 +283,6 @@ namespace PageRankCalculator.PageRankCalculation
             }
             return dampingFactorMatrix;
         }
-
         /// <summary>
         /// Fulfil the Zero-lines in the Transition Matrix, this method stochasticize the transition matrix and hence delete the dangling nodes case
         /// </summary>
@@ -304,7 +299,6 @@ namespace PageRankCalculator.PageRankCalculation
                                                    }
                                                });
         }
-
         /// <summary>
         /// Calculates the Google matrix used to calculate the PageRank
         /// </summary>
@@ -320,9 +314,7 @@ namespace PageRankCalculator.PageRankCalculation
             //return google matrix
             return temp1 + temp2;
         }
-
         #endregion
-
         #region  Fields
 
         /// <summary>

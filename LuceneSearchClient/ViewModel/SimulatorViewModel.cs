@@ -45,6 +45,8 @@ namespace LuceneSearchClient.ViewModel
         public const string GoogleMatrixIsCalculatedPropertyName = "GoogleMatrixIsCalculated";
         public const string GoogleMatrixPropertyName = "GoogleMatrix";
         public const string AutomaticIterationsAprPropertyName = "AutomaticIterationsApr";
+        public const string ListMatricesLabelsPropertyName = "ListMatricesLabels";
+        public const string SelectedMatriceEvPropertyName = "SelectedMatriceEv";
         #endregion
         #region Fields
         private ulong _matrixSize;
@@ -55,7 +57,7 @@ namespace LuceneSearchClient.ViewModel
         private float _defaultInitialPageRank;
         private ulong _prNumberIterations;
         private Vector _initialPageRank;
-        private bool _automaticIterations = false;        
+        private bool _automaticIterations = false;
         private bool _automaticIterationsApr = false;
         private Vector _pageRank;
         private Matrix _teleportationMatrix;
@@ -72,7 +74,14 @@ namespace LuceneSearchClient.ViewModel
         private short _prPrecision = 5;
         private ObservableCollection<KeyValuePair<float, float>> _listAprPages;
         private Matrix _googleMatrix;
-        private Visibility _googleMatrixIsCalculated = Visibility.Hidden;           
+        private Visibility _googleMatrixIsCalculated = Visibility.Hidden;
+        private List<string> _listMatricesLabelsList = new List<string>()
+        {
+            "google Matrix",
+            "Transition Matrix",
+            "Adjacence Matrix"
+        };
+        private string _selectedMatriceEv = "google Matrix";
         #endregion
         #region Properties
         public ulong MatrixSize
@@ -208,7 +217,7 @@ namespace LuceneSearchClient.ViewModel
                 _prNumberIterations = value;
                 RaisePropertyChanged(NumberIterationsPropertyName);
             }
-        }                           
+        }
         public short PrPrecision
         {
             get
@@ -222,11 +231,11 @@ namespace LuceneSearchClient.ViewModel
                 {
                     return;
                 }
-                
+
                 _prPrecision = value;
                 RaisePropertyChanged(PrPrecisionPropertyName);
             }
-        }              
+        }
         public short Aprprecision
         {
             get
@@ -240,7 +249,7 @@ namespace LuceneSearchClient.ViewModel
                 {
                     return;
                 }
-                
+
                 _aprPrecesion = value;
                 RaisePropertyChanged(AprprecisionPropertyName);
             }
@@ -258,7 +267,7 @@ namespace LuceneSearchClient.ViewModel
                 {
                     return;
                 }
-                
+
                 _aprNumberOfIteration = value;
                 RaisePropertyChanged(AprNumberOfIterationPropertyName);
             }
@@ -310,7 +319,7 @@ namespace LuceneSearchClient.ViewModel
                 {
                     return;
                 }
-                
+
                 _automaticIterationsApr = value;
                 RaisePropertyChanged(AutomaticIterationsAprPropertyName);
             }
@@ -475,7 +484,7 @@ namespace LuceneSearchClient.ViewModel
                 _listPrPages = value;
                 RaisePropertyChanged(ListPrPagesPropertyName);
             }
-        }                
+        }
         public ObservableCollection<KeyValuePair<float, float>> ListAprPages
         {
             get
@@ -547,7 +556,42 @@ namespace LuceneSearchClient.ViewModel
                 _googleMatrixIsCalculated = value;
                 RaisePropertyChanged(GoogleMatrixIsCalculatedPropertyName);
             }
-        }      
+        }
+        public List<string> ListMatricesLabels
+        {
+            get
+            {
+                return _listMatricesLabelsList;
+            }
+
+            set
+            {
+                if (_listMatricesLabelsList == value)
+                {
+                    return;
+                }
+                _listMatricesLabelsList = value;
+                RaisePropertyChanged(ListMatricesLabelsPropertyName);
+            }
+        }
+        public string SelectedMatriceEv
+        {
+            get
+            {
+                return _selectedMatriceEv;
+            }
+
+            set
+            {
+                if (_selectedMatriceEv == value)
+                {
+                    return;
+                }
+
+                _selectedMatriceEv = value;
+                RaisePropertyChanged(SelectedMatriceEvPropertyName);
+            }
+        }
         #endregion
         #region Ctors and Methods
         public SimulatorViewModel()
@@ -619,7 +663,7 @@ namespace LuceneSearchClient.ViewModel
                                               TransitionMatrix = new Matrix(AdjacenteMatrix);
                                               TransitionMatrix.ToProbablityMatrix();
                                               RaisePropertyChanged(TransitionMatrixPropertyName);
-                                              var pageRank = new PageRank(TransitionMatrix, DampingFactor, TelePortationMatrix);                                              
+                                              var pageRank = new PageRank(TransitionMatrix, DampingFactor, TelePortationMatrix);
                                               GoogleMatrix = pageRank.GetGoogleMatrix();
                                               var dateTime = DateTime.Now;
                                               PageRankVector = !AutomaticIterations ? pageRank.GetPageRankVector(InitialPageRank, PrPrecision, out prNbIterations) : pageRank.GetPageRankVector(InitialPageRank, (ulong)PrNumberIterations);
@@ -710,12 +754,12 @@ namespace LuceneSearchClient.ViewModel
                                               var listPr = new List<KeyValuePair<float, float>>();
                                               var listAPr = new List<KeyValuePair<float, float>>();
                                               for (float page = 0; page < TransitionMatrix.Size; page++)
-                                              {                                                  
+                                              {
                                                   listPr.Add(new KeyValuePair<float, float>(page, PageRankVector[(ulong)page]));
                                                   listAPr.Add(new KeyValuePair<float, float>(page, AmelioratedPageRankVector[(ulong)page]));
                                               }
                                               ListPrPages = new ObservableCollection<KeyValuePair<float, float>>(listPr);
-                                              ListAprPages= new ObservableCollection<KeyValuePair<float, float>>(listAPr);
+                                              ListAprPages = new ObservableCollection<KeyValuePair<float, float>>(listAPr);
                                           }));
             }
         }
@@ -851,7 +895,7 @@ namespace LuceneSearchClient.ViewModel
                     ?? (_calculateAmelioratedPageRankCommand = new RelayCommand(
                                           () =>
                                           {
-                                              ulong aprNbIterations  = 0;
+                                              ulong aprNbIterations = 0;
                                               TransitionMatrix = new Matrix(AdjacenteMatrix);
                                               TransitionMatrix.ToProbablityMatrix();
                                               RaisePropertyChanged(TransitionMatrixPropertyName);
@@ -886,16 +930,44 @@ namespace LuceneSearchClient.ViewModel
                     ?? (_calculateEignValuesCommand = new RelayCommand(
                                           () =>
                                           {
-                                              if (TransitionMatrix==null)
-                                                  TransitionMatrix = new Matrix(AdjacenteMatrix);
-                                              
-                                              var listEv = TransitionMatrix.Eigenvalues();
-                                              _eignValuesVector = new Vector(VectorType.Column, (ulong)listEv.Count);
-                                              for (int i = 0; i < listEv.Count; i++)
+                                              List<float> listEv;
+                                              switch (SelectedMatriceEv)
                                               {
-                                                  _eignValuesVector[(ulong)i] = listEv[i];
+                                                  case "google Matrix":
+                                                      if (GoogleMatrix == null) return;                                                          
+                                                      listEv = GoogleMatrix.Eigenvalues();
+                                                      _eignValuesVector = new Vector(VectorType.Column, (ulong)listEv.Count);
+                                                      for (int i = 0; i < listEv.Count; i++)
+                                                      {
+                                                          _eignValuesVector[(ulong)i] = listEv[i];
+                                                      }
+                                                      RaisePropertyChanged(EignValuesVectorPropertyName);
+                                                      break;
+                                                  case "Transition Matrix":
+                                                      if (TransitionMatrix == null)
+                                                      {
+                                                          if (AdjacenteMatrix == null) return;
+                                                          TransitionMatrix = new Matrix(AdjacenteMatrix);
+                                                      }
+                                                      listEv = TransitionMatrix.Eigenvalues();
+                                                      _eignValuesVector = new Vector(VectorType.Column, (ulong)listEv.Count);
+                                                      for (int i = 0; i < listEv.Count; i++)
+                                                      {
+                                                          _eignValuesVector[(ulong)i] = listEv[i];
+                                                      }
+                                                      RaisePropertyChanged(EignValuesVectorPropertyName);
+                                                      break;
+                                                  case "Adjacence Matrix":
+                                                      if (AdjacenteMatrix == null) return;
+                                                      listEv = AdjacenteMatrix.Eigenvalues();
+                                                      _eignValuesVector = new Vector(VectorType.Column, (ulong)listEv.Count);
+                                                      for (int i = 0; i < listEv.Count; i++)
+                                                      {
+                                                          _eignValuesVector[(ulong)i] = listEv[i];
+                                                      }
+                                                      RaisePropertyChanged(EignValuesVectorPropertyName);
+                                                      break;
                                               }
-                                              RaisePropertyChanged(EignValuesVectorPropertyName);
                                           }));
             }
         }

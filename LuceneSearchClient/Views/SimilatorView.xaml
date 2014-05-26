@@ -177,11 +177,8 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                                 <ComboBoxItem Content="Google Matrix" IsSelected="True" />
                                                 <ComboBoxItem Content="Transition Matrix" />
                                                 <ComboBoxItem Content="Adjacence Matrix" />                                                
-                                            </ComboBox>
-                                            
+                                            </ComboBox>                                            
                                         </StackPanel>
-
-
                                     </Grid>
                                 </GroupBox>-->
                             </Grid>
@@ -199,7 +196,7 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>                                       
                                     </Grid.ColumnDefinitions>  
-                                    <GroupBox Header="Google pr" Grid.Row="0" Grid.Column="0" >
+                                    <GroupBox Header="Google page rank" Grid.Row="0" Grid.Column="0" >
                                         <Grid >
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto"/>
@@ -213,16 +210,13 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                             </Grid.ColumnDefinitions>
                                             <Label Content="Number Of Iterations :" Grid.Row="0" Grid.Column="0" />
                                             <TextBox  Grid.Row="0" Grid.Column="1" Margin="3" Text="{Binding PrNumberIterations,Mode=TwoWay}" IsEnabled="{Binding ElementName=AutoIteCheckBoxPr,Path=IsChecked}"/>
-                                            <CheckBox x:Name="AutoIteCheckBoxPr"  Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding AutomaticIterations}"/>
-
-                                            <Label Content="Convergence Crt :" Grid.Row="1" Grid.Column="0" />
-                                            <TextBox  Grid.Row="1" Grid.Column="1" Margin="3" Grid.ColumnSpan="2" Text="{Binding PrPrecision,Mode=TwoWay}" />
-                                            
-                                            <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Right" Content="Calculate" Margin="3" Command="{Binding CalculatePageRankCommand}"/>
-
+                                            <CheckBox x:Name="AutoIteCheckBoxPr" ToolTip="auto calculated"  Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding AutomaticIterations}"/>
+                                            <Label Content="Precision :" Grid.Row="1" Grid.Column="0" />
+                                            <TextBox  Grid.Row="1" Grid.Column="1" Margin="3" Grid.ColumnSpan="2" Text="{Binding PrPrecision,Mode=TwoWay}" />                                            
+                                            <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" Content="Calculate" Margin="3" Command="{Binding CalculatePageRankCommand}"/>
                                         </Grid>
                                           </GroupBox>
-                                    <GroupBox Header="Ameliorated pr" Grid.Row="0" Grid.Column="1">
+                                    <GroupBox Header="Ameliorated page rank" Grid.Row="0" Grid.Column="1">
                                         <Grid>
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto"/>
@@ -230,18 +224,16 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                                 <RowDefinition Height="Auto"/>
                                             </Grid.RowDefinitions>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="120"/>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
                                             <Label Content="Number Of Iterations :" Grid.Row="0" Grid.Column="0" />
                                             <TextBox  Grid.Row="0" Grid.Column="1" Margin="3" Text="{Binding AprNumberOfIteration,Mode=TwoWay}" IsEnabled="{Binding ElementName=AutoIteCheckBoxAPr,Path=IsChecked}"/>
-                                            <CheckBox x:Name="AutoIteCheckBoxAPr"  Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding AutomaticIterationsApr}"/>
-
-                                            <Label Content="Convergence Crt :" Grid.Row="1" Grid.Column="0" />
+                                            <CheckBox x:Name="AutoIteCheckBoxAPr" ToolTip="auto calculated"  Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding AutomaticIterationsApr}"/>
+                                            <Label Content="Precision :" Grid.Row="1" Grid.Column="0" />
                                             <TextBox  Grid.Row="1" Grid.Column="1" Margin="3" Grid.ColumnSpan="2" Text="{Binding Aprprecision,Mode=TwoWay}" />
-
-                                            <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Right" Content="Calculate" Margin="3" Command="{Binding CalculateAmelioratedPageRankCommand}"/>
+                                            <Button Grid.Row="2"  Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" Content="Calculate" Margin="3" Command="{Binding CalculateAmelioratedPageRankCommand}"/>
                                         </Grid>
                                     </GroupBox>
                                     <DataGrid  Grid.Column="0" Grid.Row="1" Margin="5" Background="White" ItemsSource="{Binding PageRankVector,Converter={StaticResource VectorToDataViewColumnConverter}}" LoadingRow="OnLoadingRow" Width="150"/>
@@ -268,14 +260,11 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                                 <RowDefinition Height="Auto"/>
                                             </Grid.RowDefinitions>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="60"/>
                                                 <ColumnDefinition Width="*"/>                                                
                                             </Grid.ColumnDefinitions>                                                                                  
                                             <Label Content="Matrice :" Grid.Row="0" Grid.Column="0" />
-                                            <ComboBox  Margin="3" Grid.Column="1" Grid.Row="0">
-                                                <ComboBoxItem Content="Google Matrix" IsSelected="True" />
-                                                <ComboBoxItem Content="Transition Matrix" />
-                                                <ComboBoxItem Content="Adjacence Matrix" />
+                                            <ComboBox  Margin="3" Grid.Column="1" Grid.Row="0" ItemsSource="{Binding ListMatricesLabels}" SelectedItem="{Binding SelectedMatriceEv, Mode=TwoWay}">                                          
                                             </ComboBox>
                                             <Button Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Right" Content="Calculate" Margin="3" Command="{Binding CalculateEignValuesCommand}"/>
                                         </Grid>

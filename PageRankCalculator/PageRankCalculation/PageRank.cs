@@ -35,6 +35,15 @@ namespace PageRankCalculator.PageRankCalculation
             {
                 return _teleportationMatrix;
             }
+            set
+            {
+
+                if (_teleportationMatrix != null && _teleportationMatrix == value)
+                {
+                    return;
+                }                    
+                _teleportationMatrix = value;
+            }
         }
         /// <summary>
         /// Gets the value of the Transition matrix, represents transition probabilities from web graph pages

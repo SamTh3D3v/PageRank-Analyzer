@@ -5,25 +5,28 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ignore="http://www.ignore.com"
       xmlns:converters="clr-namespace:LuceneSearchClient.Converters"
-        mc:Ignorable="d ignore" d:DesignHeight="500" d:DesignWidth="700"
+      xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d ignore" d:DesignHeight="500" d:DesignWidth="800"
         DataContext="{Binding PageRankViewModel, Source={StaticResource Locator}}">
     <Page.Resources>
         <converters:MatrixToDataViewConverter x:Key="MatrixToDataViewConverter" />
-        <converters:ArrayToDataViewConverter x:Key="VectorToDataViewConverter"/>
+        <converters:VectorToDataViewRowConverter x:Key="VectorToDataViewRowConverter"/>
+        <converters:VectorToDataViewColumnConverter x:Key="VectorToDataViewColumnConverter"/>
         <converters:GenerateWebGraphConverter x:Key="GenerateWebGraphConverter"/>
         <converters:InitialVectorSetConverter x:Key="InitialVectorSetConverter"/>
-        
     </Page.Resources>
 
-    <Grid>
+    <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <GroupBox Header="WebGraph" Grid.Row="0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="15"/>
+            <ColumnDefinition Width="400"/>
+        </Grid.ColumnDefinitions>
+        <GroupBox Header="WebGraph" Grid.Row="0" Margin="3" Background="WhiteSmoke">
             <Grid >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -33,21 +36,23 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="130"/>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="130"/>
+                    <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <Label Content="Web Graph Excel File :"/>
-                <TextBox Grid.Row="0" Grid.Column="1" Margin="5" IsEnabled="False" Text="{Binding WebGraphExcelFile}"  x:Name="WebGraphTextBox"/>
-                <Button Content="Browse" Grid.Column="2" Grid.Row="0" Margin="5" Command="{Binding BrowseCommand}"/>
-                <Button Content="Generate" Grid.Column="3" Grid.Row="0" Margin="5" Command="{Binding GenerateXmlsCommands}" IsEnabled="{Binding ElementName=WebGraphTextBox,Path=Text,Converter={StaticResource GenerateWebGraphConverter}}"/>
-                <Label Content="Pages Xml File :" Grid.Row="1" Grid.Column="0" />
-                <TextBox  Grid.Column="1" Margin="5" Grid.Row="1" IsEnabled="False" Grid.ColumnSpan="3" Text="{Binding PagesXmlFile}"/>               
-                <Label Content="Links Xml File :" Grid.Row="2" Grid.Column="0" />
-                <TextBox  Grid.Column="1" Margin="5" Grid.Row="2" IsEnabled="False" Grid.ColumnSpan="3" Text="{Binding LinksXmlFile}"/>
-                
+                <Label Content="Web Graph Excel File :" Margin="5" />
+                <TextBox Grid.Row="0" Grid.Column="1" Margin="5" IsEnabled="False" Text="{Binding WebGraphExcelFile}"  x:Name="WebGraphTextBox" Grid.ColumnSpan="3"/>
+                <Button Content="Browse" Grid.Column="4" x:Name="BrowseButton" Grid.Row="0" Margin="5" Command="{Binding BrowseCommand}"/>
+                <Button Content="Generate" Grid.Column="4" Grid.Row="1" Margin="5" Command="{Binding GenerateXmlsCommands}" IsEnabled="{Binding GenerateButtonIsEnabled}"/>
+                <Label Content="Pages Xml File :" Grid.Row="1" Grid.Column="0" Margin="5" />
+                <TextBox  Grid.Column="1" Margin="5" Grid.Row="1" IsEnabled="False" Text="{Binding PagesXmlFile}"/>
+                <Label Content="Links Xml File :" Grid.Row="1" Grid.Column="2" Margin="5" />
+                <TextBox x:Name="LinksXmlBox"  Grid.Column="3" Margin="5" Grid.Row="1" IsEnabled="False" Text="{Binding LinksXmlFile}"/>
+
             </Grid>
-        </GroupBox>     
-        <GroupBox Header="Matrices" Margin="5" Grid.Row="1">
+        </GroupBox>
+        <GroupBox Header="Matrices" Margin="3" Grid.Row="1" Grid.Column="0" Background="WhiteSmoke">
+            <ScrollViewer MinWidth="600" MinHeight="300" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
             <TabControl>
                 <TabItem Header="Transition Matrix">
                     <Grid>
@@ -56,8 +61,8 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <DataGrid Grid.Row="0" Margin="5" Background="White" ItemsSource="{Binding TransitionMatrix ,Converter={StaticResource MatrixToDataViewConverter},Mode=TwoWay}" LoadingRow="OnLoadingRow" />
-                        <Button Content="Get Transition Matrix" Margin="2" Grid.Row="1"  Grid.Column="0" Command="{Binding GetTransitionMatrixCommand}"/>
+                        <DataGrid Grid.Row="0" Margin="5" Background="White" ItemsSource="{Binding TransitionMatrix ,Converter={StaticResource MatrixToDataViewConverter},Mode=TwoWay}" LoadingRow="OnLoadingRow" IsReadOnly="True"/>
+                        <Button HorizontalAlignment="Left"  Content="Get Transition Matrix" Margin="2" Grid.Row="1"  Grid.Column="0" IsEnabled="{Binding GetTrMatButIsEnabled}" Command="{Binding GetTransitionMatrixCommand}"/>
                     </Grid>
                 </TabItem>
                 <TabItem Header="Teleportation Matrix">
@@ -68,31 +73,47 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <DataGrid Grid.Row="0" Margin="5" Background="White" ItemsSource="{Binding TeleportationMatrix ,Converter={StaticResource MatrixToDataViewConverter},Mode=TwoWay}" LoadingRow="OnLoadingRow"/>
-                        <Button Content="1/N" Margin="2" Grid.Row="1"  Grid.Column="0" Command="{Binding SetTeleportationCommand}"/>
+                        <Button Content="1/N" HorizontalAlignment="Left" Margin="2" Grid.Row="1"  Grid.Column="0"  IsEnabled="{Binding InitialPageRankVector,Converter={StaticResource InitialVectorSetConverter}}" Command="{Binding SetTeleportationCommand}"/>
                     </Grid>
                 </TabItem>
-            </TabControl>            
+            </TabControl>
+            </ScrollViewer>
         </GroupBox>
-        <GroupBox Header="Initial PageRank Values " Margin="5" Grid.Row="2">
+        <GridSplitter Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Width="5" HorizontalAlignment="Center"></GridSplitter>
+        <GroupBox Header="PageRank" Margin="5" Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" Background="WhiteSmoke">
             <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <DataGrid Grid.Row="0" Margin="5" Background="White" ItemsSource="{Binding InitialPageRankVector,Converter={StaticResource VectorToDataViewConverter}}"/>
-                <Button Content="1/N" Margin="2" Grid.Column="1" IsEnabled="{Binding InitialPageRankVector,Converter={StaticResource InitialVectorSetConverter}}" Command="{Binding SetInitialPageRankCommand}"/>
-
-            </Grid>
-        </GroupBox>
-        <GroupBox Header="PageRank " Margin="10,10,0,0" Grid.Row="3">
-            <Grid>
-                <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="18"/>
                 </Grid.ColumnDefinitions>
-                <DataGrid Grid.Row="0" Margin="5" Background="White" ItemsSource="{Binding PageRankVector,Converter={StaticResource VectorToDataViewConverter}}" />
-                <Button Content="Calculate Page Rank" Margin="2" Grid.Column="1" IsEnabled="{Binding InitialPageRankVector,Converter={StaticResource InitialVectorSetConverter}}" Command="{Binding CalculatePageRankCommand}"/>
+                <Label Content="Initial Vector :" Grid.Row="0" Grid.Column="0"/>
+                <Button Grid.Row="2" Content="1/N" Margin="2" Grid.Column="0" VerticalAlignment="Center" IsEnabled="{Binding InitialPageRankVector,Converter={StaticResource InitialVectorSetConverter}}" Command="{Binding SetInitialPageRankCommand}" Height="20"/>
 
+                <Label Content="Google PR :" Grid.Row="0" Grid.Column="1"/>
+                <Button Grid.Row="2" Content="Calculate" Margin="2" Grid.Column="1" VerticalAlignment="Center" IsEnabled="{Binding InitialPageRankVector,Converter={StaticResource InitialVectorSetConverter}}" Command="{Binding CalculatePageRankCommand}" Height="20"/>
+
+                <Label Content="Ameliorated PR :" Grid.Row="0" Grid.Column="2"/>
+                <Button Grid.Row="2" Content="Calculate" Margin="2" Grid.Column="2" VerticalAlignment="Center" IsEnabled="{Binding InitialPageRankVector,Converter={StaticResource InitialVectorSetConverter}}" Command="{Binding CalculateAmelioratedPageRankCommand}" Height="20"/>
+                <ScrollViewer MinWidth="300" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" VerticalScrollBarVisibility="Visible">
+
+                    <Grid >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <DataGrid  Grid.Column="0"  Margin="5" Background="White" ItemsSource="{Binding InitialPageRankVector,Converter={StaticResource VectorToDataViewColumnConverter},Mode=TwoWay}" LoadingRow="OnLoadingRow" />
+                        <DataGrid  Grid.Column="1" Margin="5" Background="White" ItemsSource="{Binding PageRankVector,Converter={StaticResource VectorToDataViewColumnConverter}}" LoadingRow="OnLoadingRow"/>
+                        <DataGrid  Grid.Column="2" Margin="5" Background="White" ItemsSource="{Binding AmelioratedPageRankVector,Converter={StaticResource VectorToDataViewColumnConverter}}" LoadingRow="OnLoadingRow" />
+                    </Grid>
+                </ScrollViewer>
             </Grid>
         </GroupBox>
     </Grid>

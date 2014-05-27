@@ -22,7 +22,6 @@ namespace LuceneSearchLibrary
         private IndexSearcher _searcher;
         #endregion
         #region Properties
-
         #endregion
         #region Constructors
         public Searcher(String indexDirectory)
@@ -35,6 +34,8 @@ namespace LuceneSearchLibrary
         //Changes
         public IEnumerable<DocumentHit> Search(String term)
         {
+            if (term == null) return null;
+           
             var analyzer = new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_30);
             var parser = new QueryParser(Lucene.Net.Util.Version.LUCENE_30, "text", analyzer);
             var query = parser.Parse(term);                      
@@ -51,7 +52,7 @@ namespace LuceneSearchLibrary
                     Path=doc.Get("path"),
                     Link = doc.Get("link"),
                     Score = hits[i].Score,
-                    PageRank = 1  //PageRank To Be Calcumated
+                    PageRank = 0 //PageRank To Be Calculated
                 });              
             }
             return listHits;

@@ -24,7 +24,12 @@
             get;
             set;
         }        
-        public short PageRank
+        public float PageRank
+        {
+            get;
+            set;
+        }
+        public float PageRankAmeliorated
         {
             get;
             set;

@@ -10,7 +10,7 @@ using PageRankCalculator.Model;
 
 namespace LuceneSearchClient.Converters
 {
-    public class ArrayToDataViewConverter : IValueConverter
+    public class VectorToDataViewRowConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -25,12 +25,20 @@ namespace LuceneSearchClient.Converters
                 newRow[(int) column] = vector[column];
             }                       
             dataTable.Rows.Add(newRow);
-            return dataTable.DefaultView;
+            return dataTable;            
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            if (value == null) return null;
+            var dataTable = value as DataTable;
+            var vector = new Vector(VectorType.Row, (ulong) dataTable.Columns.Count);
+            for (ulong column = 0; column < vector.Size; column++)
+            {
+                var tmp = dataTable.Rows[0][(int) column];
+                vector[column] = float.Parse(dataTable.Rows[0][(int)column].ToString(),CultureInfo.InvariantCulture);               
+            }
+            return vector;
         }
     }
 }

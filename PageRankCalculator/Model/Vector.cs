@@ -11,7 +11,6 @@ namespace PageRankCalculator.Model
     public class Vector
     {
         #region Properties
-
         /// <summary>
         /// Gets the size of current Vector 
         /// </summary>
@@ -102,7 +101,7 @@ namespace PageRankCalculator.Model
         #endregion
 
         #region Methods
-        
+
         /// <summary>
         /// Gets a 1/Size all Vector, using a Vector type and a specified Vector size
         /// </summary>

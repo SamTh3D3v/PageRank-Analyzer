@@ -194,6 +194,7 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="15"/>
                                         <ColumnDefinition Width="*"/>                                       
                                     </Grid.ColumnDefinitions>  
                                     <GroupBox Header="Google page rank" Grid.Row="0" Grid.Column="0" >
@@ -216,7 +217,7 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                             <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" Content="Calculate" Margin="3" Command="{Binding CalculatePageRankCommand}"/>
                                         </Grid>
                                           </GroupBox>
-                                    <GroupBox Header="Ameliorated page rank" Grid.Row="0" Grid.Column="1">
+                                    <GroupBox Header="Ameliorated page rank" Grid.Row="0" Grid.Column="2">
                                         <Grid>
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto"/>
@@ -236,8 +237,9 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                             <Button Grid.Row="2"  Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" Content="Calculate" Margin="3" Command="{Binding CalculateAmelioratedPageRankCommand}"/>
                                         </Grid>
                                     </GroupBox>
+                                    <GridSplitter HorizontalAlignment="Center" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" Width="5"></GridSplitter>
                                     <DataGrid  Grid.Column="0" Grid.Row="1" Margin="5" Background="White" ItemsSource="{Binding PageRankVector,Converter={StaticResource VectorToDataViewColumnConverter}}" LoadingRow="OnLoadingRow" Width="150"/>
-                                    <DataGrid  Grid.Column="1" Grid.Row="1" Margin="5" Background="White" ItemsSource="{Binding AmelioratedPageRankVector,Converter={StaticResource VectorToDataViewColumnConverter}}" LoadingRow="OnLoadingRow" Width="150"/>
+                                    <DataGrid  Grid.Column="2" Grid.Row="1" Margin="5" Background="White" ItemsSource="{Binding AmelioratedPageRankVector,Converter={StaticResource VectorToDataViewColumnConverter}}" LoadingRow="OnLoadingRow" Width="150"/>
 
                                     
                                 </Grid>

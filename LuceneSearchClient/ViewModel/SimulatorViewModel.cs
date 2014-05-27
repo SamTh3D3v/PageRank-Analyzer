@@ -665,6 +665,7 @@ namespace LuceneSearchClient.ViewModel
                                               RaisePropertyChanged(TransitionMatrixPropertyName);
                                               var pageRank = new PageRank(TransitionMatrix, DampingFactor, TelePortationMatrix);
                                               GoogleMatrix = pageRank.GetGoogleMatrix();
+                                              pageRank.TeleportationMatrix = TelePortationMatrix;
                                               var dateTime = DateTime.Now;
                                               PageRankVector = !AutomaticIterations ? pageRank.GetPageRankVector(InitialPageRank, PrPrecision, out prNbIterations) : pageRank.GetPageRankVector(InitialPageRank, (ulong)PrNumberIterations);
                                               Debug.WriteLine("PageRank Calculated In -> " + (DateTime.Now - dateTime).Milliseconds + " Miliseconds , Iterations ->" + PrNumberIterations);
@@ -901,6 +902,7 @@ namespace LuceneSearchClient.ViewModel
                                               RaisePropertyChanged(TransitionMatrixPropertyName);
                                               var amPageRank = new PageRank(TransitionMatrix, DampingFactor, TelePortationMatrix);
                                               var dateTime = DateTime.Now;
+                                              amPageRank.TeleportationMatrix = TelePortationMatrix;
                                               AmelioratedPageRankVector = !AutomaticIterationsApr ? amPageRank.GetAmelioratedPageRankVector(InitialPageRank, PrPrecision, out aprNbIterations) : amPageRank.GetAmelioratedPageRankVector(InitialPageRank, (ulong)aprNbIterations);
                                               Debug.WriteLine("Ameliorated PageRank Calculated In ->" + (DateTime.Now - dateTime).Milliseconds + " Miliseconds , Iterations ->" + PrNumberIterations);
                                               if (!AutomaticIterationsApr)

@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="WebGraphMaker.ExcelDataCovertion.ExcelDataConverter">
+    <Position X="4.25" Y="1" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAIQAAAAARAAAAAAAAAAAIAAAgAAAAAAAAAA=</HashCode>
+      <FileName>ExcelDataCovertion\ExcelDataConverter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WebGraphMaker.ExcelDataCovertion.ExcelDataReader">
+    <Position X="6.75" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ExcelDataCovertion\ExcelDataReader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WebGraphMaker.Model.Link">
+    <Position X="6.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Model\Link.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WebGraphMaker.Model.Page">
+    <Position X="4.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAgAAAAAAAAAAAAAAAAAAAACAgAAAAAAAA=</HashCode>
+      <FileName>Model\Page.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="WebGraphMaker.ExcelDataCovertion.GraphEntities">
+    <Position X="6.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>ExcelDataCovertion\ExcelDataConverter.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

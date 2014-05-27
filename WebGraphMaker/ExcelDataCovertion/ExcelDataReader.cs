@@ -23,11 +23,11 @@ namespace WebGraphMaker.ExcelDataCovertion
         private static Workbook LoadWorkbook(string fileName)
         {
             var xlApp = new Application();
-            Workbook xlWorkbook = null;          
+            Workbook xlWorkbook = null;
             if (fileName!=null)
-            {                
+            {
                 xlWorkbook = xlApp.Workbooks.Open(fileName);
-            }            
+            }
             if (xlWorkbook == null) throw new NullReferenceException("Workbook object is null !");
             return xlWorkbook;
 

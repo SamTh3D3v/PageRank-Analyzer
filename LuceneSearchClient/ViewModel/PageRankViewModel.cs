@@ -45,7 +45,7 @@ namespace LuceneSearchClient.ViewModel
         private bool _generateButtonIsEnabled = false;
         private bool _getTrMatButIsEnabled = false;
         #endregion
-        #region Properties
+        #region Properties 
         public string WebGraphExcelFile
         {
             get
@@ -59,11 +59,11 @@ namespace LuceneSearchClient.ViewModel
                 {
                     return;
                 }
-
+                
                 _webGraphExcelFile = value;
                 RaisePropertyChanged(WebGraphExcelFilePropertyName);
             }
-        }
+        }   
         public string PagesXmlFile
         {
             get
@@ -76,7 +76,7 @@ namespace LuceneSearchClient.ViewModel
                 if (_pagesXmlFile == value)
                 {
                     return;
-                }
+                }                
                 _pagesXmlFile = value;
                 RaisePropertyChanged(PagesXmlFilePropertyName);
             }
@@ -97,7 +97,7 @@ namespace LuceneSearchClient.ViewModel
                 _linksXmlFile = value;
                 RaisePropertyChanged(LinksXmlFilePropertyName);
             }
-        }
+        }  
         public Vector InitialPageRankVector
         {
             get
@@ -110,11 +110,11 @@ namespace LuceneSearchClient.ViewModel
                 if (_initialPageRankVector == value)
                 {
                     return;
-                }
+                }                
                 _initialPageRankVector = value;
                 RaisePropertyChanged(InitialPageRankVectorPropertyName);
             }
-        }
+        }                    
         public Matrix TransitionMatrix
         {
             get
@@ -128,11 +128,11 @@ namespace LuceneSearchClient.ViewModel
                 {
                     return;
                 }
-
+                
                 _transitionMatrix = value;
                 RaisePropertyChanged(TransitionMatrixPropertyName);
             }
-        }
+        }                   
         public Matrix TeleportationMatrix
         {
             get
@@ -145,7 +145,7 @@ namespace LuceneSearchClient.ViewModel
                 if (_teleportationMatrix == value)
                 {
                     return;
-                }
+                }                
                 _teleportationMatrix = value;
                 RaisePropertyChanged(TeleportationMatrixPropertyName);
             }
@@ -162,7 +162,7 @@ namespace LuceneSearchClient.ViewModel
                 if (_pageRankVector == value)
                 {
                     return;
-                }
+                }                
                 _pageRankVector = value;
                 RaisePropertyChanged(PageRankVectorPropertyName);
             }
@@ -281,13 +281,13 @@ namespace LuceneSearchClient.ViewModel
             {
 
                 _webGraphDataReader.ExtractDataFromWebGraph(GraphEntities.Pages, PagesXmlFile);
-                _webGraphDataReader.ExtractDataFromWebGraph(GraphEntities.Links, LinksXmlFile);
-                WebGraphDataConverter.SetTransitionMatrix(_webGraphDataReader.Pages, _webGraphDataReader.Links);
+                                              _webGraphDataReader.ExtractDataFromWebGraph(GraphEntities.Links, LinksXmlFile);
+                                              WebGraphDataConverter.SetTransitionMatrix(_webGraphDataReader.Pages, _webGraphDataReader.Links);
                 e.Result = WebGraphDataConverter.TransitionMatrix;
             }
             catch (TargetInvocationException ee)
             {
-
+                                              
                 Debug.WriteLine(ee.InnerException);
             }
         }
@@ -300,11 +300,11 @@ namespace LuceneSearchClient.ViewModel
                     ?? (_setTeleportationCommand = new RelayCommand(
                                           () =>
                                           {
-
+                                              
                                           }));
             }
         }
-        private RelayCommand _setInitialPageRankCommand;
+        private RelayCommand _setInitialPageRankCommand;      
         public RelayCommand SetInitialPageRankCommand
         {
             get
@@ -330,7 +330,7 @@ namespace LuceneSearchClient.ViewModel
                                               ulong nbIterations;
                                               var pageRank = new PageRank(TransitionMatrix, PageRank.DefaultDampingFactor);
                                               PageRankVector = pageRank.GetPageRankVector(InitialPageRankVector,
-                                                  5, out nbIterations);
+                                                  5, out nbIterations);       
                                               Messenger.Default.Send<Vector>(PageRankVector, "Pr_Is_Calculated");
 
                                           }));
@@ -374,7 +374,7 @@ namespace LuceneSearchClient.ViewModel
                                               GenerateButtonIsEnabled = false;
                                               WebGraphExcelFile = openFileDialog.FileName;
                                               //This Operation Need To Be Calculated In a Worker
-
+                                              
                                               Debug.WriteLine("Generate Rang From Excel Started");
                                               var time = DateTime.Now;
                                               //Start The Busy Indicator 
@@ -462,6 +462,6 @@ namespace LuceneSearchClient.ViewModel
         }
         #endregion
 
-
+       
     }
 }

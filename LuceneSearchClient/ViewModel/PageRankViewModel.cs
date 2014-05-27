@@ -251,6 +251,7 @@ namespace LuceneSearchClient.ViewModel
                     ?? (_generateXmLsCommand = new RelayCommand(
                                           () =>
                                           {
+
                                               var excelDataConverter = new ExcelDataConverter(_range);
                                               excelDataConverter.ConvertExelData(out _pagesXmlFile,out _linksXmlFile);
                                               RaisePropertyChanged(PagesXmlFilePropertyName);

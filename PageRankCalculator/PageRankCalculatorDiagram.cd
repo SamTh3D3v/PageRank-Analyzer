@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="PageRankCalculator.Model.Matrix">
+    <Position X="8.75" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>IAACAAAABIAAgCAAaACAAgAAAAIQAAAAAAAAAiIAByA=</HashCode>
+      <FileName>Model\Matrix.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PageRankCalculator.Model.Vector">
+    <Position X="7" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAhAAAgAAAeAAAAAAAAAEAAAACAAAAABIAAiQ=</HashCode>
+      <FileName>Model\Vector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PageRankCalculator.PageRankCalculation.PageRank">
+    <Position X="1.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAEABAAACAAAAAAAARAAAABACAAAiQRAA=</HashCode>
+      <FileName>PageRankCalculation\PageRank.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PageRankCalculator.PageRankCalculation.WebGraphDataConverter">
+    <Position X="4" Y="3.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAjAAAAAAAAAAAAAAAAAAAAAAAgAAAA=</HashCode>
+      <FileName>PageRankCalculation\WebGraphDataConverter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PageRankCalculator.PageRankCalculation.WebGraphDataReader">
+    <Position X="4" Y="1" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAAgBAAAAAAAAAAAIAAACAAAAAAAAAA=</HashCode>
+      <FileName>PageRankCalculation\WebGraphDataReader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="PageRankCalculator.Model.VectorType">
+    <Position X="7" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Vector.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="PageRankCalculatorDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WebGraphMaker\WebGraphMaker.csproj">

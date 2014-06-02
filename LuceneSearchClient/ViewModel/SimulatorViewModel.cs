@@ -49,7 +49,9 @@ namespace LuceneSearchClient.ViewModel
         public const string ListMatricesLabelsPropertyName = "ListMatricesLabels";
         public const string SelectedMatriceEvPropertyName = "SelectedMatriceEv";
         public const string ListPrIteMatPropertyName = "ListPrIteMat";
-        public const string ListAPrIteMatPropertyName = "ListAPrIteMat";        
+        public const string ListAPrIteMatPropertyName = "ListAPrIteMat";
+        public const string ListPrTimeMatPropertyName = "ListPrTimeMat";
+        public const string ListAPrTimeMatPropertyName = "ListAPrTimeMat";
         #endregion
         #region Fields
         private ulong _matrixSize;
@@ -87,6 +89,8 @@ namespace LuceneSearchClient.ViewModel
             "Adjacence Matrix"
         };
         private string _selectedMatriceEv = "google Matrix";
+        private ObservableCollection<KeyValuePair<ulong, ulong>> _listPrTimeMat;
+        private ObservableCollection<KeyValuePair<ulong, ulong>> _listAPrTimeMat;
         #endregion
         #region Properties
         public ulong MatrixSize
@@ -508,7 +512,6 @@ namespace LuceneSearchClient.ViewModel
                 RaisePropertyChanged(ListAprPagesPropertyName);
             }
         }
-
         public ObservableCollection<KeyValuePair<ulong,ulong>> ListPrIteMat
         {
             get
@@ -543,6 +546,42 @@ namespace LuceneSearchClient.ViewModel
                 
                 _listAPrIteMat = value;
                 RaisePropertyChanged(ListAPrIteMatPropertyName);
+            }
+        } 
+        public ObservableCollection<KeyValuePair<ulong,ulong>> ListAPrTimeMat
+        {
+            get
+            {
+                return _listAPrTimeMat;
+            }
+
+            set
+            {
+                if (_listAPrTimeMat == value)
+                {
+                    return;
+                }
+                
+                _listAPrTimeMat = value;
+                RaisePropertyChanged(ListAPrTimeMatPropertyName);
+            }
+        }
+        public ObservableCollection<KeyValuePair<ulong,ulong>> ListPrTimeMat
+        {
+            get
+            {
+                return _listPrTimeMat;
+            }
+
+            set
+            {
+                if (_listPrTimeMat == value)
+                {
+                    return;
+                }
+                
+                _listPrTimeMat = value;
+                RaisePropertyChanged(ListPrTimeMatPropertyName);
             }
         }
         public Vector EignValuesVector
@@ -634,6 +673,7 @@ namespace LuceneSearchClient.ViewModel
                 RaisePropertyChanged(SelectedMatriceEvPropertyName);
             }
         }
+        
         #endregion
         #region Ctors and Methods
         public SimulatorViewModel()
@@ -1025,23 +1065,19 @@ namespace LuceneSearchClient.ViewModel
                                           () =>
                                           {
                                               var worker = new BackgroundWorker();
-                                              worker.DoWork += DrawSimulationChart;
-                                              worker.RunWorkerCompleted += DrawSimulationChartCompeleted;
-                                              worker.RunWorkerAsync();
-                                            
-
-                                              
+                                              worker.DoWork += DrawSimulationIteMatChart;
+                                              worker.RunWorkerCompleted += DrawSimulationIteMatChartCompeleted;
+                                              worker.RunWorkerAsync();                                                                                          
                                           }));
             }
         }
 
-        private void DrawSimulationChartCompeleted(object sender, RunWorkerCompletedEventArgs e)
+        private void DrawSimulationIteMatChartCompeleted(object sender, RunWorkerCompletedEventArgs e)
         {
             RaisePropertyChanged(ListPrIteMatPropertyName);
             RaisePropertyChanged(ListAPrIteMatPropertyName);
         }
-
-        private void DrawSimulationChart(object sender, DoWorkEventArgs e)
+        private void DrawSimulationIteMatChart(object sender, DoWorkEventArgs e)
         {
             _listPrIteMat = new ObservableCollection<KeyValuePair<ulong, ulong>>();
             _listAPrIteMat = new ObservableCollection<KeyValuePair<ulong, ulong>>();
@@ -1071,6 +1107,69 @@ namespace LuceneSearchClient.ViewModel
                 aPageRank.GetAmelioratedPageRankVector(initialVector, 10, out nbIterationsAPr);
                 _listPrIteMat.Add(new KeyValuePair<ulong, ulong>(matrixSize, nbIterationsPr));
                 _listAPrIteMat.Add(new KeyValuePair<ulong, ulong>(matrixSize, nbIterationsAPr));
+            }
+        }
+
+
+        private RelayCommand _startSimulationPrAprTimeCommand;
+        public RelayCommand StartSimulationPrAprTimeCommand
+        {
+            get
+            {
+                return _startSimulationPrAprTimeCommand
+                    ?? (_startSimulationPrAprTimeCommand = new RelayCommand(
+                                          () =>
+                                          {
+                                              var worker = new BackgroundWorker();
+                                              worker.DoWork += DrawSimulationTimeMatChart;
+                                              worker.RunWorkerCompleted += DrawSimulationTimeMatChartCompeleted;
+                                              worker.RunWorkerAsync();  
+                                              
+                                          }));
+            }
+        }
+        private void DrawSimulationTimeMatChartCompeleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            RaisePropertyChanged(ListPrTimeMatPropertyName);
+            RaisePropertyChanged(ListAPrTimeMatPropertyName);
+        }
+        private void DrawSimulationTimeMatChart(object sender, DoWorkEventArgs e)
+        {
+            _listPrTimeMat = new ObservableCollection<KeyValuePair<ulong, ulong>>();
+            _listAPrTimeMat = new ObservableCollection<KeyValuePair<ulong, ulong>>();
+            for (ulong matrixSize = 5; matrixSize <= 50; matrixSize += 5)
+            {
+                //Generate A Random Matrix 
+                var adjacentMatrix = new Matrix(matrixSize);
+                var rand = new Random();
+                for (ulong i = 0; i < matrixSize; i++)
+                {
+                    for (ulong j = 0; j < matrixSize; j++)
+                    {
+                        adjacentMatrix[i, j] = rand.Next(2);
+                    }
+                }
+                var transitionMatrix = new Matrix(adjacentMatrix);
+                transitionMatrix.ToProbablityMatrix();
+                //Calculate The Number Of Iteration Associated To Pr Calcul 
+                ulong nbIterationsPr = 0;
+                var teleportationMatrix = Matrix.E(matrixSize);
+                var pageRank = new PageRank(transitionMatrix, PageRank.DefaultDampingFactor, teleportationMatrix);
+                var initialVector = Vector.e(VectorType.Row, matrixSize);
+                var time = DateTime.Now;
+                pageRank.GetPageRankVector(initialVector, 10, out nbIterationsPr);
+                var timePr = (DateTime.Now - time).Milliseconds;
+
+                //Calculate The Number Of Iteration Associated To APr Calcul
+                ulong nbIterationsAPr = 0;
+                var aPageRank = new PageRank(transitionMatrix, PageRank.DefaultDampingFactor, teleportationMatrix);
+
+                time = DateTime.Now;
+                aPageRank.GetAmelioratedPageRankVector(initialVector, 10, out nbIterationsAPr);
+                var timeAPr = (DateTime.Now - time).Milliseconds;
+
+                _listPrTimeMat.Add(new KeyValuePair<ulong, ulong>(matrixSize, (ulong)timePr));
+                _listAPrTimeMat.Add(new KeyValuePair<ulong, ulong>(matrixSize, (ulong)timeAPr));
             }
         }
 

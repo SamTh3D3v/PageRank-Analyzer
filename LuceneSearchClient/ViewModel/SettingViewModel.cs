@@ -19,7 +19,7 @@ namespace LuceneSearchClient.ViewModel
         public const string SaveButtonEnabledPropertyName = "SaveButtonEnabled";
         #endregion
         #region Fields
-        private String _webSiteUrl = "";
+        private String _webSiteUrl = "http://www.troyhunt.com/";
         private String _webSiteLocation = "";
         private String _indexLocation = "";
         private bool _saveButtonEnabled = false;

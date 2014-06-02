@@ -65,14 +65,15 @@
                         <Button HorizontalAlignment="Left"  Content="Get Transition Matrix" Margin="2" Grid.Row="1"  Grid.Column="0" IsEnabled="{Binding GetTrMatButIsEnabled}" Command="{Binding GetTransitionMatrixCommand}"/>
                     </Grid>
                 </TabItem>
-                <TabItem Header="Teleportation Matrix">
+                <TabItem Header="Teleportation Matrix" IsEnabled="False" Visibility="Hidden">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <DataGrid Grid.Row="0" Margin="5" Background="White" ItemsSource="{Binding TeleportationMatrix ,Converter={StaticResource MatrixToDataViewConverter},Mode=TwoWay}" LoadingRow="OnLoadingRow"/>
+                            <!--ItemsSource="{Binding  TeleportationMatrix,Converter={StaticResource MatrixToDataViewConverter},Mode=TwoWay}"-->
+                            <DataGrid Grid.Row="0" Margin="5" Background="White"  LoadingRow="OnLoadingRow"/>
                         <Button Content="1/N" HorizontalAlignment="Left" Margin="2" Grid.Row="1"  Grid.Column="0"  IsEnabled="{Binding InitialPageRankVector,Converter={StaticResource InitialVectorSetConverter}}" Command="{Binding SetTeleportationCommand}"/>
                     </Grid>
                 </TabItem>

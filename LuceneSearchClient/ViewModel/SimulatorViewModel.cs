@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
@@ -47,6 +48,8 @@ namespace LuceneSearchClient.ViewModel
         public const string AutomaticIterationsAprPropertyName = "AutomaticIterationsApr";
         public const string ListMatricesLabelsPropertyName = "ListMatricesLabels";
         public const string SelectedMatriceEvPropertyName = "SelectedMatriceEv";
+        public const string ListPrIteMatPropertyName = "ListPrIteMat";
+        public const string ListAPrIteMatPropertyName = "ListAPrIteMat";        
         #endregion
         #region Fields
         private ulong _matrixSize;
@@ -66,6 +69,8 @@ namespace LuceneSearchClient.ViewModel
         private List<List<KeyValuePair<float, float>>> _dataSourceListDampPr = new List<List<KeyValuePair<float, float>>>();
         private ObservableCollection<KeyValuePair<float, float>> _listDampPr;
         private ObservableCollection<KeyValuePair<float, ulong>> _listDampIt;
+        private ObservableCollection<KeyValuePair<ulong, ulong>> _listPrIteMat;
+        private ObservableCollection<KeyValuePair<ulong, ulong>> _listAPrIteMat;
         private Visibility _transitionMatrixIsCalculated = Visibility.Hidden;
         private Vector _amelioratedPageRankVector;
         private Vector _eignValuesVector;
@@ -501,6 +506,43 @@ namespace LuceneSearchClient.ViewModel
 
                 _listAprPages = value;
                 RaisePropertyChanged(ListAprPagesPropertyName);
+            }
+        }
+
+        public ObservableCollection<KeyValuePair<ulong,ulong>> ListPrIteMat
+        {
+            get
+            {
+                return _listPrIteMat;
+            }
+
+            set
+            {
+                if (_listPrIteMat == value)
+                {
+                    return;
+                }
+                
+                _listPrIteMat = value;
+                RaisePropertyChanged(ListPrIteMatPropertyName);
+            }
+        }
+        public ObservableCollection<KeyValuePair<ulong,ulong>> ListAPrIteMat
+        {
+            get
+            {
+                return _listAPrIteMat;
+            }
+
+            set
+            {
+                if (_listAPrIteMat == value)
+                {
+                    return;
+                }
+                
+                _listAPrIteMat = value;
+                RaisePropertyChanged(ListAPrIteMatPropertyName);
             }
         }
         public Vector EignValuesVector
@@ -973,6 +1015,65 @@ namespace LuceneSearchClient.ViewModel
                                           }));
             }
         }
+        private RelayCommand _startSimulationPrAprIteCommand;   
+        public RelayCommand StartSimulationPrAprIteCommand
+        {
+            get
+            {
+                return _startSimulationPrAprIteCommand
+                    ?? (_startSimulationPrAprIteCommand = new RelayCommand(
+                                          () =>
+                                          {
+                                              var worker = new BackgroundWorker();
+                                              worker.DoWork += DrawSimulationChart;
+                                              worker.RunWorkerCompleted += DrawSimulationChartCompeleted;
+                                              worker.RunWorkerAsync();
+                                            
+
+                                              
+                                          }));
+            }
+        }
+
+        private void DrawSimulationChartCompeleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            RaisePropertyChanged(ListPrIteMatPropertyName);
+            RaisePropertyChanged(ListAPrIteMatPropertyName);
+        }
+
+        private void DrawSimulationChart(object sender, DoWorkEventArgs e)
+        {
+            _listPrIteMat = new ObservableCollection<KeyValuePair<ulong, ulong>>();
+            _listAPrIteMat = new ObservableCollection<KeyValuePair<ulong, ulong>>();
+            for (ulong matrixSize =5; matrixSize <= 50; matrixSize += 5)
+            {
+                //Generate A Random Matrix 
+                var adjacentMatrix = new Matrix(matrixSize);
+                var rand = new Random();
+                for (ulong i = 0; i < matrixSize; i++)
+                {
+                    for (ulong j = 0; j < matrixSize; j++)
+                    {
+                        adjacentMatrix[i, j] = rand.Next(2);
+                    }
+                }
+                var transitionMatrix = new Matrix(adjacentMatrix);
+                transitionMatrix.ToProbablityMatrix();
+                //Calculate The Number Of Iteration Associated To Pr Calcul 
+                ulong nbIterationsPr = 0;
+                var teleportationMatrix = Matrix.E(matrixSize);
+                var pageRank = new PageRank(transitionMatrix, PageRank.DefaultDampingFactor, teleportationMatrix);
+                var initialVector = Vector.e(VectorType.Row, matrixSize);
+                pageRank.GetPageRankVector(initialVector, 10, out nbIterationsPr);
+                //Calculate The Number Of Iteration Associated To APr Calcul
+                ulong nbIterationsAPr = 0;
+                var aPageRank = new PageRank(transitionMatrix, PageRank.DefaultDampingFactor, teleportationMatrix);
+                aPageRank.GetAmelioratedPageRankVector(initialVector, 10, out nbIterationsAPr);
+                _listPrIteMat.Add(new KeyValuePair<ulong, ulong>(matrixSize, nbIterationsPr));
+                _listAPrIteMat.Add(new KeyValuePair<ulong, ulong>(matrixSize, nbIterationsAPr));
+            }
+        }
+
         #endregion
     }
 }

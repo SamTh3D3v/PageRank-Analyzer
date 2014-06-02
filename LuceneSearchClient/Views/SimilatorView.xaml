@@ -391,7 +391,44 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                     </Grid>
                                 </GroupBox>
                             </Grid>
-                        </avalonDock:LayoutAnchorable>                     
+                        </avalonDock:LayoutAnchorable>
+                        <avalonDock:LayoutAnchorable Title="Pr-APr Iterations/MatrixSize" IsVisible="False">
+                            <Grid>
+                                <Grid.RowDefinitions>
+
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <dvc:Chart Background="White" Grid.Column="0" Grid.ColumnSpan="2">
+                                    <dvc:LineSeries Title="PageRank" 
+                                        ItemsSource="{Binding ListPrIteMat,Mode=TwoWay}"
+                                        IndependentValueBinding="{Binding Key}"
+                                        DependentValueBinding="{Binding Value}" >
+                                    </dvc:LineSeries>
+                                    <dvc:LineSeries Title="APageRank" 
+                                        ItemsSource="{Binding ListAPrIteMat,Mode=TwoWay}"
+                                        IndependentValueBinding="{Binding Key}"
+                                        DependentValueBinding="{Binding Value}" >
+                                    </dvc:LineSeries>
+                                </dvc:Chart>
+                                <GroupBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Header="Calculate" Margin="2">
+                                    <Grid HorizontalAlignment="Right">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="60"/>
+                                            <ColumnDefinition Width="60"/>
+                                            <ColumnDefinition Width="60"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Button Grid.Column="0" Content="Simulate" Margin="3" Command="{Binding StartSimulationPrAprIteCommand}"/>
+                                        <Button Grid.Column="1" Content="Reset" Margin="3" Command="{Binding ResetChartsItCommand}"/>
+                                        <Button Grid.Column="2" Content="Export" Margin="3" Command="{Binding ExportChartItCommand}"/>
+                                    </Grid>
+                                </GroupBox>
+                            </Grid>
+                        </avalonDock:LayoutAnchorable>
                     </avalonDock:LayoutAnchorablePane>
                 </avalonDock:LayoutPanel>
 

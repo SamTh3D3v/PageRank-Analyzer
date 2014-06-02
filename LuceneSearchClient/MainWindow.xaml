@@ -43,9 +43,16 @@
                 <MenuItem Header="_View All" Command="{Binding AllSimulationCommand}"/>
                 <Separator/>
                 <MenuItem Header="_Matrix Settings"/>
-                <MenuItem Header="_Damping Factor"/>
-                <MenuItem Header="_Speed Of Convergence"/>
-                <MenuItem Header="_Web Graph"/>
+                <MenuItem Header="_Damping Factor">
+                    <MenuItem Header="_Iterations"/>
+                    <MenuItem Header="_PageRank"/>
+                </MenuItem>
+                <MenuItem Header="_Comparation">
+                    <MenuItem Header="_PageRank vs APageRank"/>
+                    <MenuItem Header="_Number Of Iteration"/>
+                    <MenuItem Header="_Time"/>
+                </MenuItem>
+                <MenuItem Header="_Eign Values"/>
             </MenuItem>
         </Menu>
         <Frame Grid.Row="1" Source="{Binding NavigationUri,Mode=TwoWay}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" NavigationUIVisibility="Visible"/>

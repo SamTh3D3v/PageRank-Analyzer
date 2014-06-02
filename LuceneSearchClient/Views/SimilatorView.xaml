@@ -33,7 +33,7 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="*"/>                                    
+                                    <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
@@ -44,17 +44,18 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                     <Grid>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>                                                                                        
+                                            <RowDefinition Height="Auto"/>
                                         </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="130"/>
-                                            <ColumnDefinition Width="*"/>                                            
+                                            <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="Matrix Size :" Grid.Row="0" Grid.Column="0"/>
-                                        <TextBox  Grid.Row="0" Grid.Column="1" Text="{Binding MatrixSize,Mode=TwoWay}" Margin="3" x:Name="MatSizeBox" /> <!--UpdateSourceTrigger=PropertyChanged-->
+                                        <TextBox  Grid.Row="0" Grid.Column="1" Text="{Binding MatrixSize,Mode=TwoWay}" Margin="3" x:Name="MatSizeBox" />
+                                        <!--UpdateSourceTrigger=PropertyChanged-->
                                         <Label Content="The Damping Factor :" Grid.Row="1" Grid.Column="0" />
                                         <TextBox  Grid.Row="1" Grid.Column="1" Text="{Binding DampingFactor,Mode=TwoWay}" Margin="3"/>
-                                         </Grid>
+                                    </Grid>
                                 </GroupBox>
                                 <GroupBox Header="Matrices" Margin="5" Grid.Row="1" Grid.Column="0" Background="WhiteSmoke">
                                     <TabControl>
@@ -116,7 +117,7 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                                 </DataGrid>
                                             </Grid>
                                         </TabItem>
-                                    </TabControl>                                    
+                                    </TabControl>
                                 </GroupBox>
                                 <GridSplitter Width="5" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center"></GridSplitter>
                                 <GroupBox Grid.Column="2" Grid.Row="1" Header="Initial Page Rank" Margin="5" Background="WhiteSmoke">
@@ -190,13 +191,13 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="*"/>                                      
+                                        <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="15"/>
-                                        <ColumnDefinition Width="*"/>                                       
-                                    </Grid.ColumnDefinitions>  
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
                                     <GroupBox Header="Google page rank" Grid.Row="0" Grid.Column="0" >
                                         <Grid >
                                             <Grid.RowDefinitions>
@@ -213,10 +214,10 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                             <TextBox  Grid.Row="0" Grid.Column="1" Margin="3" Text="{Binding PrNumberIterations,Mode=TwoWay}" IsEnabled="{Binding ElementName=AutoIteCheckBoxPr,Path=IsChecked}"/>
                                             <CheckBox x:Name="AutoIteCheckBoxPr" ToolTip="auto calculated"  Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding AutomaticIterations}"/>
                                             <Label Content="Precision :" Grid.Row="1" Grid.Column="0" />
-                                            <TextBox  Grid.Row="1" Grid.Column="1" Margin="3" Grid.ColumnSpan="2" Text="{Binding PrPrecision,Mode=TwoWay}" />                                            
+                                            <TextBox  Grid.Row="1" Grid.Column="1" Margin="3" Grid.ColumnSpan="2" Text="{Binding PrPrecision,Mode=TwoWay}" />
                                             <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" Content="Calculate" Margin="3" Command="{Binding CalculatePageRankCommand}"/>
                                         </Grid>
-                                          </GroupBox>
+                                    </GroupBox>
                                     <GroupBox Header="Ameliorated page rank" Grid.Row="0" Grid.Column="2">
                                         <Grid>
                                             <Grid.RowDefinitions>
@@ -241,7 +242,7 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                     <DataGrid  Grid.Column="0" Grid.Row="1" Margin="5" Background="White" ItemsSource="{Binding PageRankVector,Converter={StaticResource VectorToDataViewColumnConverter}}" LoadingRow="OnLoadingRow" Width="150"/>
                                     <DataGrid  Grid.Column="2" Grid.Row="1" Margin="5" Background="White" ItemsSource="{Binding AmelioratedPageRankVector,Converter={StaticResource VectorToDataViewColumnConverter}}" LoadingRow="OnLoadingRow" Width="150"/>
 
-                                    
+
                                 </Grid>
                             </GroupBox>
                         </avalonDock:LayoutAnchorable >
@@ -253,25 +254,25 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                         <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>                                        
+                                        <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <GroupBox Header="Settings" Grid.Row="0" Grid.Column="0">
-                                        <Grid> 
+                                        <Grid>
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto"/>
                                                 <RowDefinition Height="Auto"/>
                                             </Grid.RowDefinitions>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="60"/>
-                                                <ColumnDefinition Width="*"/>                                                
-                                            </Grid.ColumnDefinitions>                                                                                  
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
                                             <Label Content="Matrice :" Grid.Row="0" Grid.Column="0" />
-                                            <ComboBox  Margin="3" Grid.Column="1" Grid.Row="0" ItemsSource="{Binding ListMatricesLabels}" SelectedItem="{Binding SelectedMatriceEv, Mode=TwoWay}">                                          
+                                            <ComboBox  Margin="3" Grid.Column="1" Grid.Row="0" ItemsSource="{Binding ListMatricesLabels}" SelectedItem="{Binding SelectedMatriceEv, Mode=TwoWay}">
                                             </ComboBox>
                                             <Button Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Right" Content="Calculate" Margin="3" Command="{Binding CalculateEignValuesCommand}"/>
                                         </Grid>
                                     </GroupBox>
-                                    <DataGrid Grid.Row="1"  Margin="5" Grid.ColumnSpan="2" Background="White" ItemsSource="{Binding EignValuesVector,Converter={StaticResource VectorToDataViewColumnConverter},Mode=TwoWay}" IsReadOnly="True"/>                                 
+                                    <DataGrid Grid.Row="1"  Margin="5" Grid.ColumnSpan="2" Background="White" ItemsSource="{Binding EignValuesVector,Converter={StaticResource VectorToDataViewColumnConverter},Mode=TwoWay}" IsReadOnly="True"/>
                                 </Grid>
                             </GroupBox>
                         </avalonDock:LayoutAnchorable>
@@ -291,11 +292,14 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                 <Label Content="WebPageLabel :"></Label>
                                 <ComboBox Grid.Row="0" Grid.Column="1" Margin="3" ItemsSource="{Binding ListWebPages}" SelectedItem="{Binding SelectedPage,Mode=TwoWay}"/>
                                 <dvc:Chart Grid.Row="1" Background="White" Grid.Column="0" Grid.ColumnSpan="2">
+                                    <dvc:Chart.Axes>
+                                        <dvc:LinearAxis  Orientation="Y" Title="Rank"  />
+                                        <dvc:LinearAxis Title="Damping Factor" Orientation="X" />
+                                    </dvc:Chart.Axes>
                                     <dvc:LineSeries Title="{Binding SelectedPage}" 
                                         ItemsSource="{Binding ListDampPr}"
                                         IndependentValueBinding="{Binding Key}"
                                         DependentValueBinding="{Binding Value}" >
-
                                     </dvc:LineSeries>
                                 </dvc:Chart>
                                 <!--<resources:MultiChart Grid.Row="1" Background="White" Grid.Column="0" Grid.ColumnSpan="2" SeriesSource="{Binding DataSourceListDampPr}" >
@@ -335,6 +339,10 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <dvc:Chart Background="White" Grid.Column="0" Grid.ColumnSpan="2">
+                                    <dvc:Chart.Axes>
+                                        <dvc:LinearAxis  Orientation="Y" Title="Number Of Iterations"  />
+                                        <dvc:LinearAxis Title="Damping Factor" Orientation="X" />
+                                    </dvc:Chart.Axes>
                                     <dvc:LineSeries Title="DampingFactor/Iters" 
                                         ItemsSource="{Binding ListDampIt,Mode=TwoWay}"
                                         IndependentValueBinding="{Binding Key}"
@@ -358,7 +366,6 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                         <avalonDock:LayoutAnchorable Title="Pr-APr/Pages" IsVisible="False">
                             <Grid>
                                 <Grid.RowDefinitions>
-
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
@@ -367,6 +374,10 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <dvc:Chart Background="White" Grid.Column="0" Grid.ColumnSpan="2">
+                                    <dvc:Chart.Axes>
+                                        <dvc:LinearAxis  Orientation="Y" Title="Ranking"  />
+                                        <dvc:LinearAxis Title="Page Number" Orientation="X" />
+                                    </dvc:Chart.Axes>
                                     <dvc:LineSeries Title="PageRank" 
                                         ItemsSource="{Binding ListPrPages,Mode=TwoWay}"
                                         IndependentValueBinding="{Binding Key}"
@@ -404,6 +415,10 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <dvc:Chart Background="White" Grid.Column="0" Grid.ColumnSpan="2">
+                                    <dvc:Chart.Axes>
+                                        <dvc:LinearAxis  Orientation="Y" Title="Number Of Iteration"  />
+                                        <dvc:LinearAxis Title="Transition Matrix Size" Orientation="X" />
+                                    </dvc:Chart.Axes>
                                     <dvc:LineSeries Title="PageRank" 
                                         ItemsSource="{Binding ListPrIteMat,Mode=TwoWay}"
                                         IndependentValueBinding="{Binding Key}"
@@ -432,7 +447,6 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                         <avalonDock:LayoutAnchorable Title="Pr-APr Time/MatrixSize" IsVisible="False">
                             <Grid>
                                 <Grid.RowDefinitions>
-
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
@@ -441,6 +455,10 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <dvc:Chart Background="White" Grid.Column="0" Grid.ColumnSpan="2">
+                                    <dvc:Chart.Axes>
+                                        <dvc:LinearAxis  Orientation="Y" Title="Time To Calculate Ranking"  />
+                                        <dvc:LinearAxis Title="Matrix Size" Orientation="X" />
+                                    </dvc:Chart.Axes>
                                     <dvc:LineSeries Title="PageRank" 
                                         ItemsSource="{Binding ListPrTimeMat,Mode=TwoWay}"
                                         IndependentValueBinding="{Binding Key}"
@@ -448,7 +466,7 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                     </dvc:LineSeries>
                                     <dvc:LineSeries Title="APageRank" 
                                         ItemsSource="{Binding ListAPrTimeMat,Mode=TwoWay}"
-                                        IndependentValueBinding="{Binding Key}"
+                                        IndependentValueBinding="{Binding Key}" 
                                         DependentValueBinding="{Binding Value}" >
                                     </dvc:LineSeries>
                                 </dvc:Chart>

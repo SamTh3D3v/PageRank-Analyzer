@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using LuceneSearchClient.Model;
 using PageRankCalculator.Model;
 using PageRankCalculator.PageRankCalculation;
 using TextBox = System.Windows.Controls.TextBox;
@@ -52,6 +53,9 @@ namespace LuceneSearchClient.ViewModel
         public const string ListAPrIteMatPropertyName = "ListAPrIteMat";
         public const string ListPrTimeMatPropertyName = "ListPrTimeMat";
         public const string ListAPrTimeMatPropertyName = "ListAPrTimeMat";
+        public const string LayoutAlgorithmTypesPropertyName = "LayoutAlgorithmTypes"; 
+        public const string SelectedLayoutAlgorithmeTtypePropertyName = "SelectedLayoutAlgorithmeTtype";
+        public const string WebGraphPropertyName = "WebGraph";
         #endregion
         #region Fields
         private ulong _matrixSize;
@@ -90,7 +94,21 @@ namespace LuceneSearchClient.ViewModel
         };
         private string _selectedMatriceEv = "google Matrix";
         private ObservableCollection<KeyValuePair<ulong, ulong>> _listPrTimeMat;
-        private ObservableCollection<KeyValuePair<ulong, ulong>> _listAPrTimeMat;
+        private ObservableCollection<KeyValuePair<ulong, ulong>> _listAPrTimeMat;        
+        private List<string> _layoutAlgorithmTypes = new List<string>
+        {
+            "BoundedFR",
+            "Circular",
+            "CompoundFDP",
+            "EfficientSugiyama",
+            "FR",
+            "ISOM",
+            "KK",
+            "LinLog",
+            "Tree"
+        };
+        private string _selectedLayoutAlgorithmeType = "LinLog";
+        private WebGraph _webGraph;
         #endregion
         #region Properties
         public ulong MatrixSize
@@ -116,6 +134,12 @@ namespace LuceneSearchClient.ViewModel
                 }
                 ListWebPages = new ObservableCollection<string>(listpages);
                 SelectedPage = ListWebPages.First();
+                //Generate The WebGraph
+                WebGraph=new WebGraph(true);
+                foreach (var page in listpages)             
+                    WebGraph.AddVertex(new WebVertex() {Label = page});
+                RaisePropertyChanged(WebGraphPropertyName);
+                
             }
         }
         public Matrix AdjacenteMatrix
@@ -672,8 +696,60 @@ namespace LuceneSearchClient.ViewModel
                 _selectedMatriceEv = value;
                 RaisePropertyChanged(SelectedMatriceEvPropertyName);
             }
+        }    
+        public List<string> LayoutAlgorithmTypes
+        {
+            get
+            {
+                return _layoutAlgorithmTypes;
+            }
+
+            set
+            {
+                if (_layoutAlgorithmTypes == value)
+                {
+                    return;
+                }
+                
+                _layoutAlgorithmTypes = value;
+                RaisePropertyChanged(LayoutAlgorithmTypesPropertyName);
+            }
         }
-        
+        public string SelectedLayoutAlgorithmeTtype
+        {
+            get
+            {
+                return _selectedLayoutAlgorithmeType;
+            }
+
+            set
+            {
+                if (_selectedLayoutAlgorithmeType == value)
+                {
+                    return;
+                }
+                _selectedLayoutAlgorithmeType = value;
+                RaisePropertyChanged(SelectedLayoutAlgorithmeTtypePropertyName);
+            }
+        }
+        public WebGraph WebGraph
+        {
+            get
+            {
+                return _webGraph;
+            }
+
+            set
+            {
+                if (_webGraph == value)
+                {
+                    return;
+                }
+                
+                _webGraph = value;
+                RaisePropertyChanged(WebGraphPropertyName);
+            }
+        }
         #endregion
         #region Ctors and Methods
         public SimulatorViewModel()
@@ -951,8 +1027,17 @@ namespace LuceneSearchClient.ViewModel
                                               var editedTextbox = args.EditingElement as TextBox;
                                               if (editedTextbox != null)
                                                   AdjacenteMatrix[(ulong)args.Row.GetIndex(), (ulong)args.Column.DisplayIndex] = float.Parse(editedTextbox.Text.Replace(",", "."), CultureInfo.InvariantCulture);
+                                              AddNewGraphEdge(args.Row.GetIndex().ToString(), args.Column.DisplayIndex.ToString());
                                           }));
             }
+        }
+        private void AddNewGraphEdge(string from, string to)
+        {
+            var webEdge = new WebEdge(WebGraph.Vertices.Where(x => x.Label == from).First(), WebGraph.Vertices.Where(x => x.Label == to).First());
+
+            _webGraph.AddEdge(webEdge);
+            RaisePropertyChanged(WebGraphPropertyName);
+            
         }
         private RelayCommand<DataGridCellEditEndingEventArgs> _telMatCellEditEndingCommand;
         public RelayCommand<DataGridCellEditEndingEventArgs> TelMatCellEditEndingCommand
@@ -1109,8 +1194,6 @@ namespace LuceneSearchClient.ViewModel
                 _listAPrIteMat.Add(new KeyValuePair<ulong, ulong>(matrixSize, nbIterationsAPr));
             }
         }
-
-
         private RelayCommand _startSimulationPrAprTimeCommand;
         public RelayCommand StartSimulationPrAprTimeCommand
         {

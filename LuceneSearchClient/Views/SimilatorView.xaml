@@ -12,6 +12,9 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
       xmlns:resources="clr-namespace:LuceneSearchClient.Resources"
       xmlns:command="http://www.galasoft.ch/mvvmlight"
       xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+      xmlns:controls="clr-namespace:WPFExtensions.Controls;assembly=WPFExtensions"
+      xmlns:model="clr-namespace:LuceneSearchClient.Model"
+      xmlns:graphsharp="clr-namespace:GraphSharp.Controls;assembly=GraphSharp.Controls"
 
       mc:Ignorable="d ignore" d:DesignHeight="500" d:DesignWidth="900"
         DataContext="{Binding SimulatorViewModel, Source={StaticResource Locator}}">
@@ -20,6 +23,43 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
         <converters:VectorToDataViewRowConverter x:Key="ArrayToDataViewConverter"/>
         <converters:VectorToDataViewColumnConverter x:Key="VectorToDataViewColumnConverter"/>
         <converters:InitialVectorSetConverter x:Key="InitialVectorSetConverter"/>
+        <DataTemplate x:Key="VertexDataTemplate" DataType="{x:Type model:WebVertex}">
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <TextBlock Text="{Binding Path=Label, Mode=OneWay}" Foreground="White" HorizontalAlignment="Center" />
+            </StackPanel>
+        </DataTemplate>
+        <Style TargetType="{x:Type graphsharp:VertexControl}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type graphsharp:VertexControl}">
+                        <Border BorderBrush="White" Width="30" Height="30" 
+                                    Background="Black"
+							        BorderThickness="2"
+							        CornerRadius="20"
+							        Padding="{TemplateBinding Padding}">
+                            <ContentPresenter Content="{TemplateBinding Vertex}" 
+                                            ContentTemplate="{StaticResource VertexDataTemplate}" >
+                               
+                            </ContentPresenter>
+                            <!--<Border.Effect>
+                                <DropShadowEffect BlurRadius="2" Color="LightGray" 
+                                    Opacity="0.3" Direction="315"/>
+                            </Border.Effect>-->
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="{x:Type graphsharp:EdgeControl}">
+            <Style.Resources>
+                <ToolTip x:Key="ToolTipContent">
+                    <StackPanel>
+                        <TextBlock FontWeight="Bold" Text="Edge Information"/>
+                    </StackPanel>
+                </ToolTip>
+            </Style.Resources>
+            <Setter Property="ToolTip" Value="{StaticResource ToolTipContent}"/>
+        </Style>
     </Page.Resources>
     <Grid>
         <avalonDock:DockingManager >
@@ -29,7 +69,7 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                      
                     </avalonDock:LayoutDocumentPane>-->
                     <avalonDock:LayoutAnchorablePane  >
-                        <avalonDock:LayoutAnchorable Title="Define Matrix" >
+                        <avalonDock:LayoutAnchorable Title="Define Matrix" IsVisible="False" >
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
@@ -182,6 +222,33 @@ xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;asse
                                         </StackPanel>
                                     </Grid>
                                 </GroupBox>-->
+                            </Grid>
+                        </avalonDock:LayoutAnchorable >
+                        <avalonDock:LayoutAnchorable Title="Visual WebGraph" >
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <StackPanel Orientation="Vertical" Grid.Row="0" >
+                                    <StackPanel Orientation="Horizontal" Background="Black"
+                                            HorizontalAlignment="Stretch" Margin="0">
+                                        <Label VerticalAlignment="Center" VerticalContentAlignment="Center" Foreground="White"
+                                             FontWeight="Bold" Margin="5"  
+                                            Content="Layout Type"/>
+                                        <ComboBox ItemsSource="{Binding LayoutAlgorithmTypes}"
+                                            SelectedItem="{Binding Path=SelectedLayoutAlgorithmeTtype, Mode=TwoWay}"
+                                            Width="150" Margin="5" />
+                                    </StackPanel>
+                                </StackPanel>
+                                <controls:ZoomControl  Grid.Row="1"  Zoom="0.2" ZoomBoxOpacity="0.5" Background="#ff656565">
+                                    <model:WebGraphLayout x:Name="GraphLayout" Margin="10"
+						                      Graph="{Binding Path=WebGraph}"
+						                      LayoutAlgorithmType="{Binding Path=SelectedLayoutAlgorithmeTtype, Mode=OneWay}"
+						                      OverlapRemovalAlgorithmType="FSA"
+						                      HighlightAlgorithmType="Simple" >
+                                    </model:WebGraphLayout>
+                                </controls:ZoomControl>
                             </Grid>
                         </avalonDock:LayoutAnchorable >
                     </avalonDock:LayoutAnchorablePane>

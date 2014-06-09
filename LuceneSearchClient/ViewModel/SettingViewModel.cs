@@ -17,12 +17,14 @@ namespace LuceneSearchClient.ViewModel
         public const string WebSiteLocationPropertyName = "WebSiteLocation";
         public const string IndexLocationPropertyName = "IndexLocation";
         public const string SaveButtonEnabledPropertyName = "SaveButtonEnabled";
+        public const string ExistingIndexPropertyName = "NewIndex";
         #endregion
         #region Fields
         private String _webSiteUrl = "http://www.troyhunt.com/";
         private String _webSiteLocation = "";
         private String _indexLocation = "";
         private bool _saveButtonEnabled = false;
+        private bool _newIndex = false;
         #endregion
         #region Properties         
         public String WebSiteUrl
@@ -101,6 +103,25 @@ namespace LuceneSearchClient.ViewModel
                 RaisePropertyChanged(SaveButtonEnabledPropertyName);
             }
         }
+
+        public bool NewIndex
+        {
+            get
+            {
+                return _newIndex;
+            }
+
+            set
+            {
+                if (_newIndex == value)
+                {
+                    return;
+                }
+                
+                _newIndex = value;
+                RaisePropertyChanged(ExistingIndexPropertyName);
+            }
+        }
         #endregion        
         #region  Constructors and Methods
         public SettingViewModel()
@@ -152,7 +173,8 @@ namespace LuceneSearchClient.ViewModel
                                {
                                    WebSiteIndex = _indexLocation,
                                    WebSiteLocation = _webSiteLocation,
-                                   WebSiteUrl = _webSiteUrl
+                                   WebSiteUrl = _webSiteUrl,
+                                   NewIndex=NewIndex,
                                }, "savesettings");
                                Messenger.Default.Send<NotificationMessage>(new NotificationMessage("killsettingswindow"));
                            }));

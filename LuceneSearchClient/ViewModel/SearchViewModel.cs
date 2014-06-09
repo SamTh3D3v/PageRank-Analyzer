@@ -255,9 +255,12 @@ namespace LuceneSearchClient.ViewModel
         }
         private void Indexing()
         {
-            _indexer = new HtmlIndexer(_webSite.WebSiteIndex, _webSite.WebSiteUrl); //c:\index   http://blog.codinghorror.com/
-            _indexer.AddDirectory(new DirectoryInfo(_webSite.WebSiteLocation), "*.htm*");   //\blog.codinghorror.com
-            _indexer.Close();
+            if (WebSite.NewIndex)
+            {
+                _indexer = new HtmlIndexer(_webSite.WebSiteIndex, _webSite.WebSiteUrl); //c:\index   http://blog.codinghorror.com/
+                _indexer.AddDirectory(new DirectoryInfo(_webSite.WebSiteLocation), "*.htm*");   //\blog.codinghorror.com
+                _indexer.Close(); 
+            }
             _searcher = new Searcher(_webSite.WebSiteIndex);
             SearchEnabled = true;
             BusyIndicator = false;

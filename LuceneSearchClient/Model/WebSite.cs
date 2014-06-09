@@ -25,6 +25,12 @@ namespace LuceneSearchClient.Model
            set;
        }
 
+       public bool NewIndex
+       {
+           get;
+           set;
+       }
+
         #endregion
     }
 }

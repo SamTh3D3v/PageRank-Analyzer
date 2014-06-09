@@ -27,14 +27,14 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="70"/>
             </Grid.ColumnDefinitions>
-            <Label Grid.Row="0" Grid.Column="0" Content="Website Url :"/>
+            <Label Grid.Row="0" Grid.Column="0" Content="Website Url :" FontWeight="Bold"/>
             <TextBox x:Name="TxbSiteUrl"  Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding WebSiteUrl ,Mode=TwoWay}" Style="{StaticResource SettingsTextBoxStyle}"/>
-            <Label Grid.Row="1" Grid.Column="0" Content="New Index"/>
+            <Label Grid.Row="1" Grid.Column="0" Content="New Index" FontWeight="Bold"/>
             <CheckBox  Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="ExistingIndexCheckBox" IsChecked="{Binding NewIndex,Mode=TwoWay}" />
-            <Label Grid.Row="2" Grid.Column="0" Content="WebSite Location"/>
+            <Label Grid.Row="2" Grid.Column="0" Content="WebSite Location" FontWeight="Bold"/>
             <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding WebSiteLocation ,Mode=TwoWay}" IsEnabled="{Binding ElementName=ExistingIndexCheckBox,Path=IsChecked}" Style="{StaticResource SettingsTextBoxStyle}" />
             <Button Content="Browse" Grid.Row="2" Grid.Column="2" Style="{StaticResource SettingsButtonStyle}" IsEnabled="{Binding ElementName=ExistingIndexCheckBox}" Command="{Binding WebSiteLocationCommand}"/>
-            <Label Grid.Row="3" Grid.Column="0" Content="Index Location"/>
+            <Label Grid.Row="3" Grid.Column="0" Content="Index Location" FontWeight="Bold"/>
             <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding IndexLocation ,Mode=TwoWay}"  Style="{StaticResource SettingsTextBoxStyle}"/>
             <Button Content="Browse" Grid.Row="3" Grid.Column="2" Style="{StaticResource SettingsButtonStyle}" Command="{Binding IndexLocationCommand}"/>
             <Grid Margin="0,5,5,5" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Right" Width="200">

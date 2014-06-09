@@ -22,9 +22,9 @@
                  PassEventArgsToCommand="True" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    <Grid x:Name="LayoutRoot">
+    <Grid x:Name="LayoutRoot" Background="LightGray">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="40"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -34,12 +34,12 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="100"/>
         </Grid.ColumnDefinitions>
-        <TextBlock Text="Search Terms" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+        <TextBlock Text="Search Terms"  HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"></TextBlock>
         <TextBox x:Name="TxbSearch" Grid.Row="0" Text="{Binding SearchTerms ,Mode=TwoWay}" IsEnabled="{Binding SearchEnabled}" Grid.Column="1" Grid.ColumnSpan="2" Margin="5"/>
         <Button Content="Search" Grid.Row="0" Grid.Column="3" Margin="5"  Command="{Binding SearchCommand}" IsEnabled="{Binding SearchEnabled}"/>
-        <Label Content="Ranking : " Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center"/>
-        <RadioButton GroupName="RankingType" Content="GooglePageRank" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding GooglePrIsSelected,Mode=TwoWay}" IsEnabled="{Binding RankingIsCalculated}"/>
-        <RadioButton GroupName="RankingType" Content="AmeliratedPageRank" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding AmelioratedPrIsSelected,Mode=TwoWay}" IsEnabled="{Binding RankingIsCalculated}"/>
+        <Label Content="Ranking : " Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" FontWeight="Bold"/>
+        <RadioButton GroupName="RankingType" Content="GooglePageRank" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding GooglePrIsSelected,Mode=TwoWay}" IsEnabled="{Binding RankingIsCalculated}" FontWeight="Bold"/>
+        <RadioButton GroupName="RankingType" Content="AmeliratedPageRank" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding AmelioratedPrIsSelected,Mode=TwoWay}" IsEnabled="{Binding RankingIsCalculated}" FontWeight="Bold"/>
         <!--<ListBox ItemsSource="{Binding ListSearchResult}" Margin="5" Grid.Row="1" Grid.ColumnSpan="3" Grid.Column="0"
                  Background="LightGray">
             <ListBox.ItemTemplate>

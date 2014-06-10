@@ -13,20 +13,20 @@ namespace LuceneSearchClient
         {
             InitializeComponent();
             Closing += (s, e) => ViewModelLocator.Cleanup();
-            Messenger.Default.Register<NotificationMessage>(this, (msg) =>
-            {
-                if (msg.Notification == "opensettingswindow")
-                {
-                    _settingsWindow = new SettingView();
-                    _settingsWindow.ShowDialog();
-                }
-            });
-            Messenger.Default.Register<NotificationMessage>(this, (msg) =>
-            {
+            //Messenger.Default.Register<NotificationMessage>(this, (msg) =>
+            //{
+            //    if (msg.Notification == "opensettingswindow")
+            //    {
+            //        _settingsWindow = new SettingView();
+            //        _settingsWindow.ShowDialog();
+            //    }
+            //});
+            //Messenger.Default.Register<NotificationMessage>(this, (msg) =>
+            //{
 
-                if (msg.Notification == "killsettingswindow" && _settingsWindow != null)
-                    _settingsWindow.Close();
-            });
+            //    if (msg.Notification == "killsettingswindow" && _settingsWindow != null)
+            //        _settingsWindow.Close();
+            //});
         }
     }
 }

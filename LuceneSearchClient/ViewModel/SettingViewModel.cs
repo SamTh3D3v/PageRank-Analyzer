@@ -169,6 +169,7 @@ namespace LuceneSearchClient.ViewModel
                        ?? (_saveCommand = new RelayCommand(
                            () =>
                            {
+                               Messenger.Default.Send<NotificationMessage>(new NotificationMessage("navigateToSearch"));
                                Messenger.Default.Send<WebSite>(new WebSite()
                                {
                                    WebSiteIndex = _indexLocation,
@@ -176,7 +177,7 @@ namespace LuceneSearchClient.ViewModel
                                    WebSiteUrl = _webSiteUrl,
                                    NewIndex=NewIndex,
                                }, "savesettings");
-                               Messenger.Default.Send<NotificationMessage>(new NotificationMessage("killsettingswindow"));
+                               
                            }));
             }
 
@@ -188,7 +189,7 @@ namespace LuceneSearchClient.ViewModel
             {
                 return _cancelSettingsCommand
                     ?? (_cancelSettingsCommand = new RelayCommand(
-                                          () => Messenger.Default.Send<NotificationMessage>(new NotificationMessage("killsettingswindow"))));
+                                          () => Messenger.Default.Send<NotificationMessage>(new NotificationMessage("navigateToSearch"))));
             }
         }
         #endregion

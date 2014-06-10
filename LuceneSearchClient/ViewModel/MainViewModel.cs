@@ -42,7 +42,12 @@ namespace LuceneSearchClient.ViewModel
         #region Ctors and Methods        
         public MainViewModel()
         {    
-            NavigationUri=new Uri("../Views/SearchView.xaml",UriKind.RelativeOrAbsolute);             
+            NavigationUri=new Uri("../Views/SearchView.xaml",UriKind.RelativeOrAbsolute);
+            Messenger.Default.Register<NotificationMessage>(this, (msg) =>
+            {
+                if (msg.Notification == "navigateToSearch")
+                    NavigationUri = new Uri("../Views/SearchView.xaml", UriKind.RelativeOrAbsolute);
+            }); 
         }
 
         #endregion
@@ -67,8 +72,10 @@ namespace LuceneSearchClient.ViewModel
             {
                 return _settingsCommand
                     ?? (_settingsCommand = new RelayCommand(
-                                          () => Messenger.Default.Send<NotificationMessage>(
-                                              new NotificationMessage("opensettingswindow"))));
+                        () =>
+                        {
+                            NavigationUri = new Uri("../Views/SettingView.xaml", UriKind.RelativeOrAbsolute); 
+                        }));
             }
         }
         private RelayCommand _allSimulationCommand;      

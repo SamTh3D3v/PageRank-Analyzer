@@ -775,10 +775,13 @@ namespace LuceneSearchClient.ViewModel
                                                   for (ulong j = 0; j < MatrixSize; j++)
                                                   {
                                                       AdjacenteMatrix[i, j] = rand.Next(2);
+                                                      if (AdjacenteMatrix[i, j] != 0)
+                                                          AddNewGraphEdge(i.ToString(CultureInfo.InvariantCulture), j.ToString(CultureInfo.InvariantCulture));
                                                   }
 
                                               }
                                               RaisePropertyChanged(AdjacenceMatrixPropertyName);
+                                              RaisePropertyChanged(WebGraphPropertyName);
                                           }));
             }
         }
@@ -1005,18 +1008,34 @@ namespace LuceneSearchClient.ViewModel
                                           {
                                               var editedTextbox = args.EditingElement as TextBox;
                                               if (editedTextbox != null)
-                                                  AdjacenteMatrix[(ulong)args.Row.GetIndex(), (ulong)args.Column.DisplayIndex] = float.Parse(editedTextbox.Text.Replace(",", "."), CultureInfo.InvariantCulture);
-                                              AddNewGraphEdge(args.Row.GetIndex().ToString(), args.Column.DisplayIndex.ToString());
+                                              {
+                                                  var newval = float.Parse(editedTextbox.Text.Replace(",", "."),
+                                                      CultureInfo.InvariantCulture);
+                                                  AdjacenteMatrix[
+                                                      (ulong)args.Row.GetIndex(), (ulong)args.Column.DisplayIndex] =
+                                                      newval;
+                                                  if (newval != 0)
+                                                      AddNewGraphEdge(args.Row.GetIndex().ToString(),
+                                                      args.Column.DisplayIndex.ToString());
+                                                  else
+                                                      RemoveGraphEdge(args.Row.GetIndex().ToString(),
+                                                      args.Column.DisplayIndex.ToString());
+                                                  RaisePropertyChanged(WebGraphPropertyName);
+                                              }
                                           }));
             }
         }
         private void AddNewGraphEdge(string from, string to)
         {
             var webEdge = new WebEdge(WebGraph.Vertices.Where(x => x.Label == from).First(), WebGraph.Vertices.Where(x => x.Label == to).First());
-
             _webGraph.AddEdge(webEdge);
-            RaisePropertyChanged(WebGraphPropertyName);
 
+        }
+        private void RemoveGraphEdge(string from, string to)
+        {
+            var edge = _webGraph.Edges.FirstOrDefault(e => e.Source.Label == from && e.Target.Label == to);
+            if (edge != null)                
+            _webGraph.RemoveEdge(edge);
         }
         private RelayCommand<DataGridCellEditEndingEventArgs> _telMatCellEditEndingCommand;
         public RelayCommand<DataGridCellEditEndingEventArgs> TelMatCellEditEndingCommand
@@ -1190,7 +1209,7 @@ namespace LuceneSearchClient.ViewModel
                                           }));
             }
         }
-        private RelayCommand _resetChartsPrAprTimeCommand;  
+        private RelayCommand _resetChartsPrAprTimeCommand;
         public RelayCommand ResetChartsPrAprTimeCommand
         {
             get

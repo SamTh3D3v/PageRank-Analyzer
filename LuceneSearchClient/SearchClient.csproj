@@ -235,6 +235,15 @@
     <Folder Include="Assets\Images\" />
     <Folder Include="Helpers\" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\icons\excel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\icons\xml.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\icons\matrice.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

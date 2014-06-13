@@ -18,131 +18,18 @@
       mc:Ignorable="d ignore" d:DesignHeight="500" d:DesignWidth="900"
         DataContext="{Binding SimulatorViewModel, Source={StaticResource Locator}}">
     <Page.Resources>
-        <converters:MatrixToDataViewConverter x:Key="MatrixToDataViewConverter" />
-        <converters:VectorToDataViewRowConverter x:Key="ArrayToDataViewConverter"/>
-        <converters:VectorToDataViewColumnConverter x:Key="VectorToDataViewColumnConverter"/>
-        <converters:InitialVectorSetConverter x:Key="InitialVectorSetConverter"/>
-        <DataTemplate x:Key="VertexDataTemplate" DataType="{x:Type model:WebVertex}">
-            <StackPanel Orientation="Horizontal" Margin="5">
-                <TextBlock Text="{Binding Path=Label, Mode=OneWay}" Foreground="White" FontFamily="Segoe WP Black" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <TextBlock.Effect>
-                        <DropShadowEffect Color="White" BlurRadius="4" ShadowDepth="0"/>
-                    </TextBlock.Effect>
-                </TextBlock>
-            </StackPanel>
-        </DataTemplate>
-        <Style TargetType="{x:Type graphsharp:VertexControl}">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate x:Name="ControlTemplate" TargetType="{x:Type graphsharp:VertexControl}">
-                        <Border x:Name="_border" CornerRadius="50" Width="60" Height="60" BorderThickness="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                            <Border.Effect>
-                                <DropShadowEffect BlurRadius="15" Direction="309" ShadowDepth="0" Color="#FF2B00FF" RenderingBias="Quality"/>
-                            </Border.Effect>
-                            <Border.Background>
-                                <RadialGradientBrush GradientOrigin="0.231,0.889" RadiusX="0.517" RadiusY="0.517">
-                                    <GradientStop Color="#CCD4D3FD" Offset="1"/>
-                                    <GradientStop Color="Black"/>
-                                </RadialGradientBrush>
-                            </Border.Background>
-                            <Border CornerRadius="50" Width="60" Height="60" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" BorderThickness="0">
-                                <Border.Background>
-                                    <RadialGradientBrush RadiusY="0.939" RadiusX="0.982" GradientOrigin="-0.005,0.984" Center="0.417,0.539">
-                                        <RadialGradientBrush.RelativeTransform>
-                                            <TransformGroup>
-                                                <ScaleTransform CenterY="0.5" CenterX="0.5" ScaleY="1" ScaleX="1"/>
-                                                <SkewTransform AngleY="0" AngleX="0" CenterY="0.5" CenterX="0.5"/>
-                                                <RotateTransform Angle="181.901" CenterY="0.5" CenterX="0.5"/>
-                                                <TranslateTransform/>
-                                            </TransformGroup>
-                                        </RadialGradientBrush.RelativeTransform>
-                                        <GradientStop Color="#34434343" Offset="0.56"/>
-                                        <GradientStop Offset="1"/>
-                                        <GradientStop Color="#40737373" Offset="0.543"/>
-                                        <GradientStop/>
-                                    </RadialGradientBrush>
-                                </Border.Background>
-                                <ContentPresenter Content="{TemplateBinding Vertex}" 
-                                            ContentTemplate="{StaticResource VertexDataTemplate}"  VerticalAlignment="Center" HorizontalAlignment="Center">
-                                </ContentPresenter>
-                            </Border>
-                        </Border>
-                        <ControlTemplate.Resources>
-                            <Storyboard x:Key="OnMouseEnter1">
-                                <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[0].(GradientStop.Color)" Storyboard.TargetName="_border">
-                                    <EasingColorKeyFrame KeyTime="0:0:0.3" Value="#CCFF8989"/>
-                                </ColorAnimationUsingKeyFrames>
-                                <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[1].(GradientStop.Color)" Storyboard.TargetName="_border">
-                                    <EasingColorKeyFrame KeyTime="0:0:0.3" Value="#FF210000"/>
-                                </ColorAnimationUsingKeyFrames>
-                                <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.Color)" Storyboard.TargetName="_border">
-                                    <EasingColorKeyFrame KeyTime="0:0:0.3" Value="Red"/>
-                                </ColorAnimationUsingKeyFrames>
-                            </Storyboard>
-                            <Storyboard x:Key="OnMouseLeave1">
-                                <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.Color)" Storyboard.TargetName="_border">
-                                    <EasingColorKeyFrame KeyTime="0" Value="Red"/>
-                                    <EasingColorKeyFrame KeyTime="0:0:0.3" Value="#FF2B00FF"/>
-                                </ColorAnimationUsingKeyFrames>
-                                <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[0].(GradientStop.Color)" Storyboard.TargetName="_border">
-                                    <EasingColorKeyFrame KeyTime="0" Value="#CCFF8989"/>
-                                    <EasingColorKeyFrame KeyTime="0:0:0.3" Value="#CCD4D3FD"/>
-                                </ColorAnimationUsingKeyFrames>
-                            </Storyboard>
-                            <Storyboard x:Key="OnMouseLeftButtonDown1">
-                                <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.Color)" Storyboard.TargetName="ControlTemplate">
-                                    <EasingColorKeyFrame KeyTime="0" Value="Black"/>
-                                </ColorAnimationUsingKeyFrames>
-                                <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[0].(GradientStop.Color)" Storyboard.TargetName="ControlTemplate">
-                                    <EasingColorKeyFrame KeyTime="0" Value="#CCFF0000"/>
-                                </ColorAnimationUsingKeyFrames>
-                                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[0].(GradientStop.Offset)" Storyboard.TargetName="ControlTemplate">
-                                    <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-                                </DoubleAnimationUsingKeyFrames>
-                                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[1].(GradientStop.Offset)" Storyboard.TargetName="ControlTemplate">
-                                    <EasingDoubleKeyFrame KeyTime="0" Value="1"/>
-                                </DoubleAnimationUsingKeyFrames>
-                            </Storyboard>
-                        </ControlTemplate.Resources>
-                        <ControlTemplate.Triggers>
-                            <EventTrigger RoutedEvent="Mouse.MouseEnter">
-                                <BeginStoryboard x:Name="OnMouseEnter1_BeginStoryboard" Storyboard="{StaticResource OnMouseEnter1}"/>
-                            </EventTrigger>
-                            <EventTrigger RoutedEvent="Mouse.MouseLeave">
-                                <BeginStoryboard x:Name="OnMouseLeave1_BeginStoryboard" Storyboard="{StaticResource OnMouseLeave1}"/>
-                            </EventTrigger>
-                            <EventTrigger RoutedEvent="UIElement.MouseLeftButtonDown">
-                                <BeginStoryboard x:Name="OnMouseLeftButtonDown1_BeginStoryboard" Storyboard="{StaticResource OnMouseLeftButtonDown1}"/>
-                            </EventTrigger>
-                            <EventTrigger RoutedEvent="UIElement.MouseLeftButtonUp">
-                                <StopStoryboard BeginStoryboardName="OnMouseLeftButtonDown1_BeginStoryboard"/>
-                                <BeginStoryboard Storyboard="{StaticResource OnMouseEnter1}"/>
-                            </EventTrigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style TargetType="{x:Type graphsharp:EdgeControl}">
-            <Style.Resources>
-                <ToolTip x:Key="ToolTipContent">
-                    <StackPanel>
-                        <TextBlock FontWeight="Bold" Text="Edge Information"/>
-                    </StackPanel>
-                </ToolTip>
-            </Style.Resources>
-            <Setter Property="ToolTip" Value="{StaticResource ToolTipContent}"/>
-        </Style>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/ResourceDictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Page.Resources>
     <Grid>
         <avalonDock:DockingManager >
             <avalonDock:LayoutRoot>
                 <avalonDock:LayoutPanel Orientation="Horizontal">
-                    <!--<avalonDock:LayoutDocumentPane>
-                     
-                    </avalonDock:LayoutDocumentPane>-->
                     <avalonDock:LayoutAnchorablePane  >
-                        <avalonDock:LayoutAnchorable Title="Define Matrix" IsVisible="False" >
+                        <avalonDock:LayoutAnchorable Title="Define Matrix"  >
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
@@ -153,7 +40,7 @@
                                     <ColumnDefinition Width="10"/>
                                     <ColumnDefinition Width="150"/>
                                 </Grid.ColumnDefinitions>
-                                <GroupBox Header="Settings" Margin="5" Grid.Row="0" Grid.ColumnSpan="3" Background="WhiteSmoke">
+                                <GroupBox Header="Settings" Margin="5" Grid.Row="0" Grid.ColumnSpan="3" Background="LightGray" FontWeight="Bold">
                                     <Grid>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto"/>
@@ -170,7 +57,7 @@
                                         <TextBox  Grid.Row="1" Grid.Column="1" Text="{Binding DampingFactor,Mode=TwoWay}" Margin="3"/>
                                     </Grid>
                                 </GroupBox>
-                                <GroupBox Header="Matrices" Margin="5" Grid.Row="1" Grid.Column="0" Background="WhiteSmoke">
+                                <GroupBox Header="Matrices" Margin="5" Grid.Row="1" Grid.Column="0" Background="LightGray" FontWeight="Bold">
                                     <TabControl>
                                         <TabItem Header="Adjancence Matrix">
                                             <Grid>
@@ -191,8 +78,29 @@
                                                         <ColumnDefinition Width="*"/>
                                                         <ColumnDefinition Width="*"/>
                                                     </Grid.ColumnDefinitions>
-                                                    <Button Content="Generate Matrix Randomly" Margin="2" Grid.Column="0" Command="{Binding GenerateMatrixCommand}"/>
-                                                    <Button Content="Reset Matrix"  Margin="2" Grid.Column="1" Command="{Binding ResetMatrixCommand}"/>
+                                                    <Button  Margin="4" Grid.Column="0" Command="{Binding GenerateMatrixCommand}" Style="{StaticResource DarkStyleButton}">
+                                                        <Button.Content>
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <Image Source="../Assets/icons/matrice.png"/>
+                                                                <StackPanel Orientation="Vertical" Margin="5">
+                                                                    <TextBlock Text="Generate matrice" VerticalAlignment="Center" />
+                                                                    <TextBlock Text="Randomly" FontSize="8" VerticalAlignment="Center" Foreground="Gainsboro" />
+                                                                </StackPanel>
+                                                            </StackPanel>
+                                                        </Button.Content>
+                                                    </Button>
+                                                    
+                                                    <Button  Margin="2" Grid.Column="1" Command="{Binding ResetMatrixCommand}" Style="{StaticResource DarkStyleButton}">
+                                                        <Button.Content>
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <Image Source="../Assets/icons/matrice.png"/>
+                                                                <StackPanel Orientation="Vertical" Margin="5">
+                                                                    <TextBlock Text="Reset Matrix" VerticalAlignment="Center" />
+                                                                    <TextBlock Text="set elements to 0" FontSize="8" VerticalAlignment="Center" Foreground="Gainsboro" />
+                                                                </StackPanel>
+                                                            </StackPanel>
+                                                        </Button.Content>
+                                                    </Button>
                                                 </Grid>
                                             </Grid>
                                         </TabItem>
@@ -233,7 +141,7 @@
                                     </TabControl>
                                 </GroupBox>
                                 <GridSplitter Width="5" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center"></GridSplitter>
-                                <GroupBox Grid.Column="2" Grid.Row="1" Header="Initial Page Rank" Margin="5" Background="WhiteSmoke">
+                                <GroupBox Grid.Column="2" Grid.Row="1" Header="Initial Page Rank" Margin="5" Background="LightGray" FontWeight="Bold">
                                     <Grid>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="*"/>
@@ -246,7 +154,17 @@
                                                 </i:EventTrigger>
                                             </i:Interaction.Triggers>
                                         </DataGrid>
-                                        <Button Grid.Row="1" Content="1/N" Margin="5" Grid.Column="0" VerticalAlignment="Center" IsEnabled="{Binding InitialPageRank,Converter={StaticResource InitialVectorSetConverter}}" Command="{Binding ResetInitialPageRankCommand}"/>
+                                        <Button Grid.Row="1"  Margin="4" Grid.Column="0" VerticalAlignment="Center" IsEnabled="{Binding InitialPageRank,Converter={StaticResource InitialVectorSetConverter}}" Command="{Binding ResetInitialPageRankCommand}" Style="{StaticResource DarkStyleButton}">
+                                            <Button.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Source="../Assets/icons/calc.png"/>
+                                                    <StackPanel Orientation="Vertical" Margin="5">
+                                                        <TextBlock Text="Reset" VerticalAlignment="Center" />
+                                                        <TextBlock Text="1/N" FontSize="8" VerticalAlignment="Center" Foreground="Gainsboro" />
+                                                    </StackPanel>
+                                                </StackPanel>
+                                            </Button.Content>
+                                        </Button>
                                     </Grid>
                                 </GroupBox>
                                 <!--<GroupBox Header="Calculation" Margin="5" Grid.Row="2" Visibility="Hidden">
@@ -326,8 +244,8 @@
                         </avalonDock:LayoutAnchorable >
                     </avalonDock:LayoutAnchorablePane>
                     <avalonDock:LayoutAnchorablePane DockWidth="300" >
-                        <avalonDock:LayoutAnchorable Title="Calculation" >
-                            <GroupBox Header="PageRank" Margin="5" Background="WhiteSmoke">
+                        <avalonDock:LayoutAnchorable Title="Calculation"  >
+                            <GroupBox Header="PageRank" Margin="5" Background="LightGray" FontWeight="Bold">
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
@@ -355,7 +273,17 @@
                                             <CheckBox x:Name="AutoIteCheckBoxPr" ToolTip="auto calculated"  Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding AutomaticIterations}"/>
                                             <Label Content="Precision :" Grid.Row="1" Grid.Column="0" />
                                             <TextBox  Grid.Row="1" Grid.Column="1" Margin="3" Grid.ColumnSpan="2" Text="{Binding PrPrecision,Mode=TwoWay}" />
-                                            <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" Content="Calculate" Margin="3" Command="{Binding CalculatePageRankCommand}"/>
+                                            <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" Style="{StaticResource DarkStyleButton}" Margin="4" Command="{Binding CalculatePageRankCommand}">
+                                                <Button.Content>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Image Source="../Assets/icons/calc.png"/>
+                                                        <StackPanel Orientation="Vertical" Margin="5">
+                                                            <TextBlock Text="Calculate" VerticalAlignment="Center" />
+                                                            <TextBlock Text="PageRank" FontSize="8" VerticalAlignment="Center" Foreground="Gainsboro" />
+                                                        </StackPanel>
+                                                    </StackPanel>
+                                                </Button.Content>
+                                            </Button>
                                         </Grid>
                                     </GroupBox>
                                     <GroupBox Header="Ameliorated page rank" Grid.Row="0" Grid.Column="2">
@@ -375,7 +303,17 @@
                                             <CheckBox x:Name="AutoIteCheckBoxAPr" ToolTip="auto calculated"  Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding AutomaticIterationsApr}"/>
                                             <Label Content="Precision :" Grid.Row="1" Grid.Column="0" />
                                             <TextBox  Grid.Row="1" Grid.Column="1" Margin="3" Grid.ColumnSpan="2" Text="{Binding Aprprecision,Mode=TwoWay}" />
-                                            <Button Grid.Row="2"  Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" Content="Calculate" Margin="3" Command="{Binding CalculateAmelioratedPageRankCommand}"/>
+                                            <Button Grid.Row="2"  Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" Style="{StaticResource DarkStyleButton}"  Margin="4" Command="{Binding CalculateAmelioratedPageRankCommand}">
+                                                <Button.Content>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Image Source="../Assets/icons/calc.png"/>
+                                                        <StackPanel Orientation="Vertical" Margin="5">
+                                                            <TextBlock Text="Calculate" VerticalAlignment="Center" />
+                                                            <TextBlock Text="Ameliorated PR" FontSize="8" VerticalAlignment="Center" Foreground="Gainsboro" />
+                                                        </StackPanel>
+                                                    </StackPanel>
+                                                </Button.Content>
+                                            </Button>
                                         </Grid>
                                     </GroupBox>
                                     <GridSplitter HorizontalAlignment="Center" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" Width="5"></GridSplitter>
@@ -386,8 +324,8 @@
                                 </Grid>
                             </GroupBox>
                         </avalonDock:LayoutAnchorable >
-                        <avalonDock:LayoutAnchorable Title="EignValues" >
-                            <GroupBox Header="Eign Values" Margin="5" Background="WhiteSmoke">
+                        <avalonDock:LayoutAnchorable Title="EignValues" IsVisible="False">
+                            <GroupBox Header="Eign Values" Margin="5" Background="LightGray" FontWeight="Bold">
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
@@ -409,10 +347,20 @@
                                             <Label Content="Matrice :" Grid.Row="0" Grid.Column="0" />
                                             <ComboBox  Margin="3" Grid.Column="1" Grid.Row="0" ItemsSource="{Binding ListMatricesLabels}" SelectedItem="{Binding SelectedMatriceEv, Mode=TwoWay}">
                                             </ComboBox>
-                                            <Button Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Right" Content="Calculate" Margin="3" Command="{Binding CalculateEignValuesCommand}"/>
+                                            <Button Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource DarkStyleButton}" HorizontalAlignment="Right" Margin="4" Command="{Binding CalculateEignValuesCommand}">
+                                                <Button.Content>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Image Source="../Assets/icons/lambda.png"/>
+                                                        <StackPanel Orientation="Vertical" Margin="5">
+                                                            <TextBlock Text="Calculate" VerticalAlignment="Center" />
+                                                            <TextBlock Text="eign values" FontSize="8" VerticalAlignment="Center" Foreground="Gainsboro" />
+                                                        </StackPanel>
+                                                    </StackPanel>
+                                                </Button.Content>
+                                            </Button>
                                         </Grid>
                                     </GroupBox>
-                                    <DataGrid Grid.Row="1"  Margin="5" Grid.ColumnSpan="2" Background="White" ItemsSource="{Binding EignValuesVector,Converter={StaticResource VectorToDataViewColumnConverter},Mode=TwoWay}" IsReadOnly="True"/>
+                                    <DataGrid Grid.Row="1"  Margin="5" MaxWidth="150" Grid.ColumnSpan="2" Background="White" ItemsSource="{Binding EignValuesVector,Converter={StaticResource VectorToDataViewColumnConverter},Mode=TwoWay}" IsReadOnly="True"/>
                                 </Grid>
                             </GroupBox>
                         </avalonDock:LayoutAnchorable>

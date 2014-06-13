@@ -4,10 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ignore="http://www.ignore.com"
-        xmlns:avalonDock="http://schemas.xceed.com/wpf/xaml/avalondock"
-      
+        xmlns:avalonDock="http://schemas.xceed.com/wpf/xaml/avalondock"      
       xmlns:dv="clr-namespace:System.Windows.Controls.DataVisualization;assembly=System.Windows.Controls.DataVisualization.Toolkit"
-xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
+      xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
       xmlns:converters="clr-namespace:LuceneSearchClient.Converters"
       xmlns:resources="clr-namespace:LuceneSearchClient.Resources"
       xmlns:command="http://www.galasoft.ch/mvvmlight"

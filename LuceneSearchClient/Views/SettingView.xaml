@@ -9,23 +9,23 @@
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Resources/ResourceDictionary.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="../Resources/ResourceDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>
-    <Border VerticalAlignment="Center" HorizontalAlignment="Center" BorderThickness="4" BorderBrush="Gray" Width="422" >
+    <Border VerticalAlignment="Center" HorizontalAlignment="Center" BorderThickness="4" BorderBrush="Gray" Width="500" >
         <Grid Background="LightGray">
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="40"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="120"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="70"/>
+                <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Row="0" Grid.Column="0" Content="Website Url :" FontWeight="Bold"/>
             <TextBox x:Name="TxbSiteUrl"  Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding WebSiteUrl ,Mode=TwoWay}" Style="{StaticResource SettingsTextBoxStyle}"/>
@@ -33,17 +33,46 @@
             <CheckBox  Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="ExistingIndexCheckBox" IsChecked="{Binding NewIndex,Mode=TwoWay}" />
             <Label Grid.Row="2" Grid.Column="0" Content="WebSite Location" FontWeight="Bold"/>
             <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding WebSiteLocation ,Mode=TwoWay}" IsEnabled="{Binding ElementName=ExistingIndexCheckBox,Path=IsChecked}" Style="{StaticResource SettingsTextBoxStyle}" />
-            <Button Content="Browse" Grid.Row="2" Grid.Column="2" Style="{StaticResource SettingsButtonStyle}" IsEnabled="{Binding ElementName=ExistingIndexCheckBox,Path=IsChecked}" Command="{Binding WebSiteLocationCommand}"/>
+            <Button Grid.Row="2" Grid.Column="2" Margin="4" Style="{StaticResource DarkStyleButton}" IsEnabled="{Binding ElementName=ExistingIndexCheckBox,Path=IsChecked}" Command="{Binding WebSiteLocationCommand}">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="../Assets/icons/browse.png"/>
+                        <TextBlock Text="Browse" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5"></TextBlock>
+                    </StackPanel>
+                </Button.Content>
+            </Button>
             <Label Grid.Row="3" Grid.Column="0" Content="Index Location" FontWeight="Bold"/>
             <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding IndexLocation ,Mode=TwoWay}"  Style="{StaticResource SettingsTextBoxStyle}"/>
-            <Button Content="Browse" Grid.Row="3" Grid.Column="2" Style="{StaticResource SettingsButtonStyle}" Command="{Binding IndexLocationCommand}"/>
+            <Button  Grid.Row="3" Grid.Column="2" Style="{StaticResource DarkStyleButton}" Command="{Binding IndexLocationCommand}" Margin="4">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="../Assets/icons/browse.png"/>
+                        <TextBlock Text="Browse" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5"></TextBlock>
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+            
             <Grid Margin="0,5,5,5" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Right" Width="200">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="100"/>
                     <ColumnDefinition Width="100"/>
                 </Grid.ColumnDefinitions>
-                <Button Content="Save" Grid.Column="0" Style="{StaticResource SettingsButtonStyle}" IsEnabled="{Binding SaveButtonEnabled}" Command="{Binding SaveCommand}" Margin="2"/>
-                <Button Content="Cancel" Grid.Column="1" IsEnabled="True" Command="{Binding CancelSettingsCommand}" Style="{StaticResource SettingsButtonStyle}" Margin="2"/>
+                <Button  Grid.Column="0" Style="{StaticResource DarkStyleButton}" IsEnabled="{Binding SaveButtonEnabled}" Command="{Binding SaveCommand}" Margin="2">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="../Assets/icons/save.png"/>
+                            <TextBlock Text="Save" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5"></TextBlock>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <Button Grid.Column="1" IsEnabled="True" Command="{Binding CancelSettingsCommand}" Style="{StaticResource DarkStyleButton}" Margin="2">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="../Assets/icons/cancel.png"/>
+                            <TextBlock Text="Cancel" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5"></TextBlock>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
             </Grid>
 
         </Grid>

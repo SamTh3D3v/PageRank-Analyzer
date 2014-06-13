@@ -53,7 +53,7 @@ namespace LuceneSearchClient.ViewModel
         public const string ListAPrIteMatPropertyName = "ListAPrIteMat";
         public const string ListPrTimeMatPropertyName = "ListPrTimeMat";
         public const string ListAPrTimeMatPropertyName = "ListAPrTimeMat";
-        public const string LayoutAlgorithmTypesPropertyName = "LayoutAlgorithmTypes"; 
+        public const string LayoutAlgorithmTypesPropertyName = "LayoutAlgorithmTypes";
         public const string SelectedLayoutAlgorithmeTtypePropertyName = "SelectedLayoutAlgorithmeTtype";
         public const string WebGraphPropertyName = "WebGraph";
         #endregion
@@ -94,7 +94,7 @@ namespace LuceneSearchClient.ViewModel
         };
         private string _selectedMatriceEv = "google Matrix";
         private ObservableCollection<KeyValuePair<ulong, ulong>> _listPrTimeMat;
-        private ObservableCollection<KeyValuePair<ulong, ulong>> _listAPrTimeMat;        
+        private ObservableCollection<KeyValuePair<ulong, ulong>> _listAPrTimeMat;
         private List<string> _layoutAlgorithmTypes = new List<string>
         {
             "BoundedFR",
@@ -135,11 +135,11 @@ namespace LuceneSearchClient.ViewModel
                 ListWebPages = new ObservableCollection<string>(listpages);
                 SelectedPage = ListWebPages.First();
                 //Generate The WebGraph
-                WebGraph=new WebGraph(true);
-                foreach (var page in listpages)             
-                    WebGraph.AddVertex(new WebVertex() {Label = page});
+                WebGraph = new WebGraph(true);
+                foreach (var page in listpages)
+                    WebGraph.AddVertex(new WebVertex() { Label = page });
                 RaisePropertyChanged(WebGraphPropertyName);
-                
+
             }
         }
         public Matrix AdjacenteMatrix
@@ -536,7 +536,7 @@ namespace LuceneSearchClient.ViewModel
                 RaisePropertyChanged(ListAprPagesPropertyName);
             }
         }
-        public ObservableCollection<KeyValuePair<ulong,ulong>> ListPrIteMat
+        public ObservableCollection<KeyValuePair<ulong, ulong>> ListPrIteMat
         {
             get
             {
@@ -549,12 +549,12 @@ namespace LuceneSearchClient.ViewModel
                 {
                     return;
                 }
-                
+
                 _listPrIteMat = value;
                 RaisePropertyChanged(ListPrIteMatPropertyName);
             }
         }
-        public ObservableCollection<KeyValuePair<ulong,ulong>> ListAPrIteMat
+        public ObservableCollection<KeyValuePair<ulong, ulong>> ListAPrIteMat
         {
             get
             {
@@ -567,12 +567,12 @@ namespace LuceneSearchClient.ViewModel
                 {
                     return;
                 }
-                
+
                 _listAPrIteMat = value;
                 RaisePropertyChanged(ListAPrIteMatPropertyName);
             }
-        } 
-        public ObservableCollection<KeyValuePair<ulong,ulong>> ListAPrTimeMat
+        }
+        public ObservableCollection<KeyValuePair<ulong, ulong>> ListAPrTimeMat
         {
             get
             {
@@ -585,12 +585,12 @@ namespace LuceneSearchClient.ViewModel
                 {
                     return;
                 }
-                
+
                 _listAPrTimeMat = value;
                 RaisePropertyChanged(ListAPrTimeMatPropertyName);
             }
         }
-        public ObservableCollection<KeyValuePair<ulong,ulong>> ListPrTimeMat
+        public ObservableCollection<KeyValuePair<ulong, ulong>> ListPrTimeMat
         {
             get
             {
@@ -603,7 +603,7 @@ namespace LuceneSearchClient.ViewModel
                 {
                     return;
                 }
-                
+
                 _listPrTimeMat = value;
                 RaisePropertyChanged(ListPrTimeMatPropertyName);
             }
@@ -696,7 +696,7 @@ namespace LuceneSearchClient.ViewModel
                 _selectedMatriceEv = value;
                 RaisePropertyChanged(SelectedMatriceEvPropertyName);
             }
-        }    
+        }
         public List<string> LayoutAlgorithmTypes
         {
             get
@@ -710,7 +710,7 @@ namespace LuceneSearchClient.ViewModel
                 {
                     return;
                 }
-                
+
                 _layoutAlgorithmTypes = value;
                 RaisePropertyChanged(LayoutAlgorithmTypesPropertyName);
             }
@@ -745,7 +745,7 @@ namespace LuceneSearchClient.ViewModel
                 {
                     return;
                 }
-                
+
                 _webGraph = value;
                 RaisePropertyChanged(WebGraphPropertyName);
             }
@@ -885,7 +885,7 @@ namespace LuceneSearchClient.ViewModel
                                                       DataSourceListDampPr[(int)i].Add(new KeyValuePair<float, float>(dampFactor, prVector[i]));
                                                   }
                                               }
-                                              ListDampPr = new ObservableCollection<KeyValuePair<float, float>>(DataSourceListDampPr[int.Parse(SelectedPage.Trim())]);                                              
+                                              ListDampPr = new ObservableCollection<KeyValuePair<float, float>>(DataSourceListDampPr[int.Parse(SelectedPage.Trim())]);
 
                                           }));
             }
@@ -920,21 +920,8 @@ namespace LuceneSearchClient.ViewModel
                     ?? (_resetChartsPrCommand = new RelayCommand(
                                           () =>
                                           {
-                                              DataSourceListDampPr=new List<List<KeyValuePair<float, float>>>();
-                                              ListDampPr=new ObservableCollection<KeyValuePair<float, float>>();
-                                          }));
-            }
-        }
-        private RelayCommand _exportChartPrCommand;
-        public RelayCommand ExportChartPrCommand
-        {
-            get
-            {
-                return _exportChartPrCommand
-                    ?? (_exportChartPrCommand = new RelayCommand(
-                                          () =>
-                                          {
-
+                                              DataSourceListDampPr = new List<List<KeyValuePair<float, float>>>();
+                                              ListDampPr = new ObservableCollection<KeyValuePair<float, float>>();
                                           }));
             }
         }
@@ -972,24 +959,25 @@ namespace LuceneSearchClient.ViewModel
                     ?? (_resetChartsItCommand = new RelayCommand(
                                           () =>
                                           {
-
+                                              ListDampIt = new ObservableCollection<KeyValuePair<float, ulong>>();
                                           }));
             }
         }
-        private RelayCommand _exportChartItCommand;
-        public RelayCommand ExportChartItCommand
+        private RelayCommand _resetChartsPrAprIteCommand;
+        public RelayCommand ResetChartsPrAprIteCommand
         {
             get
             {
-                return _exportChartItCommand
-                    ?? (_exportChartItCommand = new RelayCommand(
+                return _resetChartsPrAprIteCommand
+                    ?? (_resetChartsPrAprIteCommand = new RelayCommand(
                                           () =>
                                           {
 
+                                              ListPrIteMat = new ObservableCollection<KeyValuePair<ulong, ulong>>();
+                                              ListAPrIteMat = new ObservableCollection<KeyValuePair<ulong, ulong>>();
                                           }));
             }
         }
-
         private RelayCommand<DataGridCellEditEndingEventArgs> _initialVecCellEditEndingCommand;
         public RelayCommand<DataGridCellEditEndingEventArgs> InitialVecCellEditEndingCommand
         {
@@ -1028,7 +1016,7 @@ namespace LuceneSearchClient.ViewModel
 
             _webGraph.AddEdge(webEdge);
             RaisePropertyChanged(WebGraphPropertyName);
-            
+
         }
         private RelayCommand<DataGridCellEditEndingEventArgs> _telMatCellEditEndingCommand;
         public RelayCommand<DataGridCellEditEndingEventArgs> TelMatCellEditEndingCommand
@@ -1094,7 +1082,7 @@ namespace LuceneSearchClient.ViewModel
                                               switch (SelectedMatriceEv)
                                               {
                                                   case "google Matrix":
-                                                      if (GoogleMatrix == null) return;                                                          
+                                                      if (GoogleMatrix == null) return;
                                                       listEv = GoogleMatrix.Eigenvalues();
                                                       _eignValuesVector = new Vector(VectorType.Column, (ulong)listEv.Count);
                                                       for (int i = 0; i < listEv.Count; i++)
@@ -1131,7 +1119,7 @@ namespace LuceneSearchClient.ViewModel
                                           }));
             }
         }
-        private RelayCommand _startSimulationPrAprIteCommand;   
+        private RelayCommand _startSimulationPrAprIteCommand;
         public RelayCommand StartSimulationPrAprIteCommand
         {
             get
@@ -1143,7 +1131,7 @@ namespace LuceneSearchClient.ViewModel
                                               var worker = new BackgroundWorker();
                                               worker.DoWork += DrawSimulationIteMatChart;
                                               worker.RunWorkerCompleted += DrawSimulationIteMatChartCompeleted;
-                                              worker.RunWorkerAsync();                                                                                          
+                                              worker.RunWorkerAsync();
                                           }));
             }
         }
@@ -1157,7 +1145,7 @@ namespace LuceneSearchClient.ViewModel
         {
             _listPrIteMat = new ObservableCollection<KeyValuePair<ulong, ulong>>();
             _listAPrIteMat = new ObservableCollection<KeyValuePair<ulong, ulong>>();
-            for (ulong matrixSize =5; matrixSize <= 50; matrixSize += 5)
+            for (ulong matrixSize = 5; matrixSize <= 50; matrixSize += 5)
             {
                 //Generate A Random Matrix 
                 var adjacentMatrix = new Matrix(matrixSize);
@@ -1197,8 +1185,22 @@ namespace LuceneSearchClient.ViewModel
                                               var worker = new BackgroundWorker();
                                               worker.DoWork += DrawSimulationTimeMatChart;
                                               worker.RunWorkerCompleted += DrawSimulationTimeMatChartCompeleted;
-                                              worker.RunWorkerAsync();  
-                                              
+                                              worker.RunWorkerAsync();
+
+                                          }));
+            }
+        }
+        private RelayCommand _resetChartsPrAprTimeCommand;  
+        public RelayCommand ResetChartsPrAprTimeCommand
+        {
+            get
+            {
+                return _resetChartsPrAprTimeCommand
+                    ?? (_resetChartsPrAprTimeCommand = new RelayCommand(
+                                          () =>
+                                          {
+                                              ListPrTimeMat = new ObservableCollection<KeyValuePair<ulong, ulong>>();
+                                              ListAPrTimeMat = new ObservableCollection<KeyValuePair<ulong, ulong>>();
                                           }));
             }
         }

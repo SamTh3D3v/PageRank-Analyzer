@@ -233,12 +233,12 @@
                                     </StackPanel>
                                 </StackPanel>
                                 <controls:ZoomControl  Grid.Row="1"  Zoom="0.2" ZoomBoxOpacity="0.5" Background="#ff656565">
-                                    <model:WebGraphLayout x:Name="GraphLayout" Margin="10"
+                                    <!--<model:WebGraphLayout x:Name="GraphLayout" Margin="10"
 						                      Graph="{Binding Path=WebGraph}"
 						                      LayoutAlgorithmType="{Binding Path=SelectedLayoutAlgorithmeTtype, Mode=OneWay}"
 						                      OverlapRemovalAlgorithmType="FSA"
 						                      HighlightAlgorithmType="Simple" >
-                                    </model:WebGraphLayout>
+                                    </model:WebGraphLayout>-->
                                 </controls:ZoomControl>
                             </Grid>
                         </avalonDock:LayoutAnchorable >
@@ -401,11 +401,11 @@
                                         </DataTemplate>
                                     </resources:MultiChart.SeriesTemplate>
                                 </resources:MultiChart>-->
-                                <GroupBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Header="Calculate" Margin="2">
+                                <GroupBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Header="Calculate" Margin="2" Background="LightGray" FontWeight="Bold">
                                     <Grid HorizontalAlignment="Right">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="80"/>
-                                            <ColumnDefinition Width="80"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
                                             
                                         </Grid.ColumnDefinitions>
                                         <Button Grid.Column="0"  Margin="4" Command="{Binding StartSimulationPrCommand}" Style="{StaticResource DarkStyleButton}">
@@ -426,7 +426,6 @@
                         <avalonDock:LayoutAnchorable Title="Iterations/DampingFactor" IsVisible="False">
                             <Grid>
                                 <Grid.RowDefinitions>
-
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
@@ -434,12 +433,12 @@
                                     <ColumnDefinition Width="100"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <dvc:Chart Background="White" Grid.Column="0" Grid.ColumnSpan="2">
+                                <dvc:Chart Background="White" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" Grid.RowSpan="2">
                                     <dvc:Chart.Axes>
                                         <dvc:LinearAxis  Orientation="Y" Title="Number Of Iterations"  />
-                                        <dvc:LinearAxis Title="Damping Factor" Orientation="X" />
+                                        <dvc:LinearAxis Title="Damping Factor" Orientation="X" Interval=".1" Maximum="1" Minimum="0" />
                                     </dvc:Chart.Axes>
-                                    <dvc:LineSeries Title="DampingFactor/Iters" 
+                                    <dvc:LineSeries Title="DF/Iters" 
                                         ItemsSource="{Binding ListDampIt,Mode=TwoWay}"
                                         IndependentValueBinding="{Binding Key}"
                                         DependentValueBinding="{Binding Value}" >
@@ -448,13 +447,18 @@
                                 <GroupBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Header="Calculate" Margin="2">
                                     <Grid HorizontalAlignment="Right">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="60"/>
-                                            <ColumnDefinition Width="60"/>
-                                            <ColumnDefinition Width="60"/>
+                                            <ColumnDefinition Width="100"/>                                            
+                                            <ColumnDefinition Width="100"/>
                                         </Grid.ColumnDefinitions>
-                                        <Button Grid.Column="0" Content="Simulate" Margin="3" Command="{Binding StartSimulationItCommand}"/>
-                                        <Button Grid.Column="1" Content="Reset" Margin="3" Command="{Binding ResetChartsItCommand}"/>
-                                        <Button Grid.Column="2" Content="Export" Margin="3" Command="{Binding ExportChartItCommand}"/>
+                                        <Button Grid.Column="0" Margin="4" Command="{Binding StartSimulationItCommand}" Style="{StaticResource DarkStyleButton}">
+                                            <Button.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Source="../Assets/icons/graph.png"/>
+                                                    <TextBlock Text="Simulate" VerticalAlignment="Center" />
+                                                </StackPanel>
+                                            </Button.Content>
+                                        </Button>
+                                        <Button Grid.Column="1" Content="Reset" Margin="4" Command="{Binding ResetChartsItCommand}" Style="{StaticResource DarkStyleButton}"/>                                        
                                     </Grid>
                                 </GroupBox>
                             </Grid>
@@ -472,7 +476,7 @@
                                 <dvc:Chart Background="White" Grid.Column="0" Grid.ColumnSpan="2">
                                     <dvc:Chart.Axes>
                                         <dvc:LinearAxis  Orientation="Y" Title="Ranking"  />
-                                        <dvc:LinearAxis Title="Page Number" Orientation="X" />
+                                        <dvc:LinearAxis Title="Page Number" Orientation="X" Interval="1" />
                                     </dvc:Chart.Axes>
                                     <dvc:LineSeries Title="PageRank" 
                                         ItemsSource="{Binding ListPrPages,Mode=TwoWay}"
@@ -488,13 +492,18 @@
                                 <GroupBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Header="Calculate" Margin="2">
                                     <Grid HorizontalAlignment="Right">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="60"/>
-                                            <ColumnDefinition Width="60"/>
-                                            <ColumnDefinition Width="60"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>                                            
                                         </Grid.ColumnDefinitions>
-                                        <Button Grid.Column="0" Content="Simulate" Margin="3" Command="{Binding StartSimulationPrAprCommand}"/>
-                                        <Button Grid.Column="1" Content="Reset" Margin="3" Command="{Binding ResetChartsItCommand}"/>
-                                        <Button Grid.Column="2" Content="Export" Margin="3" Command="{Binding ExportChartItCommand}"/>
+                                        <Button Grid.Column="0" Margin="4" Command="{Binding StartSimulationPrAprCommand}" Style="{StaticResource DarkStyleButton}">
+                                            <Button.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Source="../Assets/icons/graph.png"/>
+                                                    <TextBlock Text="Simulate" VerticalAlignment="Center" />
+                                                </StackPanel>
+                                            </Button.Content>
+                                        </Button>
+                                        <Button Grid.Column="1" Content="Reset" Margin="4" Command="{Binding ResetChartsItCommand}" Style="{StaticResource DarkStyleButton}"/>                                        
                                     </Grid>
                                 </GroupBox>
                             </Grid>
@@ -513,7 +522,7 @@
                                 <dvc:Chart Background="White" Grid.Column="0" Grid.ColumnSpan="2">
                                     <dvc:Chart.Axes>
                                         <dvc:LinearAxis  Orientation="Y" Title="Number Of Iteration"  />
-                                        <dvc:LinearAxis Title="Transition Matrix Size" Orientation="X" />
+                                        <dvc:LinearAxis Title="Transition Matrice Size" Orientation="X" Interval="5" />
                                     </dvc:Chart.Axes>
                                     <dvc:LineSeries Title="PageRank" 
                                         ItemsSource="{Binding ListPrIteMat,Mode=TwoWay}"
@@ -526,16 +535,21 @@
                                         DependentValueBinding="{Binding Value}" >
                                     </dvc:LineSeries>
                                 </dvc:Chart>
-                                <GroupBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Header="Calculate" Margin="2">
+                                <GroupBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Header="Calculate" Margin="2" Background="LightGray" FontWeight="Bold">
                                     <Grid HorizontalAlignment="Right">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="60"/>
-                                            <ColumnDefinition Width="60"/>
-                                            <ColumnDefinition Width="60"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>                                            
                                         </Grid.ColumnDefinitions>
-                                        <Button Grid.Column="0" Content="Simulate" Margin="3" Command="{Binding StartSimulationPrAprIteCommand}"/>
-                                        <Button Grid.Column="1" Content="Reset" Margin="3" Command="{Binding ResetChartsItCommand}"/>
-                                        <Button Grid.Column="2" Content="Export" Margin="3" Command="{Binding ExportChartItCommand}"/>
+                                        <Button Grid.Column="0" Margin="4" Command="{Binding StartSimulationPrAprIteCommand}" Style="{StaticResource DarkStyleButton}">
+                                            <Button.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Source="../Assets/icons/graph.png"/>
+                                                    <TextBlock Text="Simulate" VerticalAlignment="Center" />
+                                                </StackPanel>
+                                            </Button.Content>
+                                        </Button>
+                                        <Button Grid.Column="1" Content="Reset" Margin="4" Command="{Binding ResetChartsPrAprIteCommand}" Style="{StaticResource DarkStyleButton}"/>                                        
                                     </Grid>
                                 </GroupBox>
                             </Grid>
@@ -552,8 +566,8 @@
                                 </Grid.ColumnDefinitions>
                                 <dvc:Chart Background="White" Grid.Column="0" Grid.ColumnSpan="2">
                                     <dvc:Chart.Axes>
-                                        <dvc:LinearAxis  Orientation="Y" Title="Time To Calculate Ranking"  />
-                                        <dvc:LinearAxis Title="Matrix Size" Orientation="X" />
+                                        <dvc:LinearAxis  Orientation="Y" Title="Time To Calculate Ranking (ms)"  />
+                                        <dvc:LinearAxis Title="Matrix Size" Orientation="X" Interval="5"/>
                                     </dvc:Chart.Axes>
                                     <dvc:LineSeries Title="PageRank" 
                                         ItemsSource="{Binding ListPrTimeMat,Mode=TwoWay}"
@@ -566,32 +580,27 @@
                                         DependentValueBinding="{Binding Value}" >
                                     </dvc:LineSeries>
                                 </dvc:Chart>
-                                <GroupBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Header="Calculate" Margin="2">
+                                <GroupBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Header="Calculate" Margin="2" FontWeight="Bold" Background="LightGray">
                                     <Grid HorizontalAlignment="Right">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="60"/>
-                                            <ColumnDefinition Width="60"/>
-                                            <ColumnDefinition Width="60"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>                                            
                                         </Grid.ColumnDefinitions>
-                                        <Button Grid.Column="0" Content="Simulate" Margin="3" Command="{Binding StartSimulationPrAprTimeCommand}"/>
-                                        <Button Grid.Column="1" Content="Reset" Margin="3" Command="{Binding ResetChartsItCommand}"/>
-                                        <Button Grid.Column="2" Content="Export" Margin="3" Command="{Binding ExportChartItCommand}"/>
+                                        <Button Grid.Column="0"  Margin="4" Command="{Binding StartSimulationPrAprTimeCommand}" Style="{StaticResource DarkStyleButton}">
+                                            <Button.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Source="../Assets/icons/graph.png"/>
+                                                    <TextBlock Text="Simulate" VerticalAlignment="Center" />
+                                                </StackPanel>
+                                            </Button.Content>
+                                        </Button>
+                                        <Button Grid.Column="1" Content="Reset" Margin="4" Command="{Binding ResetChartsPrAprTimeCommand}" Style="{StaticResource DarkStyleButton}"/>                                        
                                     </Grid>
                                 </GroupBox>
                             </Grid>
                         </avalonDock:LayoutAnchorable>
                     </avalonDock:LayoutAnchorablePane>
-                </avalonDock:LayoutPanel>
-
-                <!--<avalonDock:LayoutRoot.LeftSide>
-                    <avalonDock:LayoutAnchorSide>
-                        <avalonDock:LayoutAnchorGroup>
-                            <avalonDock:LayoutAnchorable Title="Autohidden Content">
-                                <TextBox/>
-                            </avalonDock:LayoutAnchorable>
-                        </avalonDock:LayoutAnchorGroup>
-                    </avalonDock:LayoutAnchorSide>
-                </avalonDock:LayoutRoot.LeftSide>-->
+                </avalonDock:LayoutPanel>              
             </avalonDock:LayoutRoot>
         </avalonDock:DockingManager>
     </Grid>

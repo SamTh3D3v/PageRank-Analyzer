@@ -874,8 +874,6 @@ namespace LuceneSearchClient.ViewModel
                                               }
                                               for (float dampFactor = 0; dampFactor <= 1; dampFactor += 0.1f)
                                               {
-
-
                                                   ulong nbIterations = 0;
                                                   var transitionMatrix = new Matrix(AdjacenteMatrix);
                                                   transitionMatrix.ToProbablityMatrix();
@@ -887,15 +885,7 @@ namespace LuceneSearchClient.ViewModel
                                                       DataSourceListDampPr[(int)i].Add(new KeyValuePair<float, float>(dampFactor, prVector[i]));
                                                   }
                                               }
-                                              ListDampPr = new ObservableCollection<KeyValuePair<float, float>>(DataSourceListDampPr[int.Parse(SelectedPage.Trim())]);
-                                              //ulong nbIterations = 0;
-                                              //AdjacenteMatrix.ToProbablityMatrix();
-                                              //RaisePropertyChanged(AdjacenceMatrixPropertyName);
-                                              //var pageRank = new PageRank(AdjacenteMatrix, DampingFactor);
-                                              //// pageRank.GoogleMatrix();
-                                              //PageRankVector = !AutomaticIterations ? pageRank.GetPageRankVector(InitialPageRank, (short)5, out nbIterations) : pageRank.GetPageRankVector(InitialPageRank, (ulong)PrNumberIterations);
-                                              //RaisePropertyChanged(PageRankVectorPropertyName);
-                                              //PrNumberIterations = (int)nbIterations;
+                                              ListDampPr = new ObservableCollection<KeyValuePair<float, float>>(DataSourceListDampPr[int.Parse(SelectedPage.Trim())]);                                              
 
                                           }));
             }
@@ -930,7 +920,8 @@ namespace LuceneSearchClient.ViewModel
                     ?? (_resetChartsPrCommand = new RelayCommand(
                                           () =>
                                           {
-
+                                              DataSourceListDampPr=new List<List<KeyValuePair<float, float>>>();
+                                              ListDampPr=new ObservableCollection<KeyValuePair<float, float>>();
                                           }));
             }
         }

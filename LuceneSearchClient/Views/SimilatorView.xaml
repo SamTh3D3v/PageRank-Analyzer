@@ -233,12 +233,12 @@
                                     </StackPanel>
                                 </StackPanel>
                                 <controls:ZoomControl  Grid.Row="1"  Zoom="0.2" ZoomBoxOpacity="0.5" Background="#ff656565">
-                                    <!--<model:WebGraphLayout x:Name="GraphLayout" Margin="10"
+                                    <model:WebGraphLayout x:Name="GraphLayout" Margin="10"
 						                      Graph="{Binding Path=WebGraph}"
 						                      LayoutAlgorithmType="{Binding Path=SelectedLayoutAlgorithmeTtype, Mode=OneWay}"
 						                      OverlapRemovalAlgorithmType="FSA"
 						                      HighlightAlgorithmType="Simple" >
-                                    </model:WebGraphLayout>-->
+                                    </model:WebGraphLayout>
                                 </controls:ZoomControl>
                             </Grid>
                         </avalonDock:LayoutAnchorable >

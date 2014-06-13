@@ -28,6 +28,7 @@ namespace WebGraphMaker.ExcelDataCovertion
             {
                 xlWorkbook = xlApp.Workbooks.Open(fileName);
             }
+            xlApp.Quit();
             if (xlWorkbook == null) throw new NullReferenceException("Workbook object is null !");
             return xlWorkbook;
 
@@ -42,7 +43,9 @@ namespace WebGraphMaker.ExcelDataCovertion
         {
             var r = LoadWorkbook(fileName);
             _Worksheet xlWorksheet = r.Sheets[1];
-            var tmp = xlWorksheet.UsedRange;
+            r.Close();
+            var tmp = xlWorksheet.UsedRange;            
+            
             return tmp;
         }
 

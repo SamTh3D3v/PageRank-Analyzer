@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Reflection;
+using System.Threading;
 using System.Windows.Forms;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -28,6 +29,7 @@ namespace LuceneSearchClient.ViewModel
         public const string AmelioratedPageRankVectorPropertyName = "AmelioratedPageRankVector";
         public const string GenerateButtonIsEnabledPropertyName = "GenerateButtonIsEnabled";
         public const string GetTrMatButIsEnabledPropertyName = "GetTrMatButIsEnabled";
+        public const string BusyIndicatorPropertyName = "BusyIndicator";
         #endregion
         #region Fields
         private string _linksXmlFile = "";
@@ -44,6 +46,7 @@ namespace LuceneSearchClient.ViewModel
         private ExcelDataConverter _excelDataConverter;
         private bool _generateButtonIsEnabled = false;
         private bool _getTrMatButIsEnabled = false;
+        private bool _busyIndicator = false;
         #endregion
         #region Properties 
         public string WebGraphExcelFile
@@ -221,6 +224,23 @@ namespace LuceneSearchClient.ViewModel
                 RaisePropertyChanged(GetTrMatButIsEnabledPropertyName);
             }
         }
+        public bool BusyIndicator
+        {
+            get
+            {
+                return _busyIndicator;
+            }
+
+            set
+            {
+                if (_busyIndicator == value)
+                {
+                    return;
+                }                
+                _busyIndicator = value;
+                RaisePropertyChanged(BusyIndicatorPropertyName);
+            }
+        }
         #endregion
         #region Ctos and Methods
         public PageRankViewModel()
@@ -240,12 +260,10 @@ namespace LuceneSearchClient.ViewModel
                                           {
                                               try
                                               {
+                                                  BusyIndicator = true;
                                                   _webGraphDataReader = new WebGraphDataReader();
-                                                  _worker = new BackgroundWorker();
-                                                  _worker.DoWork += GetTransitionMatrix;
-                                                  _worker.RunWorkerCompleted += GetTransitionMatCompeleted;
-                                                  _worker.RunWorkerAsync();
-
+                                                  var indexingThread = new Thread(new ThreadStart(GetTransitionMat));
+                                                  indexingThread.Start();                                                 
                                               }
                                               catch (TargetInvocationException tiEx)
                                               {
@@ -255,40 +273,31 @@ namespace LuceneSearchClient.ViewModel
                                           }));
             }
         }
-        private void GetTransitionMatCompeleted(object sender, RunWorkerCompletedEventArgs e)
+        private void GetTransitionMat()
         {
             try
             {
+                _webGraphDataReader.ExtractDataFromWebGraph(GraphEntities.Pages, PagesXmlFile);
+                _webGraphDataReader.ExtractDataFromWebGraph(GraphEntities.Links, LinksXmlFile);
+                WebGraphDataConverter.SetTransitionMatrix(_webGraphDataReader.Pages, _webGraphDataReader.Links);                
                 Debug.WriteLine("Transition Matrix Generated");
-                TransitionMatrix = (Matrix)e.Result;
+                TransitionMatrix = WebGraphDataConverter.TransitionMatrix;
                 //Update The Busy Indicator  
                 //ind.IsBusy = false;
                 //Setting The Transportation Matrix 
                 TeleportationMatrix = Matrix.E(TransitionMatrix.Size);
                 InitialPageRankVector = Vector.e(VectorType.Row, TransitionMatrix.Size);
                 Messenger.Default.Send<WebGraphDataReader>(_webGraphDataReader, "WebGraphDataReader");
+                BusyIndicator = false;
             }
-            catch (Exception ee)
+            catch (TargetInvocationException tiEx)
             {
+                System.Windows.MessageBox.Show(tiEx.InnerException.ToString());
 
-                Debug.WriteLine(ee.Message);
             }
-        }
-
-        private void GetTransitionMatrix(object sender, DoWorkEventArgs e)
-        {
-            try
+            catch (Exception exception)
             {
-
-                _webGraphDataReader.ExtractDataFromWebGraph(GraphEntities.Pages, PagesXmlFile);
-                                              _webGraphDataReader.ExtractDataFromWebGraph(GraphEntities.Links, LinksXmlFile);
-                                              WebGraphDataConverter.SetTransitionMatrix(_webGraphDataReader.Pages, _webGraphDataReader.Links);
-                e.Result = WebGraphDataConverter.TransitionMatrix;
-            }
-            catch (TargetInvocationException ee)
-            {
-                                              
-                Debug.WriteLine(ee.InnerException);
+                System.Windows.MessageBox.Show(exception.Message);                
             }
         }
         private RelayCommand _setTeleportationCommand;
@@ -381,6 +390,7 @@ namespace LuceneSearchClient.ViewModel
                                               //ind.IsBusy = true;
                                               try
                                               {
+                                                  BusyIndicator = true;
                                                   var worker = new BackgroundWorker();
                                                   worker.DoWork += GenerateRang;
                                                   worker.RunWorkerCompleted += GenerateRangCompleted;
@@ -399,7 +409,7 @@ namespace LuceneSearchClient.ViewModel
             Debug.WriteLine("Excel Generation Compeleted");
             GenerateButtonIsEnabled = true;
             //Update The Busy Indicator  
-            //ind.IsBusy = false;
+            BusyIndicator = false;
         }
         private void GenerateRang(object sender, DoWorkEventArgs e)
         {
@@ -433,6 +443,7 @@ namespace LuceneSearchClient.ViewModel
                                               //ind.IsBusy = true;
                                               try
                                               {
+                                                  BusyIndicator = true;
                                                   var worker = new BackgroundWorker();
                                                   worker.DoWork += GenerateXmlFiles;
                                                   worker.RunWorkerCompleted += GenerateXmlFilesCompeleted;
@@ -453,7 +464,7 @@ namespace LuceneSearchClient.ViewModel
             Debug.WriteLine("Xmls Generation Compeleted");
             GetTrMatButIsEnabled = true;
             //Update The Busy Indicator  
-            //ind.IsBusy = false;
+            BusyIndicator = false;
         }
 
         private void GenerateXmlFiles(object sender, DoWorkEventArgs e)

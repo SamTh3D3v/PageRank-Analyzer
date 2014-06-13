@@ -33,7 +33,7 @@
             <CheckBox  Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="ExistingIndexCheckBox" IsChecked="{Binding NewIndex,Mode=TwoWay}" />
             <Label Grid.Row="2" Grid.Column="0" Content="WebSite Location" FontWeight="Bold"/>
             <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding WebSiteLocation ,Mode=TwoWay}" IsEnabled="{Binding ElementName=ExistingIndexCheckBox,Path=IsChecked}" Style="{StaticResource SettingsTextBoxStyle}" />
-            <Button Content="Browse" Grid.Row="2" Grid.Column="2" Style="{StaticResource SettingsButtonStyle}" IsEnabled="{Binding ElementName=ExistingIndexCheckBox}" Command="{Binding WebSiteLocationCommand}"/>
+            <Button Content="Browse" Grid.Row="2" Grid.Column="2" Style="{StaticResource SettingsButtonStyle}" IsEnabled="{Binding ElementName=ExistingIndexCheckBox,Path=IsChecked}" Command="{Binding WebSiteLocationCommand}"/>
             <Label Grid.Row="3" Grid.Column="0" Content="Index Location" FontWeight="Bold"/>
             <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding IndexLocation ,Mode=TwoWay}"  Style="{StaticResource SettingsTextBoxStyle}"/>
             <Button Content="Browse" Grid.Row="3" Grid.Column="2" Style="{StaticResource SettingsButtonStyle}" Command="{Binding IndexLocationCommand}"/>

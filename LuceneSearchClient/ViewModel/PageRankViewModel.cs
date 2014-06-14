@@ -48,7 +48,7 @@ namespace LuceneSearchClient.ViewModel
         private bool _getTrMatButIsEnabled = false;
         private bool _busyIndicator = false;
         #endregion
-        #region Properties 
+        #region Properties
         public string WebGraphExcelFile
         {
             get
@@ -62,11 +62,11 @@ namespace LuceneSearchClient.ViewModel
                 {
                     return;
                 }
-                
+
                 _webGraphExcelFile = value;
                 RaisePropertyChanged(WebGraphExcelFilePropertyName);
             }
-        }   
+        }
         public string PagesXmlFile
         {
             get
@@ -79,7 +79,7 @@ namespace LuceneSearchClient.ViewModel
                 if (_pagesXmlFile == value)
                 {
                     return;
-                }                
+                }
                 _pagesXmlFile = value;
                 RaisePropertyChanged(PagesXmlFilePropertyName);
             }
@@ -100,7 +100,7 @@ namespace LuceneSearchClient.ViewModel
                 _linksXmlFile = value;
                 RaisePropertyChanged(LinksXmlFilePropertyName);
             }
-        }  
+        }
         public Vector InitialPageRankVector
         {
             get
@@ -113,11 +113,11 @@ namespace LuceneSearchClient.ViewModel
                 if (_initialPageRankVector == value)
                 {
                     return;
-                }                
+                }
                 _initialPageRankVector = value;
                 RaisePropertyChanged(InitialPageRankVectorPropertyName);
             }
-        }                    
+        }
         public Matrix TransitionMatrix
         {
             get
@@ -131,11 +131,11 @@ namespace LuceneSearchClient.ViewModel
                 {
                     return;
                 }
-                
+
                 _transitionMatrix = value;
                 RaisePropertyChanged(TransitionMatrixPropertyName);
             }
-        }                   
+        }
         public Matrix TeleportationMatrix
         {
             get
@@ -148,7 +148,7 @@ namespace LuceneSearchClient.ViewModel
                 if (_teleportationMatrix == value)
                 {
                     return;
-                }                
+                }
                 _teleportationMatrix = value;
                 RaisePropertyChanged(TeleportationMatrixPropertyName);
             }
@@ -165,7 +165,7 @@ namespace LuceneSearchClient.ViewModel
                 if (_pageRankVector == value)
                 {
                     return;
-                }                
+                }
                 _pageRankVector = value;
                 RaisePropertyChanged(PageRankVectorPropertyName);
             }
@@ -236,7 +236,7 @@ namespace LuceneSearchClient.ViewModel
                 if (_busyIndicator == value)
                 {
                     return;
-                }                
+                }
                 _busyIndicator = value;
                 RaisePropertyChanged(BusyIndicatorPropertyName);
             }
@@ -263,13 +263,13 @@ namespace LuceneSearchClient.ViewModel
                                                   BusyIndicator = true;
                                                   _webGraphDataReader = new WebGraphDataReader();
                                                   var indexingThread = new Thread(new ThreadStart(GetTransitionMat));
-                                                  indexingThread.Start();                                                 
+                                                  indexingThread.Start();
                                               }
                                               catch (TargetInvocationException tiEx)
                                               {
                                                   Debug.WriteLine(tiEx.InnerException);
                                               }
-                                              
+
                                           }));
             }
         }
@@ -279,7 +279,7 @@ namespace LuceneSearchClient.ViewModel
             {
                 _webGraphDataReader.ExtractDataFromWebGraph(GraphEntities.Pages, PagesXmlFile);
                 _webGraphDataReader.ExtractDataFromWebGraph(GraphEntities.Links, LinksXmlFile);
-                WebGraphDataConverter.SetTransitionMatrix(_webGraphDataReader.Pages, _webGraphDataReader.Links);                
+                WebGraphDataConverter.SetTransitionMatrix(_webGraphDataReader.Pages, _webGraphDataReader.Links);
                 Debug.WriteLine("Transition Matrix Generated");
                 TransitionMatrix = WebGraphDataConverter.TransitionMatrix;
                 //Update The Busy Indicator  
@@ -297,7 +297,7 @@ namespace LuceneSearchClient.ViewModel
             }
             catch (Exception exception)
             {
-                System.Windows.MessageBox.Show(exception.Message);                
+                System.Windows.MessageBox.Show(exception.Message);
             }
         }
         private RelayCommand _setTeleportationCommand;
@@ -309,11 +309,11 @@ namespace LuceneSearchClient.ViewModel
                     ?? (_setTeleportationCommand = new RelayCommand(
                                           () =>
                                           {
-                                              
+
                                           }));
             }
         }
-        private RelayCommand _setInitialPageRankCommand;      
+        private RelayCommand _setInitialPageRankCommand;
         public RelayCommand SetInitialPageRankCommand
         {
             get
@@ -335,15 +335,29 @@ namespace LuceneSearchClient.ViewModel
                     ?? (_calculatePageRankCommand = new RelayCommand(
                                           () =>
                                           {
-
-                                              ulong nbIterations;
-                                              var pageRank = new PageRank(TransitionMatrix, PageRank.DefaultDampingFactor);
-                                              PageRankVector = pageRank.GetPageRankVector(InitialPageRankVector,
-                                                  5, out nbIterations);       
-                                              Messenger.Default.Send<Vector>(PageRankVector, "Pr_Is_Calculated");
-
+                                              BusyIndicator = true;
+                                              var worker = new BackgroundWorker();
+                                              worker.DoWork += CalculatePageRank;
+                                              worker.RunWorkerCompleted += CalculatePRCompeleted;
+                                              worker.RunWorkerAsync();
                                           }));
             }
+        }
+        private void CalculatePRCompeleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+
+            PageRankVector = (Vector)e.Result;
+            Messenger.Default.Send<Vector>(PageRankVector, "Pr_Is_Calculated");
+            //Update The Busy Indicator  
+            BusyIndicator = false;
+        }
+
+        private void CalculatePageRank(object sender, DoWorkEventArgs e)
+        {
+            ulong nbIterations;
+            var pageRank = new PageRank(TransitionMatrix, PageRank.DefaultDampingFactor);
+            e.Result = pageRank.GetPageRankVector(InitialPageRankVector,
+               5, out nbIterations);
         }
 
         private RelayCommand _calculateAmelioratedPageRankCommand;
@@ -355,13 +369,31 @@ namespace LuceneSearchClient.ViewModel
                     ?? (_calculateAmelioratedPageRankCommand = new RelayCommand(
                                           () =>
                                           {
-                                              ulong nbIterations;
-                                              var pageRank = new PageRank(TransitionMatrix, PageRank.DefaultDampingFactor);
-                                              AmelioratedPageRankVector = pageRank.GetAmelioratedPageRankVector(InitialPageRankVector,
-                                                  5, out nbIterations);
-                                              Messenger.Default.Send<Vector>(AmelioratedPageRankVector, "APr_Is_Calculated");
+
+                                              BusyIndicator = true;
+                                              var worker = new BackgroundWorker();
+                                              worker.DoWork += CalculateAmeliPageRank;
+                                              worker.RunWorkerCompleted += CalculateAPRCompeleted;
+                                              worker.RunWorkerAsync();
+
                                           }));
             }
+        }
+        private void CalculateAPRCompeleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+
+            AmelioratedPageRankVector = (Vector)e.Result;
+            Messenger.Default.Send<Vector>(AmelioratedPageRankVector, "APr_Is_Calculated");
+            //Update The Busy Indicator  
+            BusyIndicator = false;
+        }
+
+        private void CalculateAmeliPageRank(object sender, DoWorkEventArgs e)
+        {
+            ulong nbIterations;
+            var pageRank = new PageRank(TransitionMatrix, PageRank.DefaultDampingFactor);
+            e.Result = pageRank.GetAmelioratedPageRankVector(InitialPageRankVector,
+               5, out nbIterations);
         }
         private RelayCommand _browseCommand;
         public RelayCommand BrowseCommand
@@ -383,7 +415,7 @@ namespace LuceneSearchClient.ViewModel
                                               GenerateButtonIsEnabled = false;
                                               WebGraphExcelFile = openFileDialog.FileName;
                                               //This Operation Need To Be Calculated In a Worker
-                                              
+
                                               Debug.WriteLine("Generate Rang From Excel Started");
                                               var time = DateTime.Now;
                                               //Start The Busy Indicator 
@@ -473,6 +505,6 @@ namespace LuceneSearchClient.ViewModel
         }
         #endregion
 
-       
+
     }
 }

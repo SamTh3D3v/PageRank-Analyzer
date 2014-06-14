@@ -61,7 +61,7 @@
             </ListBox.ItemTemplate>
         </ListBox>-->
         <xctk:BusyIndicator x:Name="ind" IsBusy="{Binding BusyIndicator}" Grid.Row="2" Grid.ColumnSpan="4" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <DataGrid Margin="5" ItemsSource="{Binding ListSearchResult}"/>
+            <DataGrid Margin="5" ItemsSource="{Binding ListSearchResult}" AlternatingRowBackground="LightBlue" ColumnWidth="*"/>
         </xctk:BusyIndicator>
 
 

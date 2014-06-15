@@ -59,13 +59,13 @@
         <Grid Grid.Row="1">
             <xcad:DockingManager >
                 <xcad:LayoutRoot >
-                    <xcad:LayoutPanel Orientation="Vertical" >
+                    <xcad:LayoutPanel Orientation="Vertical"  >
                         <xcad:LayoutAnchorablePane  >
                             <xcad:LayoutAnchorable CanHide="False" Title="Main Panel" >
                                 <Frame  Source="{Binding NavigationUri,Mode=TwoWay}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" NavigationUIVisibility="Visible" />
                             </xcad:LayoutAnchorable>                           
                         </xcad:LayoutAnchorablePane>
-                        <xcad:LayoutAnchorablePane DockHeight="100" >
+                        <xcad:LayoutAnchorablePane DockHeight="50" >
                             <xcad:LayoutAnchorable  Title="Status Panel"  >
                                
                             </xcad:LayoutAnchorable>

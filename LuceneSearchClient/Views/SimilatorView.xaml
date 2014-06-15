@@ -233,6 +233,15 @@
                                     </StackPanel>
                                 </StackPanel>
                                 <controls:ZoomControl  Grid.Row="1"  Zoom="0.2" ZoomBoxOpacity="0.5" Background="#ff656565">
+                                    <controls:ZoomControl.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="New Node" >
+                                                <MenuItem.Icon>
+                                                    <Image Source="../Assets/icons/new.png"/>
+                                                </MenuItem.Icon>
+                                            </MenuItem>                                           
+                                        </ContextMenu>
+                                    </controls:ZoomControl.ContextMenu>
                                     <model:WebGraphLayout x:Name="GraphLayout" Margin="10"
 						                      Graph="{Binding Path=WebGraph}"
 						                      LayoutAlgorithmType="{Binding Path=SelectedLayoutAlgorithmeTtype, Mode=OneWay}"

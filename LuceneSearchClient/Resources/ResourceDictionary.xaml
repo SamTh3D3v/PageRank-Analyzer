@@ -72,6 +72,28 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <Setter Property="ContextMenu">
+            <Setter.Value>
+                <ContextMenu>                    
+                    <MenuItem Header="Remove Node" >
+                        <MenuItem.Icon>
+                            <Image Source="../Assets/icons/remove.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Strat Arc" >
+                        <MenuItem.Icon>
+                            <Image Source="../Assets/icons/start.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="End Arc" >
+                        <MenuItem.Icon>
+                            <Image Source="../Assets/icons/end.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    
+                </ContextMenu>
+            </Setter.Value>
+        </Setter>
     </Style>
     <Style TargetType="{x:Type graphsharp:EdgeControl}">
         <Style.Resources>

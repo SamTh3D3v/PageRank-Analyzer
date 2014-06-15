@@ -83,6 +83,7 @@
         </Style.Resources>
         <Setter Property="ToolTip" Value="{StaticResource ToolTipContent}"/>
     </Style>
+    
     <converters:MatrixToDataViewConverter x:Key="MatrixToDataViewConverter" />
     <converters:VectorToDataViewRowConverter x:Key="VectorToDataViewRowConverter"/>
     <converters:VectorToDataViewColumnConverter x:Key="VectorToDataViewColumnConverter"/>

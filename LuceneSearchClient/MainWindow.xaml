@@ -6,6 +6,7 @@
         xmlns:ignore="http://www.ignore.com"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:command="http://www.galasoft.ch/mvvmlight"
+        xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
         mc:Ignorable="d ignore" WindowState="Maximized"
         Height="400"
         Width="600"
@@ -55,7 +56,25 @@
                 <MenuItem Header="_Eign Values"/>
             </MenuItem>
         </Menu>
-        <Frame Grid.Row="1" Source="{Binding NavigationUri,Mode=TwoWay}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" NavigationUIVisibility="Visible"/>
+        <Grid Grid.Row="1">
+            <xcad:DockingManager >
+                <xcad:LayoutRoot >
+                    <xcad:LayoutPanel Orientation="Vertical" >
+                        <xcad:LayoutAnchorablePane  >
+                            <xcad:LayoutAnchorable CanHide="False" Title="Main Panel" >
+                                <Frame  Source="{Binding NavigationUri,Mode=TwoWay}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" NavigationUIVisibility="Visible" />
+                            </xcad:LayoutAnchorable>                           
+                        </xcad:LayoutAnchorablePane>
+                        <xcad:LayoutAnchorablePane DockHeight="100" >
+                            <xcad:LayoutAnchorable  Title="Status Panel"  >
+                               
+                            </xcad:LayoutAnchorable>
+                        </xcad:LayoutAnchorablePane>
+                    </xcad:LayoutPanel>
+                </xcad:LayoutRoot>
+            </xcad:DockingManager>
+        </Grid>
+
     </Grid>
 </Window>
 

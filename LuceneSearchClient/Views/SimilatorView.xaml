@@ -26,8 +26,8 @@
     </Page.Resources>
     <Grid>
         <avalonDock:DockingManager >
-            <avalonDock:LayoutRoot>
-                <avalonDock:LayoutPanel Orientation="Horizontal">
+            <avalonDock:LayoutRoot >
+                <avalonDock:LayoutPanel Orientation="Horizontal" >
                     <avalonDock:LayoutAnchorablePane  >
                         <avalonDock:LayoutAnchorable Title="Define Matrix"  >
                             <Grid>
@@ -365,7 +365,7 @@
                             </GroupBox>
                         </avalonDock:LayoutAnchorable>
                     </avalonDock:LayoutAnchorablePane>
-                    <avalonDock:LayoutAnchorablePane DockWidth="300" >
+                    <avalonDock:LayoutAnchorablePane >
                         <avalonDock:LayoutAnchorable Title="PageRank/DampingFactor" >
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -423,7 +423,7 @@
                                 </GroupBox>
                             </Grid>
                         </avalonDock:LayoutAnchorable>
-                        <avalonDock:LayoutAnchorable Title="Iterations/DampingFactor" IsVisible="False">
+                        <avalonDock:LayoutAnchorable Title="Iterations/DampingFactor" >
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"/>
@@ -463,7 +463,7 @@
                                 </GroupBox>
                             </Grid>
                         </avalonDock:LayoutAnchorable>
-                        <avalonDock:LayoutAnchorable Title="Pr-APr/Pages" IsVisible="False">
+                        <avalonDock:LayoutAnchorable Title="Pr-APr/Pages" >
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"/>
@@ -508,7 +508,7 @@
                                 </GroupBox>
                             </Grid>
                         </avalonDock:LayoutAnchorable>
-                        <avalonDock:LayoutAnchorable Title="Pr-APr Iterations/MatrixSize" IsVisible="False">
+                        <avalonDock:LayoutAnchorable Title="Pr-APr Iterations/MatrixSize" >
                             <Grid>
                                 <Grid.RowDefinitions>
 
@@ -554,7 +554,7 @@
                                 </GroupBox>
                             </Grid>
                         </avalonDock:LayoutAnchorable>
-                        <avalonDock:LayoutAnchorable Title="Pr-APr Time/MatrixSize" IsVisible="False">
+                        <avalonDock:LayoutAnchorable Title="Pr-APr Time/MatrixSize" >
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"/>
@@ -600,7 +600,7 @@
                             </Grid>
                         </avalonDock:LayoutAnchorable>
                     </avalonDock:LayoutAnchorablePane>
-                </avalonDock:LayoutPanel>              
+                </avalonDock:LayoutPanel >              
             </avalonDock:LayoutRoot>
         </avalonDock:DockingManager>
     </Grid>

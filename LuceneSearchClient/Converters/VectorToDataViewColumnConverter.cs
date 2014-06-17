@@ -18,11 +18,14 @@ namespace LuceneSearchClient.Converters
             var vector = value as Vector;
             if (vector.Size == 0) return null;
             var dataTable = new DataTable();
+            dataTable.Columns.Add("Page");
             dataTable.Columns.Add("values");
             for (ulong row = 0; row < vector.Size; row++)
             {
-                var newRow = dataTable.NewRow();                
-                newRow[0] = vector[row];
+
+                var newRow = dataTable.NewRow();
+                newRow[0] = row;
+                newRow[1] = vector[row];
                 dataTable.Rows.Add(newRow);
             }            
             return dataTable;

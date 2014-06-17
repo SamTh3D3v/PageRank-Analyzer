@@ -30,7 +30,7 @@
             <avalonDock:LayoutRoot  >
                 <avalonDock:LayoutPanel Orientation="Horizontal" >
                     <avalonDock:LayoutAnchorablePane DockWidth="2*">
-                        <avalonDock:LayoutAnchorable Title="Define Matrix" x:Name="DefMatPane" IsVisible="False">
+                        <avalonDock:LayoutAnchorable Title="Define Matrix" x:Name="DefMatPane" >
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
@@ -67,7 +67,7 @@
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
-                                                <DataGrid Grid.Row="0" Margin="5" Background="White" ItemsSource="{Binding AdjacenteMatrix ,Converter={StaticResource MatrixToDataViewConverter},Mode=TwoWay}" LoadingRow="OnLoadingRow">
+                                                <DataGrid Grid.Row="0" Margin="5" Background="White" ItemsSource="{Binding AdjacenteMatrix ,Converter={StaticResource MatrixToDataViewConverter},Mode=TwoWay}" LoadingRow="OnLoadingRow" >
                                                     <i:Interaction.Triggers>
                                                         <i:EventTrigger EventName="CellEditEnding">
                                                             <command:EventToCommand PassEventArgsToCommand="True" Command="{Binding AdjMatCellEditEndingCommand}"/>
@@ -148,7 +148,7 @@
                                             <RowDefinition Height="*"/>
                                             <RowDefinition Height="Auto"/>
                                         </Grid.RowDefinitions>
-                                        <DataGrid Grid.Row="0"  Margin="5" Background="White" ItemsSource="{Binding InitialPageRank,Converter={StaticResource VectorToDataViewColumnConverter},Mode=TwoWay}" LoadingRow="OnLoadingRow" >
+                                        <DataGrid Grid.Row="0"  Margin="5" Background="White" ItemsSource="{Binding InitialPageRank,Converter={StaticResource VectorToDataViewColumnConverter},Mode=TwoWay}" >
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="CellEditEnding">
                                                     <command:EventToCommand PassEventArgsToCommand="True" Command="{Binding InitialVecCellEditEndingCommand}"/>
@@ -327,8 +327,8 @@
                                         </Grid>
                                     </GroupBox>
                                     <GridSplitter HorizontalAlignment="Center" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" Width="5"></GridSplitter>
-                                    <DataGrid  Grid.Column="0" Grid.Row="1" Margin="5" Background="White" ItemsSource="{Binding PageRankVector,Converter={StaticResource VectorToDataViewColumnConverter}}" LoadingRow="OnLoadingRow" Width="150"/>
-                                    <DataGrid  Grid.Column="2" Grid.Row="1" Margin="5" Background="White" ItemsSource="{Binding AmelioratedPageRankVector,Converter={StaticResource VectorToDataViewColumnConverter}}" LoadingRow="OnLoadingRow" Width="150"/>
+                                    <DataGrid  Grid.Column="0" Grid.Row="1" Margin="5" Background="White" ItemsSource="{Binding PageRankVector,Converter={StaticResource VectorToDataViewColumnConverter}}"  Width="150" AlternatingRowBackground="LightGray"/>
+                                    <DataGrid  Grid.Column="2" Grid.Row="1" Margin="5" Background="White" ItemsSource="{Binding AmelioratedPageRankVector,Converter={StaticResource VectorToDataViewColumnConverter}}"  Width="150" AlternatingRowBackground="LightGray"/>
 
 
                                 </Grid>

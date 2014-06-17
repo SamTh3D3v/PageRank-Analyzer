@@ -10,7 +10,7 @@
         mc:Ignorable="d ignore" WindowState="Maximized"
         Height="400"
         Width="600"
-        Title="PageRank Analyser"
+        Title="PageRank Analyzer"
         
     WindowStartupLocation="CenterScreen"
         DataContext="{Binding Main, Source={StaticResource Locator}}" >
@@ -32,7 +32,7 @@
                 <MenuItem Header="_Search" Command="{Binding NewSearchCommand}"/>
                 <MenuItem Header="_View All Pages" Command="{Binding AllPagesCommand}"/>
                 <MenuItem Header="_Settings" Command="{Binding SettingsCommand}"/>
-            </MenuItem>            
+            </MenuItem>
             <MenuItem Header="_PageRank">
                 <MenuItem Header="_Settings" Command="{Binding PageRankCommand}"/>
             </MenuItem>
@@ -55,22 +55,7 @@
             </MenuItem>
         </Menu>
         <Grid Grid.Row="1">
-            <xcad:DockingManager >
-                <xcad:LayoutRoot >
-                    <xcad:LayoutPanel Orientation="Vertical"  >
-                        <xcad:LayoutAnchorablePane  DockHeight="3*">
-                            <xcad:LayoutAnchorable CanHide="False" Title="Main Panel" >
-                                <Frame  Source="{Binding NavigationUri,Mode=TwoWay}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" NavigationUIVisibility="Visible" />
-                            </xcad:LayoutAnchorable>                           
-                        </xcad:LayoutAnchorablePane>
-                        <xcad:LayoutAnchorablePane DockHeight="*">
-                            <xcad:LayoutAnchorable  Title="Status Panel"  >
-                               
-                            </xcad:LayoutAnchorable>
-                        </xcad:LayoutAnchorablePane>
-                    </xcad:LayoutPanel>
-                </xcad:LayoutRoot>
-            </xcad:DockingManager>
+            <Frame  Source="{Binding NavigationUri,Mode=TwoWay}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" NavigationUIVisibility="Visible" />
         </Grid>
 
     </Grid>

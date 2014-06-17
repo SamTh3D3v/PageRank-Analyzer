@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Data;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
@@ -874,6 +875,7 @@ namespace LuceneSearchClient.ViewModel
                                               for (ulong i = 0; i < MatrixSize; i++)
                                               {
                                                   DataSourceListDampPr.Add(new List<KeyValuePair<float, float>>());
+                                                  
                                               }
                                               for (float dampFactor = 0; dampFactor <= 1; dampFactor += 0.1f)
                                               {
@@ -890,9 +892,10 @@ namespace LuceneSearchClient.ViewModel
                                               }
                                               ListDampPr = new ObservableCollection<KeyValuePair<float, float>>(DataSourceListDampPr[int.Parse(SelectedPage.Trim())]);
 
+
                                           }));
             }
-        }
+        }      
         private RelayCommand _resetChartsPrCommand;
         private RelayCommand _startSimulationPrAprCommand;
         public RelayCommand StartSimulationPrAprCommand

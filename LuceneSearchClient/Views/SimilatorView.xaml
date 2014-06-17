@@ -433,7 +433,7 @@
                                 </GroupBox>
                             </Grid>
                         </avalonDock:LayoutAnchorable>
-                        <avalonDock:LayoutAnchorable Title="Iterations/DampingFactor" x:Name="IteDfPane">
+                        <avalonDock:LayoutAnchorable Title="Iterations/DampingFactor" x:Name="IteDfPane" >
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"/>
@@ -443,7 +443,7 @@
                                     <ColumnDefinition Width="100"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <dvc:Chart Background="White" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" Grid.RowSpan="2">
+                                <dvc:Chart Background="White" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" >
                                     <dvc:Chart.Axes>
                                         <dvc:LinearAxis  Orientation="Y" Title="Number Of Iterations"  />
                                         <dvc:LinearAxis Title="Damping Factor" Orientation="X" Interval=".1" Maximum="1" Minimum="0" />
@@ -454,7 +454,7 @@
                                         DependentValueBinding="{Binding Value}" >
                                     </dvc:LineSeries>
                                 </dvc:Chart>
-                                <GroupBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Header="Calculate" Margin="2">
+                                <GroupBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Header="Calculate" Margin="2" Background="LightGray">
                                     <Grid HorizontalAlignment="Right">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="100"/>
@@ -499,7 +499,7 @@
                                         DependentValueBinding="{Binding Value}" >
                                     </dvc:LineSeries>
                                 </dvc:Chart>
-                                <GroupBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Header="Calculate" Margin="2">
+                                <GroupBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Header="Calculate" Margin="2" Background="LightGray">
                                     <Grid HorizontalAlignment="Right">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="100"/>
@@ -532,7 +532,7 @@
                                 <dvc:Chart Background="White" Grid.Column="0" Grid.ColumnSpan="2">
                                     <dvc:Chart.Axes>
                                         <dvc:LinearAxis  Orientation="Y" Title="Number Of Iteration"  />
-                                        <dvc:LinearAxis Title="Transition Matrice Size" Orientation="X" Interval="5" />
+                                        <dvc:LinearAxis Title="Transition Matrix Size" Orientation="X" Interval="5" />
                                     </dvc:Chart.Axes>
                                     <dvc:LineSeries Title="PageRank" 
                                         ItemsSource="{Binding ListPrIteMat,Mode=TwoWay}"

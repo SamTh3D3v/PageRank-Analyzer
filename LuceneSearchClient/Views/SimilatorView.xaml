@@ -20,16 +20,17 @@
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/GraphResourceDictionary.xaml"/>
                 <ResourceDictionary Source="../Resources/ResourceDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>
     <Grid>
-        <avalonDock:DockingManager >
-            <avalonDock:LayoutRoot >
+        <avalonDock:DockingManager AllowMixedOrientation="True" >
+            <avalonDock:LayoutRoot  >
                 <avalonDock:LayoutPanel Orientation="Horizontal" >
-                    <avalonDock:LayoutAnchorablePane  >
-                        <avalonDock:LayoutAnchorable Title="Define Matrix"  >
+                    <avalonDock:LayoutAnchorablePane DockWidth="2*">
+                        <avalonDock:LayoutAnchorable Title="Define Matrix" x:Name="DefMatPane" IsVisible="False">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
@@ -89,8 +90,8 @@
                                                             </StackPanel>
                                                         </Button.Content>
                                                     </Button>
-                                                    
-                                                    <Button  Margin="2" Grid.Column="1" Command="{Binding ResetMatrixCommand}" Style="{StaticResource DarkStyleButton}">
+
+                                                    <Button  Margin="2" Grid.Column="1" Command="{Binding ResetMatrixCommand}" Style="{StaticResource DarkStyleButton}" >
                                                         <Button.Content>
                                                             <StackPanel Orientation="Horizontal">
                                                                 <Image Source="../Assets/icons/matrice.png"/>
@@ -215,7 +216,7 @@
                                 </GroupBox>-->
                             </Grid>
                         </avalonDock:LayoutAnchorable >
-                        <avalonDock:LayoutAnchorable Title="Visual WebGraph" >
+                        <avalonDock:LayoutAnchorable Title="Visual WebGraph" x:Name="VisWebPane">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
@@ -239,21 +240,21 @@
                                                 <MenuItem.Icon>
                                                     <Image Source="../Assets/icons/new.png"/>
                                                 </MenuItem.Icon>
-                                            </MenuItem>                                           
+                                            </MenuItem>
                                         </ContextMenu>
                                     </controls:ZoomControl.ContextMenu>
                                     <model:WebGraphLayout x:Name="GraphLayout" Margin="10"
 						                      Graph="{Binding Path=WebGraph}"
 						                      LayoutAlgorithmType="{Binding Path=SelectedLayoutAlgorithmeTtype, Mode=OneWay}"
 						                      OverlapRemovalAlgorithmType="FSA"
-						                      HighlightAlgorithmType="Simple" >
+						                      HighlightAlgorithmType="Simple" >                                        
                                     </model:WebGraphLayout>
                                 </controls:ZoomControl>
                             </Grid>
                         </avalonDock:LayoutAnchorable >
                     </avalonDock:LayoutAnchorablePane>
-                    <avalonDock:LayoutAnchorablePane DockWidth="300" >
-                        <avalonDock:LayoutAnchorable Title="Calculation"  >
+                    <avalonDock:LayoutAnchorablePane DockWidth="*" >
+                        <avalonDock:LayoutAnchorable Title="Calculation" x:Name="CalcPane"  >
                             <GroupBox Header="PageRank" Margin="5" Background="LightGray" FontWeight="Bold">
                                 <Grid>
                                     <Grid.RowDefinitions>
@@ -333,7 +334,7 @@
                                 </Grid>
                             </GroupBox>
                         </avalonDock:LayoutAnchorable >
-                        <avalonDock:LayoutAnchorable Title="EignValues" IsVisible="False">
+                        <avalonDock:LayoutAnchorable Title="EignValues" x:Name="EignPane">
                             <GroupBox Header="Eign Values" Margin="5" Background="LightGray" FontWeight="Bold">
                                 <Grid>
                                     <Grid.RowDefinitions>
@@ -374,8 +375,8 @@
                             </GroupBox>
                         </avalonDock:LayoutAnchorable>
                     </avalonDock:LayoutAnchorablePane>
-                    <avalonDock:LayoutAnchorablePane >
-                        <avalonDock:LayoutAnchorable Title="PageRank/DampingFactor" >
+                    <avalonDock:LayoutAnchorablePane DockWidth="2*">
+                        <avalonDock:LayoutAnchorable Title="PageRank/DampingFactor" x:Name="PrDfPane" >
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
@@ -415,24 +416,24 @@
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="100"/>
                                             <ColumnDefinition Width="100"/>
-                                            
+
                                         </Grid.ColumnDefinitions>
                                         <Button Grid.Column="0"  Margin="4" Command="{Binding StartSimulationPrCommand}" Style="{StaticResource DarkStyleButton}">
                                             <Button.Content>
                                                 <StackPanel Orientation="Horizontal">
                                                     <Image Source="../Assets/icons/graph.png"/>
-                                                    <TextBlock Text="Simulate" VerticalAlignment="Center" />                                                                                                            
+                                                    <TextBlock Text="Simulate" VerticalAlignment="Center" />
                                                 </StackPanel>
                                             </Button.Content>
                                         </Button>
-                                        <Button Grid.Column="1" Content="Reset" Margin="4" Command="{Binding ResetChartsPrCommand}" Style="{StaticResource DarkStyleButton}">                                            
+                                        <Button Grid.Column="1" Content="Reset" Margin="4" Command="{Binding ResetChartsPrCommand}" Style="{StaticResource DarkStyleButton}">
                                         </Button>
-                                        
+
                                     </Grid>
                                 </GroupBox>
                             </Grid>
                         </avalonDock:LayoutAnchorable>
-                        <avalonDock:LayoutAnchorable Title="Iterations/DampingFactor" >
+                        <avalonDock:LayoutAnchorable Title="Iterations/DampingFactor" x:Name="IteDfPane">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"/>
@@ -456,7 +457,7 @@
                                 <GroupBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Header="Calculate" Margin="2">
                                     <Grid HorizontalAlignment="Right">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="100"/>                                            
+                                            <ColumnDefinition Width="100"/>
                                             <ColumnDefinition Width="100"/>
                                         </Grid.ColumnDefinitions>
                                         <Button Grid.Column="0" Margin="4" Command="{Binding StartSimulationItCommand}" Style="{StaticResource DarkStyleButton}">
@@ -467,12 +468,12 @@
                                                 </StackPanel>
                                             </Button.Content>
                                         </Button>
-                                        <Button Grid.Column="1" Content="Reset" Margin="4" Command="{Binding ResetChartsItCommand}" Style="{StaticResource DarkStyleButton}"/>                                        
+                                        <Button Grid.Column="1" Content="Reset" Margin="4" Command="{Binding ResetChartsItCommand}" Style="{StaticResource DarkStyleButton}"/>
                                     </Grid>
                                 </GroupBox>
                             </Grid>
                         </avalonDock:LayoutAnchorable>
-                        <avalonDock:LayoutAnchorable Title="Pr-APr/Pages" >
+                        <avalonDock:LayoutAnchorable Title="Pr-APr/Pages" x:Name="PrAprPagePane">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"/>
@@ -502,7 +503,7 @@
                                     <Grid HorizontalAlignment="Right">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="100"/>
-                                            <ColumnDefinition Width="100"/>                                            
+                                            <ColumnDefinition Width="100"/>
                                         </Grid.ColumnDefinitions>
                                         <Button Grid.Column="0" Margin="4" Command="{Binding StartSimulationPrAprCommand}" Style="{StaticResource DarkStyleButton}">
                                             <Button.Content>
@@ -512,12 +513,12 @@
                                                 </StackPanel>
                                             </Button.Content>
                                         </Button>
-                                        <Button Grid.Column="1" Content="Reset" Margin="4" Command="{Binding ResetChartsItCommand}" Style="{StaticResource DarkStyleButton}"/>                                        
+                                        <Button Grid.Column="1" Content="Reset" Margin="4" Command="{Binding ResetChartsItCommand}" Style="{StaticResource DarkStyleButton}"/>
                                     </Grid>
                                 </GroupBox>
                             </Grid>
                         </avalonDock:LayoutAnchorable>
-                        <avalonDock:LayoutAnchorable Title="Pr-APr Iterations/MatrixSize" >
+                        <avalonDock:LayoutAnchorable Title="Pr-APr Iterations/MatrixSize" x:Name="PrAprIteMatPane">
                             <Grid>
                                 <Grid.RowDefinitions>
 
@@ -548,7 +549,7 @@
                                     <Grid HorizontalAlignment="Right">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="100"/>
-                                            <ColumnDefinition Width="100"/>                                            
+                                            <ColumnDefinition Width="100"/>
                                         </Grid.ColumnDefinitions>
                                         <Button Grid.Column="0" Margin="4" Command="{Binding StartSimulationPrAprIteCommand}" Style="{StaticResource DarkStyleButton}">
                                             <Button.Content>
@@ -558,12 +559,12 @@
                                                 </StackPanel>
                                             </Button.Content>
                                         </Button>
-                                        <Button Grid.Column="1" Content="Reset" Margin="4" Command="{Binding ResetChartsPrAprIteCommand}" Style="{StaticResource DarkStyleButton}"/>                                        
+                                        <Button Grid.Column="1" Content="Reset" Margin="4" Command="{Binding ResetChartsPrAprIteCommand}" Style="{StaticResource DarkStyleButton}"/>
                                     </Grid>
                                 </GroupBox>
                             </Grid>
                         </avalonDock:LayoutAnchorable>
-                        <avalonDock:LayoutAnchorable Title="Pr-APr Time/MatrixSize" >
+                        <avalonDock:LayoutAnchorable Title="Pr-APr Time/MatrixSize" x:Name="PrAprTimeMatPane">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"/>
@@ -593,7 +594,7 @@
                                     <Grid HorizontalAlignment="Right">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="100"/>
-                                            <ColumnDefinition Width="100"/>                                            
+                                            <ColumnDefinition Width="100"/>
                                         </Grid.ColumnDefinitions>
                                         <Button Grid.Column="0"  Margin="4" Command="{Binding StartSimulationPrAprTimeCommand}" Style="{StaticResource DarkStyleButton}">
                                             <Button.Content>
@@ -603,13 +604,13 @@
                                                 </StackPanel>
                                             </Button.Content>
                                         </Button>
-                                        <Button Grid.Column="1" Content="Reset" Margin="4" Command="{Binding ResetChartsPrAprTimeCommand}" Style="{StaticResource DarkStyleButton}"/>                                        
+                                        <Button Grid.Column="1" Content="Reset" Margin="4" Command="{Binding ResetChartsPrAprTimeCommand}" Style="{StaticResource DarkStyleButton}"/>
                                     </Grid>
                                 </GroupBox>
                             </Grid>
                         </avalonDock:LayoutAnchorable>
                     </avalonDock:LayoutAnchorablePane>
-                </avalonDock:LayoutPanel >              
+                </avalonDock:LayoutPanel >
             </avalonDock:LayoutRoot>
         </avalonDock:DockingManager>
     </Grid>

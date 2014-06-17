@@ -996,7 +996,6 @@ namespace LuceneSearchClient.ViewModel
                            }));
             }
         }
-
         private RelayCommand<DataGridCellEditEndingEventArgs> _adjMatCellEditEndingCommand;
         public RelayCommand<DataGridCellEditEndingEventArgs> AdjMatCellEditEndingCommand
         {
@@ -1046,7 +1045,7 @@ namespace LuceneSearchClient.ViewModel
                     ?? (_telMatCellEditEndingCommand = new RelayCommand<DataGridCellEditEndingEventArgs>(
                                           (args) =>
                                           {
-                                              var editedTextbox = args.EditingElement as TextBox;
+                                              var editedTextbox = args.EditingElement as TextBox;                                              
                                               if (editedTextbox != null)
                                                   TelePortationMatrix[(ulong)args.Row.GetIndex(), (ulong)args.Column.DisplayIndex] = float.Parse(editedTextbox.Text.Replace(",", "."), CultureInfo.InvariantCulture);
                                           }));
@@ -1154,7 +1153,6 @@ namespace LuceneSearchClient.ViewModel
                                           }));
             }
         }
-
         private void DrawSimulationIteMatChartCompeleted(object sender, RunWorkerCompletedEventArgs e)
         {
             RaisePropertyChanged(ListPrIteMatPropertyName);
@@ -1268,6 +1266,7 @@ namespace LuceneSearchClient.ViewModel
             }
         }
 
+        
         #endregion
     }
 }

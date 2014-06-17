@@ -32,40 +32,38 @@
                 <MenuItem Header="_Search" Command="{Binding NewSearchCommand}"/>
                 <MenuItem Header="_View All Pages" Command="{Binding AllPagesCommand}"/>
                 <MenuItem Header="_Settings" Command="{Binding SettingsCommand}"/>
-            </MenuItem>
-            <MenuItem Header="_WebGraph">
-                <MenuItem Header="_New"/>
-                <MenuItem Header="_Settings"/>
-            </MenuItem>
+            </MenuItem>            
             <MenuItem Header="_PageRank">
                 <MenuItem Header="_Settings" Command="{Binding PageRankCommand}"/>
             </MenuItem>
             <MenuItem Header="_Simulation">
                 <MenuItem Header="_View All" Command="{Binding AllSimulationCommand}"/>
                 <Separator/>
-                <MenuItem Header="_Matrix Settings"/>
+                <MenuItem Header="_Matrix Settings" Command="{Binding ShowDefineMatricePaneCommand}"/>
+                <MenuItem Header="_Visual WebGraph" Command="{Binding ShowVisualWebGraphPaneCommand}"/>
+                <MenuItem Header="_Pr and APr Calculation" Command="{Binding ShowCalculationPaneCommand}"/>
                 <MenuItem Header="_Damping Factor">
-                    <MenuItem Header="_Iterations"/>
-                    <MenuItem Header="_PageRank"/>
+                    <MenuItem Header="_Iterations" Command="{Binding ShowItDfPaneCommand}"/>
+                    <MenuItem Header="_PageRank" Command="{Binding ShowPrDfPaneCommand}"/>
                 </MenuItem>
                 <MenuItem Header="_Comparation">
-                    <MenuItem Header="_PageRank vs APageRank"/>
-                    <MenuItem Header="_Number Of Iteration"/>
-                    <MenuItem Header="_Time"/>
+                    <MenuItem Header="_PageRank vs APageRank" Command="{Binding ShowPrAprPagePaneCommand}"/>
+                    <MenuItem Header="_Number Of Iteration" Command="{Binding ShowPrAprIteMatPaneCommand}"/>
+                    <MenuItem Header="_Time" Command="{Binding ShowPrAprTimeMatPaneCommand}"/>
                 </MenuItem>
-                <MenuItem Header="_Eign Values"/>
+                <MenuItem Header="_Eign Values" Command="{Binding ShowEignValuesPaneCommand}"/>
             </MenuItem>
         </Menu>
         <Grid Grid.Row="1">
             <xcad:DockingManager >
                 <xcad:LayoutRoot >
                     <xcad:LayoutPanel Orientation="Vertical"  >
-                        <xcad:LayoutAnchorablePane  >
+                        <xcad:LayoutAnchorablePane  DockHeight="3*">
                             <xcad:LayoutAnchorable CanHide="False" Title="Main Panel" >
                                 <Frame  Source="{Binding NavigationUri,Mode=TwoWay}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" NavigationUIVisibility="Visible" />
                             </xcad:LayoutAnchorable>                           
                         </xcad:LayoutAnchorablePane>
-                        <xcad:LayoutAnchorablePane DockHeight="50" >
+                        <xcad:LayoutAnchorablePane DockHeight="*">
                             <xcad:LayoutAnchorable  Title="Status Panel"  >
                                
                             </xcad:LayoutAnchorable>

@@ -104,9 +104,7 @@ namespace LuceneSearchClient.ViewModel
                                           }));
             }
         }
-
-        private RelayCommand _allPagesCommand;  
-   
+        private RelayCommand _allPagesCommand;    
         public RelayCommand AllPagesCommand
         {
             get
@@ -115,7 +113,152 @@ namespace LuceneSearchClient.ViewModel
                     ?? (_allPagesCommand = new RelayCommand(
                                           () =>
                                           {
-                                              NavigationUri = new Uri("../Views/AllPagesView.xaml", UriKind.RelativeOrAbsolute);  
+                                              NavigationUri = new Uri("../Views/AllPagesView.xaml", UriKind.RelativeOrAbsolute);
+                                              Messenger.Default.Send<NotificationMessage>(new NotificationMessage("ShowAll"));
+                                          }));
+            }
+        }
+        private RelayCommand _showDefineMatricePaneCommand;
+        public RelayCommand ShowDefineMatricePaneCommand
+        {
+            get
+            {
+                return _showDefineMatricePaneCommand
+                    ?? (_showDefineMatricePaneCommand = new RelayCommand(
+                        () =>
+                        {
+                            NavigationUri = new Uri("../Views/SimilatorView.xaml", UriKind.RelativeOrAbsolute); 
+                            Messenger.Default.Send<NotificationMessage>(new NotificationMessage("ShowDefineMatricePane"));
+                        }));
+            }
+        }
+        private RelayCommand _showVisualWebGraphPaneCommand;
+        public RelayCommand ShowVisualWebGraphPaneCommand
+        {
+            get
+            {
+                return _showVisualWebGraphPaneCommand
+                    ?? (_showVisualWebGraphPaneCommand = new RelayCommand(
+                                          () =>
+                                          {
+                                              NavigationUri = new Uri("../Views/SimilatorView.xaml", UriKind.RelativeOrAbsolute); 
+                                              Messenger.Default.Send<NotificationMessage>(
+                                                  new NotificationMessage("ShowVisualWebGraphPane"));
+
+                                          }));
+            }
+        }
+        private RelayCommand _showCalculationPaneCommand;
+
+        /// <summary>
+        /// Gets the MyCommand.
+        /// </summary>
+        public RelayCommand ShowCalculationPaneCommand
+        {
+            get
+            {
+                return _showCalculationPaneCommand
+                    ?? (_showCalculationPaneCommand = new RelayCommand(
+                                          () =>
+                                          {
+                                              NavigationUri = new Uri("../Views/SimilatorView.xaml", UriKind.RelativeOrAbsolute); 
+                                              Messenger.Default.Send<NotificationMessage>(
+                                                  new NotificationMessage("ShowCalculationPane"));
+                                          }));
+            }
+        }
+        private RelayCommand _showEignValuesPaneCommand;
+        public RelayCommand ShowEignValuesPaneCommand
+        {
+            get
+            {
+                return _showEignValuesPaneCommand
+                    ?? (_showEignValuesPaneCommand = new RelayCommand(
+                                          () =>
+                                          {
+                                              NavigationUri = new Uri("../Views/SimilatorView.xaml", UriKind.RelativeOrAbsolute); 
+                                              Messenger.Default.Send<NotificationMessage>(
+                                                  new NotificationMessage("ShowEignValuesPane"));
+                                          }));
+            }
+        }
+        private RelayCommand _showPrDfPaneCommand;
+        public RelayCommand ShowPrDfPaneCommand
+        {
+            get
+            {
+                return _showPrDfPaneCommand
+                    ?? (_showPrDfPaneCommand = new RelayCommand(
+                                          () =>
+                                          {
+                                              NavigationUri = new Uri("../Views/SimilatorView.xaml", UriKind.RelativeOrAbsolute); 
+                                              Messenger.Default.Send<NotificationMessage>(
+                                                  new NotificationMessage("ShowPrDfPane"));
+                                          }));
+            }
+        }
+        private RelayCommand _showItDfPaneCommand;
+        public RelayCommand ShowItDfPaneCommand
+        {
+            get
+            {
+                return  _showItDfPaneCommand
+                    ?? ( _showItDfPaneCommand = new RelayCommand(
+                                          () =>
+                                          {
+                                              NavigationUri = new Uri("../Views/SimilatorView.xaml", UriKind.RelativeOrAbsolute); 
+                                              Messenger.Default.Send<NotificationMessage>(
+                                                  new NotificationMessage("ShowItDfPane"));
+
+                                          }));
+            }
+        }
+        private RelayCommand _showPrAprPagePaneCommand;
+
+        public RelayCommand ShowPrAprPagePaneCommand
+        {
+            get
+            {
+                return _showPrAprPagePaneCommand
+                    ?? (_showPrAprPagePaneCommand = new RelayCommand(
+                                          () =>
+                                          {
+                                              NavigationUri = new Uri("../Views/SimilatorView.xaml", UriKind.RelativeOrAbsolute); 
+                                              Messenger.Default.Send<NotificationMessage>(
+                                                  new NotificationMessage("ShowPrAprPagePane"));
+
+                                          }));
+            }
+        }
+        private RelayCommand _showPrAprIteMatPaneCommand;   
+        public RelayCommand ShowPrAprIteMatPaneCommand
+        {
+            get
+            {
+                return _showPrAprIteMatPaneCommand
+                    ?? (_showPrAprIteMatPaneCommand = new RelayCommand(
+                                          () =>
+                                          {
+                                              NavigationUri = new Uri("../Views/SimilatorView.xaml", UriKind.RelativeOrAbsolute); 
+                                              Messenger.Default.Send<NotificationMessage>(
+                                                  new NotificationMessage("ShowPrAprIteMatPane"));
+                                               
+                                          }));
+            }
+        }
+        private RelayCommand _showPrAprTimeMatPaneCommand;
+        public RelayCommand ShowPrAprTimeMatPaneCommand
+        {
+            get
+            {
+                return _showPrAprTimeMatPaneCommand
+                    ?? (_showPrAprTimeMatPaneCommand = new RelayCommand(
+                                          () =>
+                                          {
+                                              NavigationUri = new Uri("../Views/SimilatorView.xaml", UriKind.RelativeOrAbsolute);  
+                                              Messenger.Default.Send<NotificationMessage>(
+                                                  new NotificationMessage("ShowPrAprTimeMatPane"));
+
                                           }));
             }
         }

@@ -1,0 +1,69 @@
+﻿<ResourceDictionary x:Class="LuceneSearchClient.Resources.MyResourceDictionary"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:graphsharp="clr-namespace:GraphSharp.Controls;assembly=GraphSharp.Controls"
+                    xmlns:model="clr-namespace:LuceneSearchClient.Model"
+                    x:ClassModifier="public">
+    <DataTemplate x:Key="VertexDataTemplate" DataType="{x:Type model:WebVertex}">
+        <StackPanel Orientation="Horizontal" Margin="5">
+            <TextBlock Text="{Binding Path=Label, Mode=OneWay}" Foreground="Black" FontFamily="Segoe WP Black" FontSize="17" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock.Effect>
+                    <DropShadowEffect Color="Black" BlurRadius="1" ShadowDepth="0"/>
+                </TextBlock.Effect>
+            </TextBlock>
+        </StackPanel>
+    </DataTemplate>
+    <Style TargetType="{x:Type graphsharp:VertexControl}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate x:Name="ControlTemplate" TargetType="{x:Type graphsharp:VertexControl}">
+                    <Border x:Name="vertexBorder" CornerRadius="50" Width="60" Height="60" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" BorderThickness="2" BorderBrush="Black" Background="White">
+                        <ContentPresenter Content="{TemplateBinding Vertex}" 
+                                            ContentTemplate="{StaticResource VertexDataTemplate}"  VerticalAlignment="Center" HorizontalAlignment="Center">
+                        </ContentPresenter>
+                    </Border>
+                    <!--<ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="vertexBorder" Property="Background" Value="LightSkyBlue" />
+                            <Setter TargetName="vertexBorder" Property="BorderBrush" Value="White" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>-->
+                    
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ContextMenu">
+            <Setter.Value>                
+                <ContextMenu>
+                    <MenuItem Header="Remove Node" Click="RemoveNode_ClickEvent">                        
+                        <MenuItem.Icon>
+                            <Image Source="../Assets/icons/remove.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Start Arc" Click="StartArc_ClickEvent">
+                        <MenuItem.Icon>
+                            <Image Source="../Assets/icons/start.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="End Arc" Click="EndArc_ClickEvent">
+                        <MenuItem.Icon>
+                            <Image Source="../Assets/icons/end.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                </ContextMenu>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="{x:Type graphsharp:EdgeControl}">
+        <Style.Resources>
+            <ToolTip x:Key="ToolTipContent">
+                <StackPanel>
+                    <TextBlock FontWeight="Bold" Text="Edge Information"/>
+                </StackPanel>
+            </ToolTip>
+        </Style.Resources>
+        <Setter Property="ToolTip" Value="{StaticResource ToolTipContent}"/>
+    </Style>
+
+</ResourceDictionary>

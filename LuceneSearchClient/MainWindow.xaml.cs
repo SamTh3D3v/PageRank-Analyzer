@@ -13,6 +13,7 @@ namespace LuceneSearchClient
         {
             InitializeComponent();
             Closing += (s, e) => ViewModelLocator.Cleanup();
+            
             //Messenger.Default.Register<NotificationMessage>(this, (msg) =>
             //{
             //    if (msg.Notification == "opensettingswindow")

@@ -57,6 +57,7 @@ namespace LuceneSearchClient.ViewModel
         public const string LayoutAlgorithmTypesPropertyName = "LayoutAlgorithmTypes";
         public const string SelectedLayoutAlgorithmeTtypePropertyName = "SelectedLayoutAlgorithmeTtype";
         public const string WebGraphPropertyName = "WebGraph";
+        public const string BusyIndicatorPropertyName = "BusyIndicator";
         #endregion
         #region Fields
         private ulong _matrixSize;
@@ -110,6 +111,7 @@ namespace LuceneSearchClient.ViewModel
         };
         private string _selectedLayoutAlgorithmeType = "LinLog";
         private WebGraph _webGraph;
+        private bool _busyIndicator = false;
         #endregion
         #region Properties
         public ulong MatrixSize
@@ -751,6 +753,23 @@ namespace LuceneSearchClient.ViewModel
                 RaisePropertyChanged(WebGraphPropertyName);
             }
         }
+        public bool BusyIndicator
+        {
+            get
+            {
+                return _busyIndicator;
+            }
+
+            set
+            {
+                if (_busyIndicator == value)
+                {
+                    return;
+                }
+                _busyIndicator = value;
+                RaisePropertyChanged(BusyIndicatorPropertyName);
+            }
+        }
         #endregion
         #region Ctors and Methods
         public SimulatorViewModel()
@@ -770,6 +789,7 @@ namespace LuceneSearchClient.ViewModel
                     ?? (_generateMatrixCommand = new RelayCommand(
                                           () =>
                                           {
+                                              BusyIndicator = true;
                                               var rand = new Random();
                                               for (ulong i = 0; i < MatrixSize; i++)
                                               {
@@ -779,10 +799,10 @@ namespace LuceneSearchClient.ViewModel
                                                       if (AdjacenteMatrix[i, j] != 0)
                                                           AddNewGraphEdge(i.ToString(CultureInfo.InvariantCulture), j.ToString(CultureInfo.InvariantCulture));
                                                   }
-
                                               }
                                               RaisePropertyChanged(AdjacenceMatrixPropertyName);
                                               RaisePropertyChanged(WebGraphPropertyName);
+                                              BusyIndicator = false;
                                           }));
             }
         }
@@ -875,7 +895,7 @@ namespace LuceneSearchClient.ViewModel
                                               for (ulong i = 0; i < MatrixSize; i++)
                                               {
                                                   DataSourceListDampPr.Add(new List<KeyValuePair<float, float>>());
-                                                  
+
                                               }
                                               for (float dampFactor = 0; dampFactor <= 1; dampFactor += 0.1f)
                                               {
@@ -895,7 +915,7 @@ namespace LuceneSearchClient.ViewModel
 
                                           }));
             }
-        }      
+        }
         private RelayCommand _resetChartsPrCommand;
         private RelayCommand _startSimulationPrAprCommand;
         public RelayCommand StartSimulationPrAprCommand
@@ -1036,8 +1056,8 @@ namespace LuceneSearchClient.ViewModel
         private void RemoveGraphEdge(string from, string to)
         {
             var edge = _webGraph.Edges.FirstOrDefault(e => e.Source.Label == from && e.Target.Label == to);
-            if (edge != null)                
-            _webGraph.RemoveEdge(edge);
+            if (edge != null)
+                _webGraph.RemoveEdge(edge);
         }
         private RelayCommand<DataGridCellEditEndingEventArgs> _telMatCellEditEndingCommand;
         public RelayCommand<DataGridCellEditEndingEventArgs> TelMatCellEditEndingCommand
@@ -1048,7 +1068,7 @@ namespace LuceneSearchClient.ViewModel
                     ?? (_telMatCellEditEndingCommand = new RelayCommand<DataGridCellEditEndingEventArgs>(
                                           (args) =>
                                           {
-                                              var editedTextbox = args.EditingElement as TextBox;                                              
+                                              var editedTextbox = args.EditingElement as TextBox;
                                               if (editedTextbox != null)
                                                   TelePortationMatrix[(ulong)args.Row.GetIndex(), (ulong)args.Column.DisplayIndex] = float.Parse(editedTextbox.Text.Replace(",", "."), CultureInfo.InvariantCulture);
                                           }));
@@ -1149,6 +1169,7 @@ namespace LuceneSearchClient.ViewModel
                     ?? (_startSimulationPrAprIteCommand = new RelayCommand(
                                           () =>
                                           {
+                                              BusyIndicator = true;
                                               var worker = new BackgroundWorker();
                                               worker.DoWork += DrawSimulationIteMatChart;
                                               worker.RunWorkerCompleted += DrawSimulationIteMatChartCompeleted;
@@ -1160,6 +1181,7 @@ namespace LuceneSearchClient.ViewModel
         {
             RaisePropertyChanged(ListPrIteMatPropertyName);
             RaisePropertyChanged(ListAPrIteMatPropertyName);
+            BusyIndicator = false;
         }
         private void DrawSimulationIteMatChart(object sender, DoWorkEventArgs e)
         {
@@ -1202,6 +1224,7 @@ namespace LuceneSearchClient.ViewModel
                     ?? (_startSimulationPrAprTimeCommand = new RelayCommand(
                                           () =>
                                           {
+                                              BusyIndicator = true;
                                               var worker = new BackgroundWorker();
                                               worker.DoWork += DrawSimulationTimeMatChart;
                                               worker.RunWorkerCompleted += DrawSimulationTimeMatChartCompeleted;
@@ -1228,6 +1251,7 @@ namespace LuceneSearchClient.ViewModel
         {
             RaisePropertyChanged(ListPrTimeMatPropertyName);
             RaisePropertyChanged(ListAPrTimeMatPropertyName);
+            BusyIndicator = false;
         }
         private void DrawSimulationTimeMatChart(object sender, DoWorkEventArgs e)
         {
@@ -1269,7 +1293,7 @@ namespace LuceneSearchClient.ViewModel
             }
         }
 
-        
+
         #endregion
     }
 }

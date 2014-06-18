@@ -40,7 +40,7 @@ namespace LuceneSearchClient.ViewModel
         private bool _amelioratedPrIsSelected;
         private bool _googlePrIsSelected;
         private bool _rankingIsCalculated = false;
-        private bool _aRankingIsCalculated = false; 
+        private bool _aRankingIsCalculated = false;
         private Vector _pageRankVector;
         private Vector _aPageRankVector;
         private bool _busyIndicator = false;
@@ -168,7 +168,7 @@ namespace LuceneSearchClient.ViewModel
                 _rankingIsCalculated = value;
                 RaisePropertyChanged(RankingIsCalculatedPropertyName);
             }
-        }     
+        }
         public bool ARankingIsCalculated
         {
             get
@@ -182,7 +182,7 @@ namespace LuceneSearchClient.ViewModel
                 {
                     return;
                 }
-                
+
                 _aRankingIsCalculated = value;
                 RaisePropertyChanged(ARankingIsCalculatedPropertyName);
             }
@@ -221,7 +221,7 @@ namespace LuceneSearchClient.ViewModel
                 _listPages = value;
                 RaisePropertyChanged(ListPagesPropertyName);
             }
-        }      
+        }
         #endregion
         #region Commands
 
@@ -247,7 +247,7 @@ namespace LuceneSearchClient.ViewModel
                 ARankingIsCalculated = true;
                 _aPageRankVector = pr;
             });
-            
+
             Messenger.Default.Register<WebGraphDataReader>(this, "WebGraphDataReader", (wg) =>
             {
                 _webGraphDataReader = wg;
@@ -255,12 +255,10 @@ namespace LuceneSearchClient.ViewModel
         }
         private void Indexing()
         {
+            _indexer = new HtmlIndexer(_webSite.WebSiteIndex, _webSite.WebSiteUrl); //c:\index   http://blog.codinghorror.com/
             if (WebSite.NewIndex)
-            {
-                _indexer = new HtmlIndexer(_webSite.WebSiteIndex, _webSite.WebSiteUrl); //c:\index   http://blog.codinghorror.com/
                 _indexer.AddDirectory(new DirectoryInfo(_webSite.WebSiteLocation), "*.htm*");   //\blog.codinghorror.com
-                _indexer.Close(); 
-            }
+            _indexer.Close();
             _searcher = new Searcher(_webSite.WebSiteIndex);
             SearchEnabled = true;
             BusyIndicator = false;
@@ -281,10 +279,10 @@ namespace LuceneSearchClient.ViewModel
                                               if (RankingIsCalculated)
                                               {
                                                   foreach (var doc in ListSearchResult)
-                                                  {                                                      
+                                                  {
                                                       var index = _webGraphDataReader.Pages.Where(
                                                           (x) => x.UriString == doc.Link).Select((x) => x.Id);
-                                                      if (index.Count()!=0)                                                                                          
+                                                      if (index.Count() != 0)
                                                           doc.PageRank = _pageRankVector[index.FirstOrDefault()];
                                                   }
                                               }
@@ -320,18 +318,17 @@ namespace LuceneSearchClient.ViewModel
                     ?? (_onloadAllPagesCommand = new RelayCommand(
                                           () =>
                                           {
+                                              if (_indexer == null) return;
                                               BusyIndicator = true;
-                                              if(_indexer==null) return;
                                               var listAllPages = _indexer.ListIndexedDocs;
                                               //Update The PageRank Values
                                               if (RankingIsCalculated)
                                               {
-
                                                   foreach (var doc in listAllPages)
-                                                  {                                                      
+                                                  {
                                                       var index = _webGraphDataReader.Pages.Where(
-                                                          (x) => x.UriString == doc.Link).Select((x) => x.Id).FirstOrDefault();                                                                                                       
-                                                          doc.PageRank = _pageRankVector[index];
+                                                          (x) => x.UriString == doc.Link).Select((x) => x.Id).FirstOrDefault();
+                                                      doc.PageRank = _pageRankVector[index];
                                                   }
                                               }
                                               if (ARankingIsCalculated)
@@ -343,8 +340,8 @@ namespace LuceneSearchClient.ViewModel
                                                           (x) => x.UriString == doc.Link).Select((x) => x.Id).FirstOrDefault();
                                                       doc.PageRankAmeliorated = _aPageRankVector[index];
                                                   }
-                                              }                                                                                         
-                                                  ListPages = new ObservableCollection<DocumentHit>(listAllPages); 
+                                              }
+                                              ListPages = new ObservableCollection<DocumentHit>(listAllPages);
                                               //Update The PageRank And The AmelioratedPageRank Value If Calculated
                                               BusyIndicator = false;
 

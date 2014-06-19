@@ -59,6 +59,8 @@ namespace LuceneSearchClient.ViewModel
         public const string SelectedLayoutAlgorithmeTtypePropertyName = "SelectedLayoutAlgorithmeTtype";
         public const string WebGraphPropertyName = "WebGraph";
         public const string BusyIndicatorPropertyName = "BusyIndicator";
+        public const string InputOutputRatioIsCalculatedPropertyName = "InputOutputRatioIsCalculated";
+        public const string InputOutputRatioPropertyName = "InputOutputRatio";        
         #endregion
         #region Fields
         private ulong _matrixSize;
@@ -89,6 +91,7 @@ namespace LuceneSearchClient.ViewModel
         private ObservableCollection<KeyValuePair<float, float>> _listAprPages;
         private Matrix _googleMatrix;
         private Visibility _googleMatrixIsCalculated = Visibility.Hidden;
+        private Visibility _inputOutputRatioIsCalculated = Visibility.Hidden;
         private List<string> _listMatricesLabelsList = new List<string>()
         {
             "google Matrix",
@@ -113,6 +116,7 @@ namespace LuceneSearchClient.ViewModel
         private string _selectedLayoutAlgorithmeType = "EfficientSugiyama";
         private WebGraph _webGraph;
         private bool _busyIndicator = false;
+        private Matrix _inputOutputRatio;
         #endregion
         #region Properties
         public ulong MatrixSize
@@ -649,6 +653,25 @@ namespace LuceneSearchClient.ViewModel
                 GoogleMatrixIsCalculated = Visibility.Visible;
             }
         }
+        public Matrix InputOutputRatio
+        {
+            get
+            {
+                return _inputOutputRatio;
+            }
+
+            set
+            {
+                if (_inputOutputRatio == value)
+                {
+                    return;
+                }
+                
+                _inputOutputRatio = value;
+                RaisePropertyChanged(InputOutputRatioPropertyName);
+                InputOutputRatioIsCalculated = Visibility.Visible;
+            }
+        }
         public Visibility GoogleMatrixIsCalculated
         {
             get
@@ -664,6 +687,25 @@ namespace LuceneSearchClient.ViewModel
                 }
                 _googleMatrixIsCalculated = value;
                 RaisePropertyChanged(GoogleMatrixIsCalculatedPropertyName);
+            }
+        }       
+        public Visibility InputOutputRatioIsCalculated
+        {
+            get
+            {
+                return _inputOutputRatioIsCalculated;
+            }
+
+            set
+            {
+                if (_inputOutputRatioIsCalculated == value)
+                {
+                    return;
+                }
+
+                RaisePropertyChanging(InputOutputRatioIsCalculatedPropertyName);
+                _inputOutputRatioIsCalculated = value;
+                RaisePropertyChanged(InputOutputRatioIsCalculatedPropertyName);
             }
         }
         public List<string> ListMatricesLabels
@@ -791,6 +833,37 @@ namespace LuceneSearchClient.ViewModel
                 //Remove The edge From The Graph 
                 //Remove The edge From The Matrix 
                 //Reset all Pregenerated Matrices
+
+            });
+            Messenger.Default.Register<Matrix>(this, "exporttosimulator", (adjMatrix) =>
+            {
+                _matrixSize = adjMatrix.Size;
+                AdjacenteMatrix = adjMatrix;
+                InitialPageRank = Vector.e(VectorType.Row, _matrixSize);
+                TelePortationMatrix = Matrix.E(_matrixSize);
+                var listpages = new List<string>();
+                for (ulong i = 0; i < _matrixSize; i++)
+                {
+                    listpages.Add(i.ToString(CultureInfo.InvariantCulture));
+                }
+                ListWebPages = new ObservableCollection<string>(listpages);
+                SelectedPage = ListWebPages.First();
+                //Generate The WebGraph
+                WebGraph = new WebGraph(true);
+                foreach (var page in listpages)
+                    WebGraph.AddVertex(new WebVertex() { Label = page });
+
+                for (ulong i = 0; i < MatrixSize; i++)
+                {
+                    for (ulong j = 0; j < MatrixSize; j++)
+                    {                        
+                        if (AdjacenteMatrix[i, j] != 0)
+                            AddNewGraphEdge(i.ToString(CultureInfo.InvariantCulture), j.ToString(CultureInfo.InvariantCulture));
+                    }
+                }
+                RaisePropertyChanged(AdjacenceMatrixPropertyName);                
+                RaisePropertyChanged(WebGraphPropertyName);
+
 
             });
             
@@ -1111,6 +1184,8 @@ namespace LuceneSearchClient.ViewModel
                                               Debug.WriteLine("Ameliorated PageRank Calculated In ->" + (DateTime.Now - dateTime).Milliseconds + " Miliseconds , Iterations ->" + PrNumberIterations);
                                               if (!AutomaticIterationsApr)
                                                   AprNumberOfIteration = aprNbIterations;
+
+                                              InputOutputRatio = amPageRank.DampingFactorMatrix;
                                           }));
             }
         }

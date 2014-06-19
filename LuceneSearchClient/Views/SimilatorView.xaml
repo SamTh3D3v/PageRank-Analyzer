@@ -140,6 +140,15 @@
                                                     </DataGrid>
                                                 </Grid>
                                             </TabItem>
+                                            <TabItem Header="InputOutput Ratio Matrix" Visibility="{Binding InputOutputRatioIsCalculated,Mode=TwoWay}" >
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="*"/>
+                                                    </Grid.RowDefinitions>
+                                                    <DataGrid Grid.Row="0" Margin="5" Background="White" ItemsSource="{Binding InputOutputRatio ,Converter={StaticResource MatrixToDataViewConverter},Mode=TwoWay}" LoadingRow="OnLoadingRow" IsReadOnly="True">
+                                                    </DataGrid>
+                                                </Grid>
+                                            </TabItem>
                                         </TabControl>
                                     </GroupBox>
                                     <GridSplitter Width="5" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center"></GridSplitter>

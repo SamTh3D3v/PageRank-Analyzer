@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using GalaSoft.MvvmLight.Threading;
 
 namespace LuceneSearchClient
@@ -17,7 +18,7 @@ namespace LuceneSearchClient
         void OnDispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
             string errorMessage = string.Format("An unhandled exception occurred: {0}", e.Exception.Message);
-            MessageBox.Show(errorMessage, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            Debug.WriteLine("Error "+errorMessage);
             e.Handled = true;
         }
     }

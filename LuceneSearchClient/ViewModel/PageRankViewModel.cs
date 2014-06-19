@@ -32,6 +32,8 @@ namespace LuceneSearchClient.ViewModel
         public const string BusyIndicatorPropertyName = "BusyIndicator";
         public const string AprPrecisionPropertyName = "AprPrecision";
         public const string PrPrecisionPropertyName = "PrPrecision";
+        public const string ExportToSimulatorIsEnabledPropertyName = "ExportToSimulatorIsEnabled";
+        public const string AdjacentMatrixPropertyName = "AdjacentMatrix";
         #endregion
         #region Fields
         private string _linksXmlFile = "";
@@ -50,7 +52,9 @@ namespace LuceneSearchClient.ViewModel
         private bool _getTrMatButIsEnabled = false;
         private bool _busyIndicator = false;
         private short _aprPrecision = 5;
-        private short _prPrecision = 5;     
+        private short _prPrecision = 5;
+        private bool _exportToSimulatorIsEnabled = false;
+        private Matrix _adjacentMatrix;         
         #endregion
         #region Properties
         public string WebGraphExcelFile
@@ -228,6 +232,42 @@ namespace LuceneSearchClient.ViewModel
                 RaisePropertyChanged(GetTrMatButIsEnabledPropertyName);
             }
         }
+        public Matrix AdjacentMatrix
+        {
+            get
+            {
+                return _adjacentMatrix;
+            }
+
+            set
+            {
+                if (_adjacentMatrix == value)
+                {
+                    return;
+                }
+
+                _adjacentMatrix = value;
+                RaisePropertyChanged(AdjacentMatrixPropertyName);
+            }
+        }
+        public bool ExportToSimulatorIsEnabled
+        {
+            get
+            {
+                return _exportToSimulatorIsEnabled;
+            }
+
+            set
+            {
+                if (_exportToSimulatorIsEnabled == value)
+                {
+                    return;
+                }
+                
+                _exportToSimulatorIsEnabled = value;
+                RaisePropertyChanged(ExportToSimulatorIsEnabledPropertyName);
+            }
+        }
         public bool BusyIndicator
         {
             get
@@ -323,6 +363,7 @@ namespace LuceneSearchClient.ViewModel
                 WebGraphDataConverter.SetTransitionMatrix(_webGraphDataReader.Pages, _webGraphDataReader.Links);
                 Debug.WriteLine("Transition Matrix Generated");
                 TransitionMatrix = WebGraphDataConverter.TransitionMatrix;
+                AdjacentMatrix = WebGraphDataConverter.AdjacentMatrix;
                 //Update The Busy Indicator  
                 //ind.IsBusy = false;
                 //Setting The Transportation Matrix 
@@ -330,16 +371,13 @@ namespace LuceneSearchClient.ViewModel
                 InitialPageRankVector = Vector.e(VectorType.Row, TransitionMatrix.Size);
                 Messenger.Default.Send<WebGraphDataReader>(_webGraphDataReader, "WebGraphDataReader");
                 BusyIndicator = false;
+                ExportToSimulatorIsEnabled = true;
             }
             catch (TargetInvocationException tiEx)
             {
-                System.Windows.MessageBox.Show(tiEx.InnerException.ToString());
+                Debug.WriteLine(tiEx.InnerException.ToString());
 
-            }
-            catch (Exception exception)
-            {
-                System.Windows.MessageBox.Show(exception.Message);
-            }
+            }           
         }
         private RelayCommand _setTeleportationCommand;
         public RelayCommand SetTeleportationCommand
@@ -428,7 +466,6 @@ namespace LuceneSearchClient.ViewModel
             //Update The Busy Indicator  
             BusyIndicator = false;
         }
-
         private void CalculateAmeliPageRank(object sender, DoWorkEventArgs e)
         {
             ulong nbIterations;
@@ -539,10 +576,26 @@ namespace LuceneSearchClient.ViewModel
             //Update The Busy Indicator  
             BusyIndicator = false;
         }
-
         private void GenerateXmlFiles(object sender, DoWorkEventArgs e)
         {
             _excelDataConverter.ConvertExelData(_pagesXmlFile, _linksXmlFile);
+        }
+        private RelayCommand _exportToSimulatorCommand;   
+        public RelayCommand ExportToSimulatorCommand
+        {
+            get
+            {
+                return _exportToSimulatorCommand
+                    ?? (_exportToSimulatorCommand = new RelayCommand(
+                                          () =>
+                                          {
+                                              //Export Adjacence Matrix 
+                                              //Navigate To Simulator 
+                                              //Recalculate The Transition Matrix 
+                                              Messenger.Default.Send<NotificationMessage>(new NotificationMessage("naviationtosimulator"));
+                                              Messenger.Default.Send<Matrix>(AdjacentMatrix,"exporttosimulator");
+                                          }));
+            }
         }
         #endregion
     }

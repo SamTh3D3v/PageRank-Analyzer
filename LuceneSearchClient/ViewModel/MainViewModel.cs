@@ -47,6 +47,8 @@ namespace LuceneSearchClient.ViewModel
             {
                 if (msg.Notification == "navigateToSearch")
                     NavigationUri = new Uri("../Views/SearchView.xaml", UriKind.RelativeOrAbsolute);
+                else if (msg.Notification == "naviationtosimulator")
+                    NavigationUri = new Uri("../Views/SimilatorView.xaml", UriKind.RelativeOrAbsolute);
             }); 
         }
 

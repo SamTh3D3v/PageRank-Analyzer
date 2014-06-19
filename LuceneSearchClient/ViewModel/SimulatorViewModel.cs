@@ -14,6 +14,7 @@ using GalaSoft.MvvmLight.Messaging;
 using LuceneSearchClient.Model;
 using PageRankCalculator.Model;
 using PageRankCalculator.PageRankCalculation;
+using QuickGraph;
 using TextBox = System.Windows.Controls.TextBox;
 using Vector = PageRankCalculator.Model.Vector;
 
@@ -113,7 +114,7 @@ namespace LuceneSearchClient.ViewModel
             "LinLog",
             "Tree"
         };
-        private string _selectedLayoutAlgorithmeType = "EfficientSugiyama";
+        private string _selectedLayoutAlgorithmeType = "KK";
         private WebGraph _webGraph;
         private bool _busyIndicator = false;
         private Matrix _inputOutputRatio;
@@ -906,6 +907,10 @@ namespace LuceneSearchClient.ViewModel
                                           () =>
                                           {
                                               AdjacenteMatrix = new Matrix(MatrixSize);
+                                              WebGraph = new WebGraph(true);
+                                              for (ulong page = 0; page < MatrixSize; page++)                                             
+                                                  WebGraph.AddVertex(new WebVertex() { Label = page.ToString(CultureInfo.InvariantCulture) });
+                                              RaisePropertyChanged(WebGraphPropertyName);
                                           }));
             }
         }

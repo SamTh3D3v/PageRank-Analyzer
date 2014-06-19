@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using LuceneSearchClient.Model;
 using PageRankCalculator.Model;
 using PageRankCalculator.PageRankCalculation;
@@ -109,7 +110,7 @@ namespace LuceneSearchClient.ViewModel
             "LinLog",
             "Tree"
         };
-        private string _selectedLayoutAlgorithmeType = "LinLog";
+        private string _selectedLayoutAlgorithmeType = "EfficientSugiyama";
         private WebGraph _webGraph;
         private bool _busyIndicator = false;
         #endregion
@@ -777,6 +778,22 @@ namespace LuceneSearchClient.ViewModel
             DampingFactor = PageRank.DefaultDampingFactor;
             PrNumberIterations = 100;
             AprNumberOfIteration = 100;
+            //Remove A Node : Receive The Id Of The Node To Remove 
+            Messenger.Default.Register<string>(this, "removenode", (node) =>
+            {
+               //Remove The Node From The Graph 
+                //Remove The Node From The Matrix 
+                //Reset all Pregenerated Matrices
+               
+            });
+            Messenger.Default.Register<WebEdge>(this, "removeedge", (edge) =>
+            {
+                //Remove The edge From The Graph 
+                //Remove The edge From The Matrix 
+                //Reset all Pregenerated Matrices
+
+            });
+            
         }
         #endregion
         #region Commands
@@ -1169,7 +1186,7 @@ namespace LuceneSearchClient.ViewModel
                     ?? (_startSimulationPrAprIteCommand = new RelayCommand(
                                           () =>
                                           {
-                                              BusyIndicator = true;
+                                              
                                               var worker = new BackgroundWorker();
                                               worker.DoWork += DrawSimulationIteMatChart;
                                               worker.RunWorkerCompleted += DrawSimulationIteMatChartCompeleted;
@@ -1181,10 +1198,11 @@ namespace LuceneSearchClient.ViewModel
         {
             RaisePropertyChanged(ListPrIteMatPropertyName);
             RaisePropertyChanged(ListAPrIteMatPropertyName);
-            BusyIndicator = false;
+            
         }
         private void DrawSimulationIteMatChart(object sender, DoWorkEventArgs e)
         {
+        //    BusyIndicator = true;
             _listPrIteMat = new ObservableCollection<KeyValuePair<ulong, ulong>>();
             _listAPrIteMat = new ObservableCollection<KeyValuePair<ulong, ulong>>();
             for (ulong matrixSize = 5; matrixSize <= 50; matrixSize += 5)
@@ -1214,6 +1232,7 @@ namespace LuceneSearchClient.ViewModel
                 _listPrIteMat.Add(new KeyValuePair<ulong, ulong>(matrixSize, nbIterationsPr));
                 _listAPrIteMat.Add(new KeyValuePair<ulong, ulong>(matrixSize, nbIterationsAPr));
             }
+         //   BusyIndicator = false;
         }
         private RelayCommand _startSimulationPrAprTimeCommand;
         public RelayCommand StartSimulationPrAprTimeCommand
@@ -1223,8 +1242,7 @@ namespace LuceneSearchClient.ViewModel
                 return _startSimulationPrAprTimeCommand
                     ?? (_startSimulationPrAprTimeCommand = new RelayCommand(
                                           () =>
-                                          {
-                                              BusyIndicator = true;
+                                          {                                              
                                               var worker = new BackgroundWorker();
                                               worker.DoWork += DrawSimulationTimeMatChart;
                                               worker.RunWorkerCompleted += DrawSimulationTimeMatChartCompeleted;
@@ -1246,15 +1264,16 @@ namespace LuceneSearchClient.ViewModel
                                               ListAPrTimeMat = new ObservableCollection<KeyValuePair<ulong, ulong>>();
                                           }));
             }
-        }
+        }        
         private void DrawSimulationTimeMatChartCompeleted(object sender, RunWorkerCompletedEventArgs e)
         {
             RaisePropertyChanged(ListPrTimeMatPropertyName);
             RaisePropertyChanged(ListAPrTimeMatPropertyName);
-            BusyIndicator = false;
+            
         }
         private void DrawSimulationTimeMatChart(object sender, DoWorkEventArgs e)
         {
+       //     BusyIndicator = true;
             _listPrTimeMat = new ObservableCollection<KeyValuePair<ulong, ulong>>();
             _listAPrTimeMat = new ObservableCollection<KeyValuePair<ulong, ulong>>();
             for (ulong matrixSize = 5; matrixSize <= 50; matrixSize += 5)
@@ -1291,6 +1310,8 @@ namespace LuceneSearchClient.ViewModel
                 _listPrTimeMat.Add(new KeyValuePair<ulong, ulong>(matrixSize, (ulong)timePr));
                 _listAPrTimeMat.Add(new KeyValuePair<ulong, ulong>(matrixSize, (ulong)timeAPr));
             }
+       //     BusyIndicator = false;
+
         }
 
 

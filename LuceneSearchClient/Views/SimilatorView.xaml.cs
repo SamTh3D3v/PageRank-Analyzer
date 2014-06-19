@@ -168,6 +168,8 @@ namespace LuceneSearchClient.Views
         {
             PrAprTimeMatPane.Hide();
         }
-        #endregion
+
+       
+        #endregion        
     }
 }

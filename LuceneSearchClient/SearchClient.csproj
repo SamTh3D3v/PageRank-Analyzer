@@ -125,7 +125,7 @@
     <Compile Include="Model\WebSite.cs" />
     <Compile Include="Model\WebVertex.cs" />
     <Compile Include="Resources\MultiChart.cs" />
-    <Compile Include="Resources\MyResourceDictionary.xaml.cs" />
+    <Compile Include="Resources\GraphResourceDictionary.xaml.cs" />
     <Compile Include="Resources\WeakEventing\CollectionChangedWeakEventSource.cs" />
     <Compile Include="Resources\WeakEventing\EventWrapperSourceBase.cs" />
     <Compile Include="Resources\WeakEventing\WeakEventListener.cs" />

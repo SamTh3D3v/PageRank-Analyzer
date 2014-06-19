@@ -61,8 +61,7 @@
                     <Label Content="Pages Xml File :" Grid.Row="1" Grid.Column="0" Margin="5" FontWeight="Bold" />
                     <TextBox  Grid.Column="1" Margin="5" Grid.Row="1" IsEnabled="False" Text="{Binding PagesXmlFile}"/>
                     <Label Content="Links Xml File :" Grid.Row="1" Grid.Column="2" Margin="5" FontWeight="Bold" />
-                    <TextBox x:Name="LinksXmlBox"  Grid.Column="3" Margin="5" Grid.Row="1" IsEnabled="False" Text="{Binding LinksXmlFile}"/>
-
+                    <TextBox  x:Name="LinksXmlBox"  Grid.Column="3" Margin="5" Grid.Row="1" IsEnabled="False" Text="{Binding LinksXmlFile}"/>
                 </Grid>
             </GroupBox>
             <GroupBox Header="Transition Matrix" Margin="3" Grid.Row="1" Grid.Column="0" Background="LightGray" FontWeight="Bold">
@@ -84,9 +83,7 @@
                             </StackPanel>
                         </Button.Content>
                     </Button>
-
                 </Grid>
-
             </GroupBox>
             <GridSplitter Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Width="5" HorizontalAlignment="Center"></GridSplitter>
             <GroupBox Header="PageRank" Margin="5" Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" Background="LightGray" FontWeight="Bold">
@@ -94,6 +91,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
@@ -103,7 +101,7 @@
                         <ColumnDefinition Width="18"/>
                     </Grid.ColumnDefinitions>
                     <Label Content="Initial Vector :" Grid.Row="0" Grid.Column="0" FontWeight="Bold"/>
-                    <Button Grid.Row="2"  Margin="4" Grid.Column="0" VerticalAlignment="Center" IsEnabled="{Binding InitialPageRankVector,Converter={StaticResource InitialVectorSetConverter}}" Command="{Binding SetInitialPageRankCommand}" Style="{StaticResource DarkStyleButton}" >
+                    <Button Grid.Row="3"  Margin="4" Grid.Column="0" VerticalAlignment="Center" IsEnabled="{Binding InitialPageRankVector,Converter={StaticResource InitialVectorSetConverter}}" Command="{Binding SetInitialPageRankCommand}" Style="{StaticResource DarkStyleButton}" >
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="../Assets/icons/calc.png"/>
@@ -114,9 +112,9 @@
                             </StackPanel>
                         </Button.Content>
                     </Button>
-
+                    <Label Content="Precision :" Grid.Row="2" Grid.Column="0" FontWeight="Bold" Margin="2"/>
                     <Label Content="Google PR :" Grid.Row="0" Grid.Column="1" FontWeight="Bold"/>
-                    <Button Grid.Row="2"  Margin="4" Grid.Column="1" VerticalAlignment="Center" IsEnabled="{Binding InitialPageRankVector,Converter={StaticResource InitialVectorSetConverter}}" Command="{Binding CalculatePageRankCommand}" Style="{StaticResource DarkStyleButton}">
+                    <Button Grid.Row="3"  Margin="4" Grid.Column="1" VerticalAlignment="Center" IsEnabled="{Binding InitialPageRankVector,Converter={StaticResource InitialVectorSetConverter}}" Command="{Binding CalculatePageRankCommand}" Style="{StaticResource DarkStyleButton}">
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="../Assets/icons/calc.png"/>
@@ -127,9 +125,9 @@
                             </StackPanel>
                         </Button.Content>
                     </Button>
-
+                    <TextBox Grid.Row="2" Grid.Column="1"  Margin="4" Text="{Binding PrPrecision,Mode=TwoWay}"></TextBox>
                     <Label Content="Ameliorated PR :" Grid.Row="0" Grid.Column="2" FontWeight="Bold"/>
-                    <Button Grid.Row="2"  Margin="4" Grid.Column="2" VerticalAlignment="Center" IsEnabled="{Binding InitialPageRankVector,Converter={StaticResource InitialVectorSetConverter}}" Command="{Binding CalculateAmelioratedPageRankCommand}" Style="{StaticResource DarkStyleButton}">
+                    <Button Grid.Row="3"  Margin="4" Grid.Column="2" VerticalAlignment="Center" IsEnabled="{Binding InitialPageRankVector,Converter={StaticResource InitialVectorSetConverter}}" Command="{Binding CalculateAmelioratedPageRankCommand}" Style="{StaticResource DarkStyleButton}">
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="../Assets/icons/calc.png"/>
@@ -140,6 +138,7 @@
                             </StackPanel>
                         </Button.Content>
                     </Button>
+                    <TextBox Grid.Row="2" Grid.Column="2"  Margin="4" Text="{Binding AprPrecision,Mode=TwoWay}"></TextBox>
                     <ScrollViewer MinWidth="300" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" VerticalScrollBarVisibility="Visible">
 
                         <Grid >

@@ -30,6 +30,8 @@ namespace LuceneSearchClient.ViewModel
         public const string GenerateButtonIsEnabledPropertyName = "GenerateButtonIsEnabled";
         public const string GetTrMatButIsEnabledPropertyName = "GetTrMatButIsEnabled";
         public const string BusyIndicatorPropertyName = "BusyIndicator";
+        public const string AprPrecisionPropertyName = "AprPrecision";
+        public const string PrPrecisionPropertyName = "PrPrecision";
         #endregion
         #region Fields
         private string _linksXmlFile = "";
@@ -47,6 +49,8 @@ namespace LuceneSearchClient.ViewModel
         private bool _generateButtonIsEnabled = false;
         private bool _getTrMatButIsEnabled = false;
         private bool _busyIndicator = false;
+        private short _aprPrecision = 5;
+        private short _prPrecision = 5;     
         #endregion
         #region Properties
         public string WebGraphExcelFile
@@ -241,6 +245,43 @@ namespace LuceneSearchClient.ViewModel
                 RaisePropertyChanged(BusyIndicatorPropertyName);
             }
         }
+        public short AprPrecision
+        {
+            get
+            {
+                return _aprPrecision;
+            }
+
+            set
+            {
+                if (_aprPrecision == value)
+                {
+                    return;
+                }
+
+
+                _aprPrecision = value;
+                RaisePropertyChanged(AprPrecisionPropertyName);
+            }
+        }                      
+        public short PrPrecision
+        {
+            get
+            {
+                return _prPrecision;
+            }
+
+            set
+            {
+                if (_prPrecision == value)
+                {
+                    return;
+                }
+
+                _prPrecision = value;
+                RaisePropertyChanged(PrPrecisionPropertyName);
+            }
+        }
         #endregion
         #region Ctos and Methods
         public PageRankViewModel()
@@ -357,7 +398,7 @@ namespace LuceneSearchClient.ViewModel
             ulong nbIterations;
             var pageRank = new PageRank(TransitionMatrix, PageRank.DefaultDampingFactor);
             e.Result = pageRank.GetPageRankVector(InitialPageRankVector,
-               5, out nbIterations);
+               PrPrecision, out nbIterations);
         }
 
         private RelayCommand _calculateAmelioratedPageRankCommand;
@@ -393,7 +434,7 @@ namespace LuceneSearchClient.ViewModel
             ulong nbIterations;
             var pageRank = new PageRank(TransitionMatrix, PageRank.DefaultDampingFactor);
             e.Result = pageRank.GetAmelioratedPageRankVector(InitialPageRankVector,
-               5, out nbIterations);
+               AprPrecision, out nbIterations);
         }
         private RelayCommand _browseCommand;
         public RelayCommand BrowseCommand
@@ -504,7 +545,5 @@ namespace LuceneSearchClient.ViewModel
             _excelDataConverter.ConvertExelData(_pagesXmlFile, _linksXmlFile);
         }
         #endregion
-
-
     }
 }

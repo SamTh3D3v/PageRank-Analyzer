@@ -218,7 +218,8 @@
                                 </Grid>
                             </avalonDock:LayoutAnchorable >
                             <avalonDock:LayoutAnchorable Title="Visual WebGraph" x:Name="VisWebPane">
-                                <Grid>
+                                
+                                <Grid >
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="*"/>
@@ -248,10 +249,15 @@
 						                      Graph="{Binding Path=WebGraph}"
 						                      LayoutAlgorithmType="{Binding Path=SelectedLayoutAlgorithmeTtype, Mode=OneWay}"
 						                      OverlapRemovalAlgorithmType="FSA"
-						                      HighlightAlgorithmType="Simple" >
+						                      HighlightAlgorithmType="Simple" >                                                                                       
                                         </model:WebGraphLayout>
                                     </controls:ZoomControl>
+                                   
                                 </Grid>
+                                    
+                                
+
+
                             </avalonDock:LayoutAnchorable >
                         </avalonDock:LayoutAnchorablePane>
                         <avalonDock:LayoutAnchorablePane DockWidth="*" >
@@ -390,12 +396,12 @@
                                     </Grid.ColumnDefinitions>
                                     <Label Content="WebPageLabel :"></Label>
                                     <ComboBox Grid.Row="0" Grid.Column="1" Margin="3" ItemsSource="{Binding ListWebPages}" SelectedItem="{Binding SelectedPage,Mode=TwoWay}"/>
-                                    <dvc:Chart Grid.Row="1" Background="White" Grid.Column="0" Grid.ColumnSpan="2">
+                                    <dvc:Chart Grid.Row="1" Background="White" Grid.Column="0" Grid.ColumnSpan="2" >
                                         <dvc:Chart.Axes>
                                             <dvc:LinearAxis  Orientation="Y" Title="PageRank" />
                                             <dvc:LinearAxis Title="Damping Factor" Orientation="X" Interval=".1" Maximum="1" Minimum="0" />
                                         </dvc:Chart.Axes>
-                                        <dvc:LineSeries Title="{Binding SelectedPage}" 
+                                        <dvc:LineSeries Title="{Binding SelectedPage}" IsSelectionEnabled="True" 
                                         ItemsSource="{Binding ListDampPr}"
                                         IndependentValueBinding="{Binding Key}"
                                         DependentValueBinding="{Binding Value}" >

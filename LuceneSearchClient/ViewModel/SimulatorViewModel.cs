@@ -859,6 +859,7 @@ namespace LuceneSearchClient.ViewModel
                 RaisePropertyChanged(AdjacenceMatrixPropertyName);
                 _edgeSource = "";
                 _edgeTarget = "";
+                ResetMatrices();
             }
         }
         #endregion
@@ -868,12 +869,38 @@ namespace LuceneSearchClient.ViewModel
             DampingFactor = PageRank.DefaultDampingFactor;
             PrNumberIterations = 100;
             AprNumberOfIteration = 100;
-            //Remove A Node : Receive The Id Of The Node To Remove 
             Messenger.Default.Register<string>(this, "removenode", (node) =>
             {
-               //Remove The Node From The Graph 
-                //Remove The Node From The Matrix 
-                //Reset all Pregenerated Matrices
+                _matrixSize = MatrixSize - 1;
+                ListWebPages.Remove(ListWebPages[ListWebPages.Count-1]);
+                SelectedPage = ListWebPages.FirstOrDefault();
+                var newAdjMatrix = new Matrix(_matrixSize);
+                InitialPageRank = Vector.e(VectorType.Row, _matrixSize);
+                TelePortationMatrix = Matrix.E(_matrixSize);
+
+                PageRankVector = null;
+                AmelioratedPageRankVector = null;
+                ulong nodeUlong = ulong.Parse(node);
+                for (ulong i = 0; i < MatrixSize ; i++)
+                {
+                    for (ulong j = 0; j < MatrixSize ; j++)
+                    {
+                        var d = i >= nodeUlong ? i + 1 : i;
+                        newAdjMatrix[i, j] = AdjacenteMatrix[i >= nodeUlong ? i + 1 : i, j >= nodeUlong?j+1:j];
+                    }
+                }
+                AdjacenteMatrix = newAdjMatrix;
+               WebGraph.RemoveVertex (WebGraph.Vertices.First(x => x.Label==node));
+                
+             
+                //for (ulong label =nodeUlong+1 ; label < MatrixSize+1; label++)
+                //{
+                //    var lab = label.ToString(CultureInfo.InvariantCulture);
+                //    WebGraph.Vertices.First(v => v.Label==lab).Label=(label-1).ToString(CultureInfo.InvariantCulture);
+                //}
+                RaisePropertyChanged(AdjacenceMatrixPropertyName);
+                RaisePropertyChanged(WebGraphPropertyName);
+                ResetMatrices(); 
                
             });
             Messenger.Default.Register<WebEdge>(this, "removeedge", (edge) =>
@@ -915,6 +942,19 @@ namespace LuceneSearchClient.ViewModel
             Messenger.Default.Register<string>(this, "startedge", (se) => EdgeSource = se);
             Messenger.Default.Register<string>(this, "endedge", (ee) => EdgeTarget = ee);
             
+        }
+
+        private void ResetMatrices()
+        {
+            TransitionMatrix = null;
+            InputOutputRatio = null;
+            GoogleMatrix = null;
+            TelePortationMatrix = Matrix.E(MatrixSize);
+            GoogleMatrixIsCalculated = Visibility.Hidden;
+            TransitionMatrixIsCalculated=Visibility.Hidden;
+            InputOutputRatioIsCalculated = Visibility.Hidden;
+
+
         }
         #endregion
         #region Commands
@@ -958,6 +998,7 @@ namespace LuceneSearchClient.ViewModel
                                               for (ulong page = 0; page < MatrixSize; page++)                                             
                                                   WebGraph.AddVertex(new WebVertex() { Label = page.ToString(CultureInfo.InvariantCulture) });
                                               RaisePropertyChanged(WebGraphPropertyName);
+                                              ResetMatrices();
                                           }));
             }
         }
@@ -1185,6 +1226,7 @@ namespace LuceneSearchClient.ViewModel
                                                       RemoveGraphEdge(args.Row.GetIndex().ToString(),
                                                       args.Column.DisplayIndex.ToString());
                                                   RaisePropertyChanged(WebGraphPropertyName);
+                                                  ResetMatrices();
                                               }
                                           }));
             }
@@ -1473,7 +1515,8 @@ namespace LuceneSearchClient.ViewModel
                                                   Label = (MatrixSize - 1).ToString(CultureInfo.InvariantCulture)
                                               });
                                               RaisePropertyChanged(AdjacenceMatrixPropertyName);
-                                              RaisePropertyChanged(WebGraphPropertyName);                                                                                          
+                                              RaisePropertyChanged(WebGraphPropertyName);
+                                              ResetMatrices();                                           
                                           }));
             }
         }

@@ -18,7 +18,7 @@
 
     <Grid>
         <xctk:BusyIndicator x:Name="ind" IsBusy="{Binding BusyIndicator}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <DataGrid Margin="5" ItemsSource="{Binding ListPages}"/>
+            <DataGrid Margin="5" ItemsSource="{Binding ListPages}" LoadingRow="OnLoadingRow"/>
         </xctk:BusyIndicator>
     </Grid>
 </Page>

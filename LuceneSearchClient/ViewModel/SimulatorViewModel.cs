@@ -61,7 +61,9 @@ namespace LuceneSearchClient.ViewModel
         public const string WebGraphPropertyName = "WebGraph";
         public const string BusyIndicatorPropertyName = "BusyIndicator";
         public const string InputOutputRatioIsCalculatedPropertyName = "InputOutputRatioIsCalculated";
-        public const string InputOutputRatioPropertyName = "InputOutputRatio";        
+        public const string InputOutputRatioPropertyName = "InputOutputRatio";
+        public const string EdgeSourcePropertyName = "EdgeSource";
+        public const string EdgeTargetPropertyName = "EdgeTarget";
         #endregion
         #region Fields
         private ulong _matrixSize;
@@ -118,6 +120,8 @@ namespace LuceneSearchClient.ViewModel
         private WebGraph _webGraph;
         private bool _busyIndicator = false;
         private Matrix _inputOutputRatio;
+        private string _edgeSource;
+        private string _edgeTarget;
         #endregion
         #region Properties
         public ulong MatrixSize
@@ -144,7 +148,7 @@ namespace LuceneSearchClient.ViewModel
                 ListWebPages = new ObservableCollection<string>(listpages);
                 SelectedPage = ListWebPages.First();
                 //Generate The WebGraph
-                WebGraph = new WebGraph(true);
+                WebGraph = new WebGraph(false);
                 foreach (var page in listpages)
                     WebGraph.AddVertex(new WebVertex() { Label = page });
                 RaisePropertyChanged(WebGraphPropertyName);
@@ -813,6 +817,49 @@ namespace LuceneSearchClient.ViewModel
                 _busyIndicator = value;
                 RaisePropertyChanged(BusyIndicatorPropertyName);
             }
+        }        
+        public string EdgeSource
+        {
+            get
+            {
+                return _edgeSource;
+            }
+
+            set
+            {
+                if (_edgeSource == value)
+                {
+                    return;
+                }
+                
+                _edgeSource = value;
+                RaisePropertyChanged(EdgeSourcePropertyName);
+            }
+        }
+        public string EdgeTarget
+        {
+            get
+            {
+                return _edgeTarget;
+            }
+
+            set
+            {
+                if (_edgeTarget == value)
+                {
+                    return;
+                }                
+                _edgeTarget = value;
+                RaisePropertyChanged(EdgeTargetPropertyName);
+                AdjacenteMatrix[ulong.Parse(EdgeSource), ulong.Parse(EdgeTarget)] =1;                
+                    AddNewGraphEdge(EdgeSource,EdgeTarget);
+                    PageRankVector = null;
+                    AmelioratedPageRankVector = null;
+                RaisePropertyChanged(WebGraphPropertyName);
+                RaisePropertyChanged(AdjacenceMatrixPropertyName);
+                _edgeSource = "";
+                _edgeTarget = "";
+            }
         }
         #endregion
         #region Ctors and Methods
@@ -850,7 +897,7 @@ namespace LuceneSearchClient.ViewModel
                 ListWebPages = new ObservableCollection<string>(listpages);
                 SelectedPage = ListWebPages.First();
                 //Generate The WebGraph
-                WebGraph = new WebGraph(true);
+                WebGraph = new WebGraph(false);
                 foreach (var page in listpages)
                     WebGraph.AddVertex(new WebVertex() { Label = page });
 
@@ -864,9 +911,9 @@ namespace LuceneSearchClient.ViewModel
                 }
                 RaisePropertyChanged(AdjacenceMatrixPropertyName);                
                 RaisePropertyChanged(WebGraphPropertyName);
-
-
             });
+            Messenger.Default.Register<string>(this, "startedge", (se) => EdgeSource = se);
+            Messenger.Default.Register<string>(this, "endedge", (ee) => EdgeTarget = ee);
             
         }
         #endregion
@@ -907,7 +954,7 @@ namespace LuceneSearchClient.ViewModel
                                           () =>
                                           {
                                               AdjacenteMatrix = new Matrix(MatrixSize);
-                                              WebGraph = new WebGraph(true);
+                                              WebGraph = new WebGraph(false);
                                               for (ulong page = 0; page < MatrixSize; page++)                                             
                                                   WebGraph.AddVertex(new WebVertex() { Label = page.ToString(CultureInfo.InvariantCulture) });
                                               RaisePropertyChanged(WebGraphPropertyName);

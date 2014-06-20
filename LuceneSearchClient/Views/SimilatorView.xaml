@@ -247,7 +247,7 @@
                                     <controls:ZoomControl  Grid.Row="1"  Zoom="0.2" ZoomBoxOpacity="0.5" Background="#ff656565">
                                         <controls:ZoomControl.ContextMenu>
                                             <ContextMenu>
-                                                <MenuItem Header="New Node" >
+                                                <MenuItem Header="New Node" Command="{Binding NewNodeCommand}">
                                                     <MenuItem.Icon>
                                                         <Image Source="../Assets/icons/new.png"/>
                                                     </MenuItem.Icon>

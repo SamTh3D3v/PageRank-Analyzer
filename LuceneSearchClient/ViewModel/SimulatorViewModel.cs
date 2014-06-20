@@ -1394,7 +1394,42 @@ namespace LuceneSearchClient.ViewModel
 
         }
 
+        private RelayCommand _newNodeCommand;  
+        public RelayCommand NewNodeCommand
+        {
+            get
+            {
+                return _newNodeCommand
+                    ?? (_newNodeCommand = new RelayCommand(
+                                          () =>
+                                          {                                              
+                                              _matrixSize = MatrixSize + 1;
+                                              ListWebPages.Add((MatrixSize - 1).ToString(CultureInfo.InvariantCulture));
+                                              SelectedPage = ListWebPages.First();
+                                              var newAdjMatrix = new Matrix(_matrixSize);
+                                              InitialPageRank = Vector.e(VectorType.Row, _matrixSize);
+                                              TelePortationMatrix = Matrix.E(_matrixSize);
+                                              
+                                              PageRankVector = null;
+                                              AmelioratedPageRankVector = null;
 
+                                              for (ulong i = 0; i < MatrixSize-1; i++)
+                                              {
+                                                  for (ulong j = 0; j < MatrixSize-1; j++)
+                                                  {
+                                                      newAdjMatrix[i, j] = AdjacenteMatrix[i, j];                                                     
+                                                  }
+                                              }
+                                              AdjacenteMatrix = newAdjMatrix;
+                                              WebGraph.AddVertex(new WebVertex()
+                                              {
+                                                  Label = (MatrixSize - 1).ToString(CultureInfo.InvariantCulture)
+                                              });
+                                              RaisePropertyChanged(AdjacenceMatrixPropertyName);
+                                              RaisePropertyChanged(WebGraphPropertyName);                                                                                          
+                                          }));
+            }
+        }
         #endregion
     }
 }

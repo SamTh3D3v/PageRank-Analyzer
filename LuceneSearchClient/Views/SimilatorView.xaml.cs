@@ -170,6 +170,8 @@ namespace LuceneSearchClient.Views
         }
 
        
-        #endregion        
+        #endregion
+
+        
     }
 }

@@ -12,7 +12,7 @@ namespace LuceneSearchClient
         public App()
             : base()
         {
-           // this.Dispatcher.UnhandledException += OnDispatcherUnhandledException;
+            this.Dispatcher.UnhandledException += OnDispatcherUnhandledException;
         }
 
         void OnDispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)

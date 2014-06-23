@@ -19,6 +19,13 @@ namespace PageRankCalculator.PageRankCalculation
                 return _transitionMatrix;
             }
         }
+        public static Matrix AdjacentMatrix
+        {
+            get
+            {
+                return _adjacentMatrix;
+            }
+        }
 
         #endregion
 
@@ -54,6 +61,7 @@ namespace PageRankCalculator.PageRankCalculation
         public static void SetTransitionMatrix(List<Page> pages, List<Link> links)
         {
             _transitionMatrix = GetAdjacentMatrix(pages, links);
+            _adjacentMatrix = new Matrix(_transitionMatrix);
             _transitionMatrix.ToProbablityMatrix();
         }
         
@@ -65,6 +73,9 @@ namespace PageRankCalculator.PageRankCalculation
         /// Represents the Transition matrix generated from converting the WebGraph
         /// </summary>
         private static Matrix _transitionMatrix;
+        private static Matrix _adjacentMatrix;
+        
+
 
         #endregion
     }

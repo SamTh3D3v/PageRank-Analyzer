@@ -54,6 +54,22 @@ namespace PageRankCalculator.PageRankCalculation
             {
                 return _transitionMatrix;
             }
+        }               
+        public Matrix DampingFactorMatrix
+        {
+            get
+            {
+                return _dampingFactorMatrix;
+            }
+
+            set
+            {
+                if (_dampingFactorMatrix == value)
+                {
+                    return;
+                }                
+                _dampingFactorMatrix = value;                
+            }
         }
         #endregion
         #region Constructors
@@ -196,6 +212,7 @@ namespace PageRankCalculator.PageRankCalculation
 
             //Calculate Damping factors
             var dampingFactorMatrix = GetVariantDampingFactorMatrix();
+            DampingFactorMatrix = dampingFactorMatrix;
 
             var pageRankVector = initialVector;
             for (ulong i = 0; i < nbItterations; i++)
@@ -222,35 +239,25 @@ namespace PageRankCalculator.PageRankCalculation
 
             //Calculate Damping factors
             var dampingFactorMatrix = GetVariantDampingFactorMatrix();
+            DampingFactorMatrix = dampingFactorMatrix;
             //Vectors used to valuate convergence 
             Vector previousPageRankValue;
             Vector pageRankVector = previousPageRankValue = initialVector;
 
             //Convergence degree example 0.0001
-            double convergenceValue = 1f / (Math.Pow(10, convergenceDegree));
-
-            //To test convergence 
-            bool converged;
-
-            //Itterations number
+            double convergenceValue = 1f / (Math.Pow(10, convergenceDegree));             
+            bool converged;            
             nbItterations = 0;
-
             do
             {
                 converged = true;
-
                 //New itteration
                 nbItterations++;
-
                 previousPageRankValue = pageRankVector;
-
-
                 var temp1 = (pageRankVector * _transitionMatrix) * dampingFactorMatrix;
                 var temp2 = Vector.e(VectorType.Row, _transitionMatrix.Size) * (Matrix.I(_transitionMatrix.Size) + (-1f) * dampingFactorMatrix);
                 pageRankVector = temp1 + temp2;
-
                 //Testing convergence 
-
                 Parallel.For((long)0, (long)_transitionMatrix.Size, (i, parallelLoopState) =>
                     {
                         if (Math.Abs(pageRankVector[(ulong)i] - previousPageRankValue[(ulong)i]) > convergenceValue)
@@ -261,7 +268,6 @@ namespace PageRankCalculator.PageRankCalculation
                     });
 
             } while (!converged);
-
             return pageRankVector;
         }
         /// <summary>
@@ -339,6 +345,10 @@ namespace PageRankCalculator.PageRankCalculation
         /// N x N Transition matrix representing the webgraph
         /// </summary>
         private Matrix _transitionMatrix;
+        /// <summary>
+        /// The Input output Ratio matrix
+        /// </summary>
+        private Matrix _dampingFactorMatrix;
 
         #endregion
     }

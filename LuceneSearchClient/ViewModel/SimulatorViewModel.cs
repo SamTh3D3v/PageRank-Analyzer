@@ -912,6 +912,7 @@ namespace LuceneSearchClient.ViewModel
             });
             Messenger.Default.Register<Matrix>(this, "exporttosimulator", (adjMatrix) =>
             {
+                ResetMatrices();
                 _matrixSize = adjMatrix.Size;
                 AdjacenteMatrix = adjMatrix;
                 InitialPageRank = Vector.e(VectorType.Row, _matrixSize);
@@ -925,6 +926,7 @@ namespace LuceneSearchClient.ViewModel
                 SelectedPage = ListWebPages.First();
                 //Generate The WebGraph
                 WebGraph = new WebGraph(false);
+                SelectedLayoutAlgorithmeTtype = "KK";
                 foreach (var page in listpages)
                     WebGraph.AddVertex(new WebVertex() { Label = page });
 
@@ -953,6 +955,9 @@ namespace LuceneSearchClient.ViewModel
             GoogleMatrixIsCalculated = Visibility.Hidden;
             TransitionMatrixIsCalculated=Visibility.Hidden;
             InputOutputRatioIsCalculated = Visibility.Hidden;
+            PageRankVector = null;
+            AmelioratedPageRankVector = null;
+            EignValuesVector = null;
 
 
         }

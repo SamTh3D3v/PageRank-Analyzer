@@ -127,11 +127,6 @@
     <Compile Include="Resources\GraphResourceDictionary.xaml.cs">
       <DependentUpon>GraphResourceDictionary.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Resources\MultiChart.cs" />
-    <Compile Include="Resources\WeakEventing\CollectionChangedWeakEventSource.cs" />
-    <Compile Include="Resources\WeakEventing\EventWrapperSourceBase.cs" />
-    <Compile Include="Resources\WeakEventing\WeakEventListener.cs" />
-    <Compile Include="Resources\WeakEventing\WeakEventListenerBase.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\PageRankViewModel.cs" />
     <Compile Include="ViewModel\SearchViewModel.cs" />

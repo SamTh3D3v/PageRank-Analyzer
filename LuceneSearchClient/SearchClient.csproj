@@ -68,9 +68,9 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Windows.Controls.DataVisualization.Toolkit, Version=3.5.40128.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\WPF Toolkit\v3.5.50211.1\System.Windows.Controls.DataVisualization.Toolkit.dll</HintPath>
+    <Reference Include="System.Web.DataVisualization" />
+    <Reference Include="System.Windows.Controls.DataVisualization.Toolkit">
+      <HintPath>..\packages\System.Windows.Controls.DataVisualization.Toolkit.4.0.0.0\lib\net40-Client\System.Windows.Controls.DataVisualization.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Controls.Input.Toolkit">
       <HintPath>..\packages\WPFToolkit.3.5.50211.1\lib\System.Windows.Controls.Input.Toolkit.dll</HintPath>
@@ -102,11 +102,11 @@
     </Reference>
     <Reference Include="Xceed.Wpf.AvalonDock, Version=2.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Downloads\Compressed\AvalonDock_2_0_2000\Xceed.Wpf.AvalonDock.dll</HintPath>
+      <HintPath>..\..\..\..\..\Downloads\Compressed\AvalonDock_2_0_2000\Xceed.Wpf.AvalonDock.dll</HintPath>
     </Reference>
     <Reference Include="Xceed.Wpf.Toolkit, Version=2.1.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Downloads\Compressed\Extended WPF Toolkit Binaries_2\Xceed.Wpf.Toolkit.dll</HintPath>
+      <HintPath>..\..\..\..\..\Downloads\Compressed\Extended WPF Toolkit Binaries\Extended WPF Toolkit Binaries\Xceed.Wpf.Toolkit.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -124,8 +124,10 @@
     <Compile Include="Model\WebGraphLayout.cs" />
     <Compile Include="Model\WebSite.cs" />
     <Compile Include="Model\WebVertex.cs" />
+    <Compile Include="Resources\GraphResourceDictionary.xaml.cs">
+      <DependentUpon>GraphResourceDictionary.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Resources\MultiChart.cs" />
-    <Compile Include="Resources\GraphResourceDictionary.xaml.cs" />
     <Compile Include="Resources\WeakEventing\CollectionChangedWeakEventSource.cs" />
     <Compile Include="Resources\WeakEventing\EventWrapperSourceBase.cs" />
     <Compile Include="Resources\WeakEventing\WeakEventListener.cs" />
